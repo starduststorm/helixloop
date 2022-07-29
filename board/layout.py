@@ -187,10 +187,6 @@ class KiCadPCB(object):
 
   # Drawing Tools
   def draw_segment(self, start, end, layer='F.Silkscreen', width=0.15):
-    if type(start) is tuple:
-      start = Point(tuple[0], tuple[1])
-    if type(end) is tuple:
-      end = Point(tuple[0], tuple[1])
     line = pcbnew.PCB_SHAPE()
     self.board._obj.Add(line)
     line.SetShape(pcbnew.S_SEGMENT)
@@ -285,6 +281,10 @@ class PCBLayout(object):
   placed_pixel_points = []
 
   def drawSegment(self, start, end, layer='F.Silkscreen', width=0.15):
+    if type(start) is tuple:
+      start = Point(start[0], start[1])
+    if type(end) is tuple:
+      end = Point(start[0], start[1])
     self.kicadpcb.draw_segment(self.center+start, self.center+end, layer, width)
 
   def seriesPixelDiscontinuity(self):
