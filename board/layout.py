@@ -5,7 +5,6 @@ import sys
 from math import *
 import cmath
 import argparse
-from this import d
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', "--path", action='store', required=True, help="Path to kicad_pcb file")
@@ -80,6 +79,9 @@ class Point(object):
 
   def __add__(self, oth):
     return Point(self.x + oth.x, self.y + oth.y)
+
+  def __eq__(self, oth):
+    return self.x == oth.x and self.y == oth.y
 
 
 ###############################################################################
@@ -185,6 +187,10 @@ class KiCadPCB(object):
 
   # Drawing Tools
   def draw_segment(self, start, end, layer='F.Silkscreen', width=0.15):
+    if type(start) is tuple:
+      start = Point(tuple[0], tuple[1])
+    if type(end) is tuple:
+      end = Point(tuple[0], tuple[1])
     line = pcbnew.PCB_SHAPE()
     self.board._obj.Add(line)
     line.SetShape(pcbnew.S_SEGMENT)
@@ -278,10 +284,13 @@ class PCBLayout(object):
   series_pixel_count = 1
   placed_pixel_points = []
 
-  def series_pixel_discontinuity(self):
+  def drawSegment(self, start, end, layer='F.Silkscreen', width=0.15):
+    self.kicadpcb.draw_segment(self.center+start, self.center+end, layer, width)
+
+  def seriesPixelDiscontinuity(self):
     self.prev_series_pixel = None
 
-  def place_series_pixel(self, point, orientation, allowOverlaps=True):
+  def placeSeriesPixel(self, point, orientation, allowOverlaps=True):
     reference = "D%i" % self.series_pixel_count
     self.series_pixel_count += 1
     
@@ -290,8 +299,11 @@ class PCBLayout(object):
       self.pixel_prototype = pcbnew.FootprintLoad("/Library/Application Support/kicad/modules/LED_SMD.pretty", "LED-APA102-2020")
       self.pixel_prototype.SetLayer(self.kicadpcb.layertable["F.Cu"])
 
+    # if self.prev_series_pixel is not None:
+    #   self.drawSegment(Point.fromWxPoint(self.prev_series_pixel.GetPosition()), point, width = 0.1)
+
     if not allowOverlaps:
-      overlapThresh = 0.5
+      overlapThresh = 0.8
       for placed in self.placed_pixel_points:
         if (self.center + point).distance_to(placed) < overlapThresh:
           print("Skipping pixel %s at point %s due to overlap" % (reference, point))
@@ -378,12 +390,25 @@ class PCBLayout(object):
 
 
 class LayoutHelixLoop(PCBLayout):
-  edge_radius = 64#mm
+  edge_radius = 72#mm
+  pixelSpacing = 3.922
+  helixRadius = 56.6
+  helixAmplitude = 12
+  helixCycles = 6
+  pixelRotation = 0.88
 
-  pixelSpacing = 3.806
-  helixRadius = 51
-  helixAmplitude = 8
-  helixCycles = 7
+  # edge_radius = 68#mm
+  # pixelSpacing = 3.849
+  # helixRadius = 55
+  # helixAmplitude = 7.15
+  # helixCycles = 6
+  # pixelRotation = 0.68
+
+  # edge_radius = 64#mm
+  # pixelSpacing = 3.806
+  # helixRadius = 51
+  # helixAmplitude = 8
+  # helixCycles = 7
 
   def drawEdgeCuts(self):
     super().drawEdgeCuts()
@@ -392,13 +417,14 @@ class LayoutHelixLoop(PCBLayout):
   
   def placePixelWave(self,phase):
     
-    segments = 20000
+    segments = 80000
     phase /= self.helixCycles
     last_placement = Point(inf, inf)
     first_placement = None
 
-    for i in range(0,segments):
-      theta = i*2*pi/segments
+    print("Placing Pixel Wave at phase", phase)
+    for s in range(0,segments):
+      theta = s*2*pi/segments
       radius = self.helixRadius + self.helixAmplitude * sin(theta * self.helixCycles)
       pos = Point(radius * sin(theta+phase), radius * cos(theta+phase))
 
@@ -412,30 +438,26 @@ class LayoutHelixLoop(PCBLayout):
       else:
         first_placement = pos
       
-      orientation = theta + phase - cos(theta * self.helixCycles) * 0.86
-      self.place_series_pixel(pos, orientation, allowOverlaps=False)
+      orientation = theta + phase - cos(theta * self.helixCycles) * self.pixelRotation
+      self.placeSeriesPixel(pos, orientation, allowOverlaps=False)
 
       last_placement = pos
-    self.series_pixel_discontinuity()
+    self.seriesPixelDiscontinuity()
 
-    for loopy in range(0, self.helixCycles):
-      theta = 3*pi/2/self.helixCycles + loopy * 2 * pi / self.helixCycles #wave min
-      orientation = pi/2+theta + phase
+    # lineLength = 7
+    # for loopy in range(0, self.helixCycles):
+    #   theta = 3*pi/2/self.helixCycles + loopy * 2 * pi / self.helixCycles #wave min
+    #   orientation = pi/2+theta + phase
 
-      # inward lines
-      lineLength = 7
-      for px in range(lineLength):
-        radius = self.helixRadius - self.helixAmplitude - self.pixelSpacing * (px+1)
-        pos = Point(radius * sin(theta+phase), radius * cos(theta+phase))
-        if px == lineLength-1: # last px is in the circle
-          orientation -= pi/2
-        self.place_series_pixel(pos, orientation, allowOverlaps=False)
-      
-      # inner circle (preserves last radius from line)
-      theta += 2*pi/14/2
-      orientation = theta + phase
-      pos = Point(radius * sin(theta+phase), radius * cos(theta+phase))
-      self.place_series_pixel(pos, orientation, allowOverlaps=True)
+    #   # inward lines
+    #   if phase == 0:
+    #     for px in range(lineLength):
+    #       radius = self.helixRadius - self.helixAmplitude - self.pixelSpacing * (px+1)
+    #       pos = Point(radius * sin(theta+phase), radius * cos(theta+phase))
+    #       if px == lineLength-1: # last px is in the circle
+    #         orientation -= pi/2
+    #       self.placeSeriesPixel(pos, orientation, allowOverlaps=False)
+  
 
   def placePixels(self):
     super().placePixels()
@@ -449,11 +471,57 @@ class LayoutHelixLoop(PCBLayout):
     self.placePixelWave(0)
     self.placePixelWave(pi)
 
+    for i in range(3):
+      print("Placing Spiral", i)
+      spiralStartRadius = 0.45 * self.helixRadius
+      spiralStartTheta = i * 2*pi/3 + 7/self.helixCycles/2
+      spiralCenter = circle_pt(spiralStartTheta, spiralStartRadius)
+      spiralRadiusPerLoop = 10.4
 
-    # guides = 28
+      # last_point = None
+      last_placement = Point(inf, inf)
+      segments = 10000
+      
+      loops = 2.04
+
+      linear_adjust_start = 3.7 * pi
+      for s in range(segments):
+        radius = 2 + loops * spiralRadiusPerLoop * s / segments
+        spiralTheta = 2*pi * loops * s / segments - 0.03
+        theta = spiralTheta - spiralStartTheta
+        orientation = theta-0.1
+        if spiralTheta > linear_adjust_start:
+          radius += 4*(spiralTheta -linear_adjust_start)
+          orientation -= 0.15
+          pass
+        
+        pos = spiralCenter + Point(radius*sin(theta), radius*cos(theta))
+        
+        # if last_point is not None:
+        #   self.drawSegment(last_point, pos, width = 0.01)
+        # last_point = pos
+        if last_placement.distance_to(pos) < self.pixelSpacing:
+          continue
+        # self.drawSegment(spiralCenter, pos)
+        self.placeSeriesPixel(pos, orientation, allowOverlaps=True)
+        
+        last_placement = pos
+      self.seriesPixelDiscontinuity()
+
+    # # inner circle
+    # circleCount = 18
+    # for i in range(0,circleCount):
+    #   radius = 10
+    #   theta = 2*pi * i / circleCount
+    #   orientation = theta
+    #   pos = Point(radius * sin(theta), radius * cos(theta))
+    #   self.placeSeriesPixel(pos, orientation, allowOverlaps=True)
+
+
+    # guides = 24
     # for i in range(guides):
     #   theta = i * 2 * pi/guides
-    #   self.kicadpcb.draw_segment(self.center, self.center+circle_pt(theta,self.edge_radius))
+    #   self.drawSegment((0,0), circle_pt(theta,self.edge_radius))
     
 
 layout = LayoutHelixLoop(args.path)    
