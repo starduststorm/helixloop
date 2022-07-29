@@ -395,7 +395,7 @@ class LayoutHelixLoop(PCBLayout):
   helixRadius = 56.6
   helixAmplitude = 12
   helixCycles = 6
-  pixelRotation = 0.88
+  pixelRotation = 0.98
 
   # edge_radius = 68#mm
   # pixelSpacing = 3.849
@@ -480,19 +480,19 @@ class LayoutHelixLoop(PCBLayout):
 
       # last_point = None
       last_placement = Point(inf, inf)
-      segments = 10000
+      segments = 40000
       
       loops = 2.04
 
       linear_adjust_start = 3.7 * pi
       for s in range(segments):
         radius = 2 + loops * spiralRadiusPerLoop * s / segments
-        spiralTheta = 2*pi * loops * s / segments - 0.03
+        spiralTheta = 2*pi * loops * s / segments - 0.022
         theta = spiralTheta - spiralStartTheta
         orientation = theta-0.1
         if spiralTheta > linear_adjust_start:
           radius += 4*(spiralTheta -linear_adjust_start)
-          orientation -= 0.15
+          orientation -= 0.12
           pass
         
         pos = spiralCenter + Point(radius*sin(theta), radius*cos(theta))
