@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+from pathlib import Path
 from math import *
 import cmath
 import argparse
@@ -114,11 +115,7 @@ class KiCadPCB(object):
     print("Saved!")
 
   def deleteEdgeCuts(self):
-    # delete old edge cuts
-    for drawing in self.board._obj.Drawings():
-      if drawing.IsOnLayer(self.layertable['Edge.Cuts']):
-        self.board._obj.Delete(drawing)
-        print("Deleting edge cut drawing")
+    self.deleteAllDrawings(layer='Edge.Cuts')
 
   def deleteAllTraces(self):
     tracks = self.board._obj.GetTracks()
@@ -126,11 +123,12 @@ class KiCadPCB(object):
       print("Deleting track {}".format(t))
       self.board._obj.Delete(t)
   
-  def deleteAllDrawings(self):
-    while list(self.board._obj.GetDrawings()):
-        drawing = list(self.board._obj.GetDrawings())[0]
-        print("Deleting drawing {}".format(drawing))
-        self.board._obj.Delete(drawing)
+  def deleteAllDrawings(self, layer=None):
+    for drawing in self.board._obj.GetDrawings():
+        if layer is None or layer == drawing.GetLayerName():
+          print("Deleting drawing {}".format(drawing))
+          self.board._obj.Delete(drawing)
+  
   def deleteShortTraces(self):
     print("FIXME: disabled because it removes vias")
     exit(1)
@@ -267,7 +265,8 @@ class KiCadPCB(object):
 class PCBLayout(object):
   center = Point(100,100)
   edge_cut_line_thickness = 0.05
-  pixel_pad_map = {"2": "5", "3": "4"} # connect SCK and SD* for APA102c-2020
+  pixel_pad_map = {"3": "1", "4": "6"} # connect SCK and SD* for SK9822-EC20
+  pixel_pad_names = {"GND": "2"}
   
   ####
 
@@ -296,7 +295,7 @@ class PCBLayout(object):
     
     if self.pixel_prototype is None:
       print("Loading pixel footprint...")
-      self.pixel_prototype = pcbnew.FootprintLoad("/Library/Application Support/kicad/modules/LED_SMD.pretty", "LED-APA102-2020")
+      self.pixel_prototype = pcbnew.FootprintLoad(str(Path(__file__).parent.joinpath('kicad_footprints.pretty').resolve()), "LED-SK9822-EC20")
       self.pixel_prototype.SetLayer(self.kicadpcb.layertable["F.Cu"])
 
     # if self.prev_series_pixel is not None:
@@ -325,7 +324,7 @@ class PCBLayout(object):
       # FIXME: Remove the center pads? esp if soldering by hand?
       # fortunately the corner GND pad always seems to come first in the list
       
-      if not args.skip_traces and pad.GetPadName() == '6': # GND
+      if not args.skip_traces and pad.GetPadName() == self.pixel_pad_names['GND']:
         # draw trace outward from ground
         end = Point.fromWxPoint(pad.GetPosition()).polar_translated(0.8, -pi/2-orientation)
         self.kicadpcb.add_copper_trace(pad.GetPosition(), end.wxPoint(), pad.GetNet())
@@ -339,21 +338,23 @@ class PCBLayout(object):
     if not args.skip_traces and self.prev_series_pixel is not None:
       for prev_pad in self.prev_series_pixel.Pads():
         if prev_pad.GetPadName() in self.pixel_pad_map:
-          tracks = self.kicadpcb.board._obj.TracksInNet(prev_pad.GetNet().GetNetCode())
-          if tracks:
-            # skip pad, already has traces
-            if args.verbose:
-              print("Skipping pad, already has tracks: {}".format(prev_pad))
-            continue
+          # tracks = self.kicadpcb.board._obj.TracksInNet(prev_pad.GetNet().GetNetCode())
+          # if tracks:
+          #   # skip pad, already has traces
+          #   if args.verbose:
+          #     print("Skipping pad, already has {} tracks: {}".format(len(tracks), prev_pad.GetPadName()))
+          #   continue
+
           # for net in board._obj.TracksInNet(prev_pad.GetNet().GetNet()):
           #   board._obj.Delete(t)
 
           # then connect the two pads
           for pad in pixel.Pads():
+            print("    pad name:", pad.GetPadName())
             if pad.GetPadName() == self.pixel_pad_map[prev_pad.GetPadName()]:
               start = prev_pad.GetPosition()
               end = pad.GetPosition()
-              print("Adding track from pixel {} pad {} to pixel {} pad {}".format(self.prev_series_pixel.reference, prev_pad.GetPadName(), pixel.reference, pad.GetPadName()))
+              print("Adding track from pixel {} pad {} to pixel {} pad {}".format(self.prev_series_pixel.Reference(), prev_pad.GetPadName(), pixel.Reference(), pad.GetPadName()))
               self.kicadpcb.add_copper_trace(start, end, pad.GetNet())
 
            # FIXME: Draw GND and +5V traces?
@@ -384,6 +385,9 @@ class PCBLayout(object):
       if re.match("^D\d+$",fp.GetReference()):
         print("Removing old footprint for pixel %s" % fp.GetReference())
         self.kicadpcb.board._obj.Delete(fp)
+    
+    self.kicadpcb.deleteAllDrawings(layer='F.Silkscreen')
+    self.kicadpcb.deleteAllTraces()
 
 
 ###############################################################################
@@ -395,7 +399,7 @@ class LayoutHelixLoop(PCBLayout):
   helixRadius = 56.6
   helixAmplitude = 12
   helixCycles = 6
-  pixelRotation = 0.98
+  pixelRotationFudge = 0.98
 
   # edge_radius = 68#mm
   # pixelSpacing = 3.849
@@ -416,7 +420,6 @@ class LayoutHelixLoop(PCBLayout):
     # FIXME: board edge follows shape
   
   def placePixelWave(self,phase):
-    
     segments = 80000
     phase /= self.helixCycles
     last_placement = Point(inf, inf)
@@ -438,7 +441,7 @@ class LayoutHelixLoop(PCBLayout):
       else:
         first_placement = pos
       
-      orientation = theta + phase - cos(theta * self.helixCycles) * self.pixelRotation
+      orientation = pi + theta + phase - cos(theta * self.helixCycles) * self.pixelRotationFudge
       self.placeSeriesPixel(pos, orientation, allowOverlaps=False)
 
       last_placement = pos
@@ -489,7 +492,7 @@ class LayoutHelixLoop(PCBLayout):
         radius = 2 + loops * spiralRadiusPerLoop * s / segments
         spiralTheta = 2*pi * loops * s / segments - 0.022
         theta = spiralTheta - spiralStartTheta
-        orientation = theta-0.1
+        orientation = pi + theta-0.1
         if spiralTheta > linear_adjust_start:
           radius += 4*(spiralTheta -linear_adjust_start)
           orientation -= 0.12
