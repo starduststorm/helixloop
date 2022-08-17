@@ -6,6 +6,7 @@ from pathlib import Path
 from math import *
 import cmath
 import argparse
+from urllib.request import getproxies
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', "--path", action='store', required=True, help="Path to kicad_pcb file")
@@ -43,9 +44,21 @@ class Point(object):
   def fromComplex(cls, c):
     return Point(c.real, c.imag)
 
-  def __init__(self, x, y):
-    self.x = x
-    self.y = y
+  def __init__(self, arg1, arg2=None):
+    if arg2 is not None:
+      self.x = arg1
+      self.y = arg2
+    elif type(arg1) == pcbnew.wxPoint:
+      p = Point.fromWxPoint(arg1)
+      self.x = p.x
+      self.y = p.y
+    elif type(arg1) == complex:
+      p = Point.fromComplex(arg1)
+      self.x = p.x
+      self.y = p.y
+    else:
+      self.x = arg1[0]
+      self.y = arg1[1]
 
   def wxPoint(self):
     return pcbnew.wxPoint(self.x * pcbnew.IU_PER_MM , self.y * pcbnew.IU_PER_MM)
@@ -79,8 +92,12 @@ class Point(object):
     return "(%0.2f, %0.2f)" % (self.x, self.y)
 
   def __add__(self, oth):
+    oth = Point(oth)
     return Point(self.x + oth.x, self.y + oth.y)
 
+  def __truediv__(self, scalar):
+    return Point(self.x/scalar, self.y/scalar)
+  
   def __eq__(self, oth):
     return self.x == oth.x and self.y == oth.y
 
@@ -277,7 +294,6 @@ class PCBLayout(object):
   prev_series_pixel = None
   pixel_prototype = None
   series_pixel_count = 1
-  placed_pixel_points = []
 
   def drawSegment(self, start, end, layer='F.Silkscreen', width=0.15):
     if type(start) is tuple:
@@ -301,13 +317,25 @@ class PCBLayout(object):
     # if self.prev_series_pixel is not None:
     #   self.drawSegment(Point.fromWxPoint(self.prev_series_pixel.GetPosition()), point, width = 0.1)
 
+    absPoint = self.center + point
+
     if not allowOverlaps:
       overlapThresh = 0.8
-      for placed in self.placed_pixel_points:
-        if (self.center + point).distance_to(placed) < overlapThresh:
-          print("Skipping pixel %s at point %s due to overlap" % (reference, point))
+      for fp in self.kicadpcb.board._obj.GetFootprints():
+        # print(fp, Point(fp.GetPosition()), fp.GetOrientation())
+        fpPoint = Point(fp.GetPosition())
+        fpOrientation = pi/180 * fp.GetOrientation()/10
+        if absPoint.distance_to(fpPoint) < overlapThresh:
+          # the pixel overlaps with a pixel already on the board. we'll adjust it to 'flow' more with the new attemped pixel
+          newPt = (fpPoint+absPoint)/2
+          orientationTweakSign = 1 if abs(fpOrientation%(pi/2) - orientation%(pi/2)) > pi/4 else -1
+          newOrientation = fpOrientation + (fpOrientation%(pi/2) - orientation%(pi/2)) / 2 * orientationTweakSign
+          print("Pixel", reference, "overlaps", fp.GetReference(), "first", fpPoint, "@", fpOrientation, "second", absPoint, "@", orientation, " => ", newPt, "@", newOrientation)
+          fp.SetPosition(newPt.wxPoint())
+          fp.SetOrientation(180/pi*10*newOrientation)
+
+          # print("Skipping pixel %s at point %s due to overlap" % (reference, point))
           return
-      self.placed_pixel_points.append(self.center+point)
 
     print("Placing pixel %s at point %s (relative center %s) orientation %f" % (reference, point, self.center, orientation));
     pixel = pcbnew.FOOTPRINT(self.pixel_prototype)
@@ -321,12 +349,9 @@ class PCBLayout(object):
     self.kicadpcb.board._obj.Add(pixel)
 
     for pad in pixel.Pads():
-      # FIXME: Remove the center pads? esp if soldering by hand?
-      # fortunately the corner GND pad always seems to come first in the list
-      
       if not args.skip_traces and pad.GetPadName() == self.pixel_pad_names['GND']:
         # draw trace outward from ground
-        end = Point.fromWxPoint(pad.GetPosition()).polar_translated(0.8, -pi/2-orientation)
+        end = Point(pad.GetPosition()).polar_translated(0.8, -pi/2-orientation)
         self.kicadpcb.add_copper_trace(pad.GetPosition(), end.wxPoint(), pad.GetNet())
 
         # add a via
@@ -394,12 +419,16 @@ class PCBLayout(object):
 
 
 class LayoutHelixLoop(PCBLayout):
-  edge_radius = 72#mm
-  pixelSpacing = 3.922
-  helixRadius = 56.6
-  helixAmplitude = 12
+
+
+  # fuck this, how about I draw 1/12 of it, then repeat that same thing rotated 2*pi*1/12 at a time? correcting for these helix-cumulative effects is endless
+
+  edge_radius = 70#mm
+  pixelSpacing = 3.810
+  helixRadius = 53.8
+  helixAmplitude = 12.00
   helixCycles = 6
-  pixelRotationFudge = 0.98
+  pixelRotationFudge = 1.0
 
   # edge_radius = 68#mm
   # pixelSpacing = 3.849
@@ -479,22 +508,22 @@ class LayoutHelixLoop(PCBLayout):
       spiralStartRadius = 0.45 * self.helixRadius
       spiralStartTheta = i * 2*pi/3 + 7/self.helixCycles/2
       spiralCenter = circle_pt(spiralStartTheta, spiralStartRadius)
-      spiralRadiusPerLoop = 10.4
+      spiralRadiusPerLoop = 9.8
 
       # last_point = None
       last_placement = Point(inf, inf)
-      segments = 40000
+      segments = 80000
       
       loops = 2.04
 
       linear_adjust_start = 3.7 * pi
       for s in range(segments):
         radius = 2 + loops * spiralRadiusPerLoop * s / segments
-        spiralTheta = 2*pi * loops * s / segments - 0.022
+        spiralTheta = 2*pi * loops * s / segments - 0.042
         theta = spiralTheta - spiralStartTheta
         orientation = pi + theta-0.1
         if spiralTheta > linear_adjust_start:
-          radius += 4*(spiralTheta -linear_adjust_start)
+          radius += 3.2 * (spiralTheta -linear_adjust_start)
           orientation -= 0.12
           pass
         
