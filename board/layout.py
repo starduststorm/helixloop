@@ -404,6 +404,7 @@ class PCBLayout(object):
   def drawEdgeCuts(self):
     self.kicadpcb.deleteEdgeCuts()
     pass
+
   def placePixels(self):
     import re
     for fp in self.kicadpcb.board._obj.GetFootprints():
@@ -423,7 +424,7 @@ class LayoutHelixLoop(PCBLayout):
 
   # fuck this, how about I draw 1/12 of it, then repeat that same thing rotated 2*pi*1/12 at a time? correcting for these helix-cumulative effects is endless
 
-  edge_radius = 70#mm
+  edgeRadius = 60#mm
   pixelSpacing = 3.810
   helixRadius = 53.8
   helixAmplitude = 12.00
@@ -445,8 +446,22 @@ class LayoutHelixLoop(PCBLayout):
 
   def drawEdgeCuts(self):
     super().drawEdgeCuts()
-    self.kicadpcb.draw_circle(self.center, self.edge_radius, layer='Edge.Cuts', width=self.edge_cut_line_thickness)
-    # FIXME: board edge follows shape
+    
+    segments = 1200
+    outerPhase = pi/self.helixCycles
+    lastPos = None
+    firstPos = None
+    for s in range(0,segments):
+      theta = s*2*pi/segments
+      radius = self.edgeRadius + self.helixAmplitude * abs(sin(theta * self.helixCycles))
+      pos = Point(radius * sin(theta), radius * cos(theta))
+      
+      if lastPos is not None:
+        self.kicadpcb.draw_segment(self.center+lastPos, self.center+pos, 'Edge.Cuts', self.edge_cut_line_thickness)
+      if firstPos is None:
+        firstPos = pos
+      lastPos = pos
+    self.kicadpcb.draw_segment(self.center+lastPos, self.center+firstPos, 'Edge.Cuts', self.edge_cut_line_thickness)
   
   def placePixelWave(self,phase):
     segments = 80000
