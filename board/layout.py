@@ -95,6 +95,10 @@ class Point(object):
     oth = Point(oth)
     return Point(self.x + oth.x, self.y + oth.y)
 
+  def __sub__(self, oth):
+    oth = Point(oth)
+    return Point(self.x - oth.x, self.y - oth.y)
+
   def __truediv__(self, scalar):
     return Point(self.x/scalar, self.y/scalar)
   
@@ -284,6 +288,7 @@ class PCBLayout(object):
   edge_cut_line_thickness = 0.05
   pixel_pad_map = {"3": "1", "4": "6"} # connect SCK and SD* for SK9822-EC20
   pixel_pad_names = {"GND": "2"}
+  drawPixelLinesOnly = False
   
   ####
 
@@ -346,7 +351,11 @@ class PCBLayout(object):
     kicad_orientation = orientation * 180/pi * 10 # kicad stores 10th's of a degree?? *shrug*
     pixel.SetOrientation(kicad_orientation)
     pixel.Reference().SetVisible(False)
-    self.kicadpcb.board._obj.Add(pixel)
+    if self.drawPixelLinesOnly:
+      if self.prev_series_pixel is not None:
+        self.drawSegment(Point.fromWxPoint(self.prev_series_pixel.GetPosition()) - self.center, point, width = 0.35)
+    else:
+      self.kicadpcb.board._obj.Add(pixel)
 
     for pad in pixel.Pads():
       if not args.skip_traces and pad.GetPadName() == self.pixel_pad_names['GND']:
@@ -394,8 +403,11 @@ class PCBLayout(object):
     elif args.delete_short_traces:
       self.kicadpcb.deleteShortTraces()
     else:
+      self.kicadpcb.deleteAllDrawings(layer='F.Silkscreen')
+
       self.drawEdgeCuts()
       self.placePixels()
+      self.decorateSilkScreen()
 
     if not args.dry_run:
       self.kicadpcb.save()
@@ -412,37 +424,23 @@ class PCBLayout(object):
         print("Removing old footprint for pixel %s" % fp.GetReference())
         self.kicadpcb.board._obj.Delete(fp)
     
-    self.kicadpcb.deleteAllDrawings(layer='F.Silkscreen')
+    
     self.kicadpcb.deleteAllTraces()
+  
+  def decorateSilkScreen(self):
+    pass
 
 
 ###############################################################################
 
 
 class LayoutHelixLoop(PCBLayout):
-
-
-  # fuck this, how about I draw 1/12 of it, then repeat that same thing rotated 2*pi*1/12 at a time? correcting for these helix-cumulative effects is endless
-
   edgeRadius = 60#mm
   pixelSpacing = 3.810
   helixRadius = 53.8
   helixAmplitude = 12.00
   helixCycles = 6
   pixelRotationFudge = 1.0
-
-  # edge_radius = 68#mm
-  # pixelSpacing = 3.849
-  # helixRadius = 55
-  # helixAmplitude = 7.15
-  # helixCycles = 6
-  # pixelRotation = 0.68
-
-  # edge_radius = 64#mm
-  # pixelSpacing = 3.806
-  # helixRadius = 51
-  # helixAmplitude = 8
-  # helixCycles = 7
 
   def drawEdgeCuts(self):
     super().drawEdgeCuts()
@@ -453,7 +451,7 @@ class LayoutHelixLoop(PCBLayout):
     firstPos = None
     for s in range(0,segments):
       theta = s*2*pi/segments
-      radius = self.edgeRadius + self.helixAmplitude * abs(sin(theta * self.helixCycles))
+      radius = self.edgeRadius + 0.9*self.helixAmplitude * abs(sin(theta * self.helixCycles))
       pos = Point(radius * sin(theta), radius * cos(theta))
       
       if lastPos is not None:
@@ -490,23 +488,9 @@ class LayoutHelixLoop(PCBLayout):
 
       last_placement = pos
     self.seriesPixelDiscontinuity()
-
-    # lineLength = 7
-    # for loopy in range(0, self.helixCycles):
-    #   theta = 3*pi/2/self.helixCycles + loopy * 2 * pi / self.helixCycles #wave min
-    #   orientation = pi/2+theta + phase
-
-    #   # inward lines
-    #   if phase == 0:
-    #     for px in range(lineLength):
-    #       radius = self.helixRadius - self.helixAmplitude - self.pixelSpacing * (px+1)
-    #       pos = Point(radius * sin(theta+phase), radius * cos(theta+phase))
-    #       if px == lineLength-1: # last px is in the circle
-    #         orientation -= pi/2
-    #       self.placeSeriesPixel(pos, orientation, allowOverlaps=False)
   
-
   def placePixels(self):
+    self.drawPixelLinesOnly = False
     super().placePixels()
 
     # # remove previous tracks
@@ -525,8 +509,8 @@ class LayoutHelixLoop(PCBLayout):
       spiralCenter = circle_pt(spiralStartTheta, spiralStartRadius)
       spiralRadiusPerLoop = 9.52
 
-      # last_point = None
       last_placement = Point(inf, inf)
+      last_line = Point(inf, inf)
       segments = 80000
       
       loops = 2.1
@@ -537,39 +521,71 @@ class LayoutHelixLoop(PCBLayout):
         spiralTheta = 2*pi * loops * s / segments - 0.391
         theta = spiralTheta - spiralStartTheta
         orientation = pi + theta-0.1
+        extraRadius = 0
         if spiralTheta > linear_adjust_start:
-          radius += 3.2 * (spiralTheta -linear_adjust_start)
+          extraRadius = 3.2 * (spiralTheta -linear_adjust_start)
+          radius += extraRadius
           orientation -= 0.12
           pass
         
         pos = spiralCenter + Point(radius*sin(theta), radius*cos(theta))
         
-        # if last_point is not None:
-        #   self.drawSegment(last_point, pos, width = 0.01)
-        # last_point = pos
+        if last_line.distance_to(pos) > easeInCubic(s, 0.4, 1, segments):
+          spiralMatchRadius = max(0,radius-spiralRadiusPerLoop - extraRadius)
+          linePos2 = spiralCenter + Point(spiralMatchRadius*sin(theta), spiralMatchRadius*cos(theta))
+          self.drawSegment(linePos2, pos, layer='F.Silkscreen', width=easeInCubic(s, 0.05, 0.3, segments))
+          last_line = pos
+
         if last_placement.distance_to(pos) < self.pixelSpacing:
           continue
-        # self.drawSegment(spiralCenter, pos)
         self.placeSeriesPixel(pos, orientation, allowOverlaps=True)
         
         last_placement = pos
+        
       self.seriesPixelDiscontinuity()
+  
+  def insertFootprint(self, name, point, layer="F.Silkscreen"):
+    for fp in self.kicadpcb.board._obj.GetFootprints():
+      if fp.GetReference() == name:
+        print("Removing old footprint for", name)
+        self.kicadpcb.board._obj.Delete(fp)
+        break
+    fp = pcbnew.FootprintLoad(str(Path(__file__).parent.joinpath('kicad_footprints.pretty').resolve()), name)
+    fp.SetLayer(self.kicadpcb.layertable[layer])
+    fp.SetPosition(point.wxPoint())
+    fp.SetReference(name)
+    fp.Reference().SetVisible(False)
+    self.kicadpcb.board._obj.Add(fp)
 
-    # # inner circle
-    # circleCount = 18
-    # for i in range(0,circleCount):
-    #   radius = 10
-    #   theta = 2*pi * i / circleCount
-    #   orientation = theta
-    #   pos = Point(radius * sin(theta), radius * cos(theta))
-    #   self.placeSeriesPixel(pos, orientation, allowOverlaps=True)
+  def decorateSilkScreen(self):
+    super().decorateSilkScreen()
 
+    for i in range(3):
+      spiralStartRadius = 0.65 * self.helixRadius
+      spiralStartTheta = 9*pi/24 + i * 2*pi/3 + 7/self.helixCycles/2
+      
+      spiralCenter = circle_pt(spiralStartTheta, spiralStartRadius)
+      
+      segments = 100
+      segmentLength = 46
+      for s in range(segments):
+        theta = spiralStartTheta + easeOutCubic(s,0,1,segments) * pi + pi/3
+        # self.drawSegment(spiralCenter + circle_pt(theta, segmentLength/2), spiralCenter + circle_pt(theta, -segmentLength/2))
 
-    # guides = 24
-    # for i in range(guides):
-    #   theta = i * 2 * pi/guides
-    #   self.drawSegment((0,0), circle_pt(theta,self.edge_radius))
-    
+    self.insertFootprint("spiraldrawing", self.center)
+
+def easeInOutCubic(time, start, change, duration): 
+  t = time / (duration/2)
+  return change/2*t*t*t + start if t < 1 else change/2*((t-2)*(t-2)*(t-2) + 2) + start;
+
+def easeOutCubic(time, start, change, duration):
+  time = time/duration
+  t2 = time-1
+  return change*(t2*t2*t2 + 1) + start
+
+def easeInCubic(time, start, change, duration):
+  time = time/duration
+  return change * time*time*time + start
 
 layout = LayoutHelixLoop(args.path)    
 
