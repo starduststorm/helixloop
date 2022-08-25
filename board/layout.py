@@ -77,6 +77,33 @@ class Point(object):
     vec = distance * cmath.exp(angle * 1j)
     return self.translated(Point.fromComplex(vec))
 
+  def __getattr__(self, attr):
+    if attr == "theta":
+      if self.x == 0:
+        return pi/2 if self.y > 0 else 3*pi/2
+      theta = atan(self.y/self.x)
+      if self.x > 0 and self.y > 0:
+        return theta
+      elif self.x > 0 and self.y < 0:
+        return 2*pi + theta
+      else:
+        return pi + theta
+    elif attr == "radius":
+      return sqrt(self.x**2 + self.y**2)
+    else:
+      super().__getattr__(attr)
+  
+  def __setattr__(self, attr, val):
+    if attr == "theta":
+      r = self.radius
+      self.x = r * cos(val)
+      self.y = r * sin(val)
+    elif attr == "radius":
+      theta = self.theta
+      self.x = val * cos(theta)
+      self.y = val * sin(theta)
+    else:
+      super().__setattr__(attr, val)
 
   def __getitem__(self, i):
     if i == 0:
@@ -461,17 +488,20 @@ class LayoutHelixLoop(PCBLayout):
       lastPos = pos
     self.kicadpcb.draw_segment(self.center+lastPos, self.center+firstPos, 'Edge.Cuts', self.edge_cut_line_thickness)
   
-  def placePixelWave(self,phase):
+  def pixelWaveFunc(self, theta, flip):
+    radius = self.helixRadius + (-1 if flip else 1) * self.helixAmplitude * sin(theta * self.helixCycles)
+    pos = Point(radius * cos(theta), radius * sin(theta))
+    return pos
+
+  def placePixelWave(self, invert):
     segments = 80000
-    phase /= self.helixCycles
     last_placement = Point(inf, inf)
     first_placement = None
 
-    print("Placing Pixel Wave at phase", phase)
+    print("Placing Pixel Wave flipped", invert)
     for s in range(0,segments):
       theta = s*2*pi/segments
-      radius = self.helixRadius + self.helixAmplitude * sin(theta * self.helixCycles)
-      pos = Point(radius * sin(theta+phase), radius * cos(theta+phase))
+      pos = self.pixelWaveFunc(theta, invert)
 
       # space the pixels roughly evenly along the curve
       if last_placement.distance_to(pos) < self.pixelSpacing:
@@ -483,7 +513,7 @@ class LayoutHelixLoop(PCBLayout):
       else:
         first_placement = pos
       
-      orientation = pi + theta + phase - cos(theta * self.helixCycles) * self.pixelRotationFudge
+      orientation = pi/2 - theta + (-1 if invert else 1) * cos(theta * self.helixCycles) * self.pixelRotationFudge
       self.placeSeriesPixel(pos, orientation, allowOverlaps=False)
 
       last_placement = pos
@@ -499,8 +529,8 @@ class LayoutHelixLoop(PCBLayout):
     # for module in modules.values():
     # 	if module.reference.startswith('D'):
     # 		clear_tracks_for_module(module)
-    self.placePixelWave(0)
-    self.placePixelWave(pi)
+    self.placePixelWave(False)
+    self.placePixelWave(True)
 
     for i in range(3):
       print("Placing Spiral", i)
@@ -512,11 +542,13 @@ class LayoutHelixLoop(PCBLayout):
       last_placement = Point(inf, inf)
       last_line = Point(inf, inf)
       segments = 80000
+      extendedSegments = int(segments * 1.16)
       
       loops = 2.1
 
+      # linear adjust tweaks the spiral tail so it lines up with the helix
       linear_adjust_start = 3.7 * pi
-      for s in range(segments):
+      for s in range(extendedSegments):
         radius = 2 + loops * spiralRadiusPerLoop * s / segments
         spiralTheta = 2*pi * loops * s / segments - 0.391
         theta = spiralTheta - spiralStartTheta
@@ -530,15 +562,39 @@ class LayoutHelixLoop(PCBLayout):
         
         pos = spiralCenter + Point(radius*sin(theta), radius*cos(theta))
         
-        if last_line.distance_to(pos) > easeInCubic(s, 0.4, 1, segments):
+        # decorate the inner spiral
+        if last_line.distance_to(pos) > Timing.linear(s, 0.5, 1, segments):
           spiralMatchRadius = max(0,radius-spiralRadiusPerLoop - extraRadius)
           linePos2 = spiralCenter + Point(spiralMatchRadius*sin(theta), spiralMatchRadius*cos(theta))
-          self.drawSegment(linePos2, pos, layer='F.Silkscreen', width=easeInCubic(s, 0.05, 0.3, segments))
+          
+          linePos1 = Point(pos)
+          if s > segments:
+            # tweak slightly to line up with the outer helix
+            linePos1 -= spiralCenter
+            linePos1.radius += 5
+            linePos1 += spiralCenter
+
+          # ok so, we want to clip the decorative lines on the ouside helix, so this is an iterative process to find the intersection between the line and the helix
+          error = inf
+          minHelixRadius = self.helixRadius - self.helixAmplitude
+          while linePos1.radius > minHelixRadius and error > 1:
+            startRadius = linePos1.radius
+            clip1 = self.pixelWaveFunc(linePos1.theta, False)
+            clip2 = self.pixelWaveFunc(linePos1.theta, True)
+            linePos1 -= spiralCenter
+            linePos1.radius -= startRadius - min(clip1.radius, clip2.radius)
+            linePos1 += spiralCenter
+
+            error = min(linePos1.distance_to(self.pixelWaveFunc(linePos1.theta, True)), linePos1.distance_to(self.pixelWaveFunc(linePos1.theta, False)))
+
+          lineThickness = 0.127 + 0.20 * (sin(1.7*pi*s/extendedSegments - pi/2)+1)/2
+          self.drawSegment(linePos2, linePos1, layer='F.Silkscreen', width=lineThickness)
           last_line = pos
 
         if last_placement.distance_to(pos) < self.pixelSpacing:
           continue
-        self.placeSeriesPixel(pos, orientation, allowOverlaps=True)
+        if s < segments:
+          self.placeSeriesPixel(pos, orientation, allowOverlaps=True)
         
         last_placement = pos
         
@@ -569,23 +625,31 @@ class LayoutHelixLoop(PCBLayout):
       segments = 100
       segmentLength = 46
       for s in range(segments):
-        theta = spiralStartTheta + easeOutCubic(s,0,1,segments) * pi + pi/3
+        theta = spiralStartTheta + Timing.easeOutCubic(s,0,1,segments) * pi + pi/3
         # self.drawSegment(spiralCenter + circle_pt(theta, segmentLength/2), spiralCenter + circle_pt(theta, -segmentLength/2))
 
     self.insertFootprint("spiraldrawing", self.center)
 
-def easeInOutCubic(time, start, change, duration): 
-  t = time / (duration/2)
-  return change/2*t*t*t + start if t < 1 else change/2*((t-2)*(t-2)*(t-2) + 2) + start;
+class Timing(object):
+  @classmethod
+  def linear(cls, time, start, change, duration):
+    return start + change * time/duration
+  
+  @classmethod
+  def easeInOutCubic(cls, time, start, change, duration): 
+    t = time / (duration/2)
+    return change/2*t*t*t + start if t < 1 else change/2*((t-2)*(t-2)*(t-2) + 2) + start;
+    
+  @classmethod
+  def easeOutCubic(cls, time, start, change, duration):
+    time = time/duration
+    t2 = time-1
+    return change*(t2*t2*t2 + 1) + start
 
-def easeOutCubic(time, start, change, duration):
-  time = time/duration
-  t2 = time-1
-  return change*(t2*t2*t2 + 1) + start
-
-def easeInCubic(time, start, change, duration):
-  time = time/duration
-  return change * time*time*time + start
+  @classmethod
+  def easeInCubic(cls, time, start, change, duration):
+    time = time/duration
+    return change * time*time*time + start
 
 layout = LayoutHelixLoop(args.path)    
 
