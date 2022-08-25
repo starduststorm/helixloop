@@ -488,8 +488,10 @@ class LayoutHelixLoop(PCBLayout):
       lastPos = pos
     self.kicadpcb.draw_segment(self.center+lastPos, self.center+firstPos, 'Edge.Cuts', self.edge_cut_line_thickness)
   
-  def pixelWaveFunc(self, theta, flip):
-    radius = self.helixRadius + (-1 if flip else 1) * self.helixAmplitude * sin(theta * self.helixCycles)
+  def pixelWaveFunc(self, theta, flip, amplitude=None):
+    if amplitude is None:
+      amplitude = self.helixAmplitude
+    radius = self.helixRadius + (-1 if flip else 1) * amplitude * sin(theta * self.helixCycles)
     pos = Point(radius * cos(theta), radius * sin(theta))
     return pos
 
@@ -497,11 +499,20 @@ class LayoutHelixLoop(PCBLayout):
     segments = 80000
     last_placement = Point(inf, inf)
     first_placement = None
+    lineCount = int(self.helixAmplitude)
+    last_line_pos = [None] * lineCount
 
     print("Placing Pixel Wave flipped", invert)
     for s in range(0,segments):
       theta = s*2*pi/segments
       pos = self.pixelWaveFunc(theta, invert)
+
+      if last_line_pos[0] is None or last_line_pos[0].distance_to(self.pixelWaveFunc(theta, False, 0)) > 0.2:
+        for i in range(lineCount):
+          linePos = self.pixelWaveFunc(theta, False, i * (-1 if invert else 1))
+          if last_line_pos[i] is not None:
+            self.drawSegment(last_line_pos[i], linePos)
+          last_line_pos[i] = linePos
 
       # space the pixels roughly evenly along the curve
       if last_placement.distance_to(pos) < self.pixelSpacing:
@@ -515,8 +526,8 @@ class LayoutHelixLoop(PCBLayout):
       
       orientation = pi/2 - theta + (-1 if invert else 1) * cos(theta * self.helixCycles) * self.pixelRotationFudge
       self.placeSeriesPixel(pos, orientation, allowOverlaps=False)
-
       last_placement = pos
+
     self.seriesPixelDiscontinuity()
   
   def placePixels(self):
@@ -563,7 +574,7 @@ class LayoutHelixLoop(PCBLayout):
         pos = spiralCenter + Point(radius*sin(theta), radius*cos(theta))
         
         # decorate the inner spiral
-        if last_line.distance_to(pos) > Timing.linear(s, 0.5, 1, segments):
+        if last_line.distance_to(pos) > Timing.linear(s, 0.5, 2.5, segments):
           spiralMatchRadius = max(0,radius-spiralRadiusPerLoop - extraRadius)
           linePos2 = spiralCenter + Point(spiralMatchRadius*sin(theta), spiralMatchRadius*cos(theta))
           
@@ -587,7 +598,7 @@ class LayoutHelixLoop(PCBLayout):
 
             error = min(linePos1.distance_to(self.pixelWaveFunc(linePos1.theta, True)), linePos1.distance_to(self.pixelWaveFunc(linePos1.theta, False)))
 
-          lineThickness = 0.127 + 0.20 * (sin(1.7*pi*s/extendedSegments - pi/2)+1)/2
+          lineThickness = 0.127 + 0.27 * (sin(11*pi*s/extendedSegments - pi/2)+1)/2
           self.drawSegment(linePos2, linePos1, layer='F.Silkscreen', width=lineThickness)
           last_line = pos
 
@@ -615,19 +626,6 @@ class LayoutHelixLoop(PCBLayout):
 
   def decorateSilkScreen(self):
     super().decorateSilkScreen()
-
-    for i in range(3):
-      spiralStartRadius = 0.65 * self.helixRadius
-      spiralStartTheta = 9*pi/24 + i * 2*pi/3 + 7/self.helixCycles/2
-      
-      spiralCenter = circle_pt(spiralStartTheta, spiralStartRadius)
-      
-      segments = 100
-      segmentLength = 46
-      for s in range(segments):
-        theta = spiralStartTheta + Timing.easeOutCubic(s,0,1,segments) * pi + pi/3
-        # self.drawSegment(spiralCenter + circle_pt(theta, segmentLength/2), spiralCenter + circle_pt(theta, -segmentLength/2))
-
     self.insertFootprint("spiraldrawing", self.center)
 
 class Timing(object):
