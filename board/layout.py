@@ -507,7 +507,8 @@ class LayoutHelixLoop(PCBLayout):
       theta = s*2*pi/segments
       pos = self.pixelWaveFunc(theta, invert)
 
-      if last_line_pos[0] is None or last_line_pos[0].distance_to(self.pixelWaveFunc(theta, False, 0)) > 0.2:
+      # decorate the inner helix
+      if last_line_pos[0] is None or last_line_pos[0].distance_to(self.pixelWaveFunc(theta, False, 0)) > 0.4:
         for i in range(lineCount):
           linePos = self.pixelWaveFunc(theta, False, i * (-1 if invert else 1))
           if last_line_pos[i] is not None:
