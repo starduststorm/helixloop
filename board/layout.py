@@ -293,7 +293,7 @@ class KiCadPCB(object):
     track.SetWidth(int(.25 * 10**6))
     track.SetNet(net)
     self.board._obj.Add(track)
-    print("adding track from {} to {} on net {}".format(start, end, net.GetNetname()))
+    print("  copper from {} to {} on net {}".format(start, end, net.GetNetname()))
     return track
 
   def add_via(self, position, net):
@@ -415,7 +415,7 @@ class PCBLayout(object):
             if pad.GetPadName() == self.pixel_pad_map[prev_pad.GetPadName()]:
               start = prev_pad.GetPosition()
               end = pad.GetPosition()
-              print("Adding track from pixel {} pad {} to pixel {} pad {}".format(self.prev_series_pixel.Reference(), prev_pad.GetPadName(), pixel.Reference(), pad.GetPadName()))
+              print("Adding track from pixel {} pad {} to pixel {} pad {}".format(self.prev_series_pixel.GetReference(), prev_pad.GetPadName(), pixel.GetReference(), pad.GetPadName()))
               self.kicadpcb.add_copper_trace(start, end, pad.GetNet())
 
            # FIXME: Draw GND and +5V traces?
@@ -508,12 +508,13 @@ class LayoutHelixLoop(PCBLayout):
       pos = self.pixelWaveFunc(theta, invert)
 
       # decorate the inner helix
-      if last_line_pos[0] is None or last_line_pos[0].distance_to(self.pixelWaveFunc(theta, False, 0)) > 0.4:
-        for i in range(lineCount):
-          linePos = self.pixelWaveFunc(theta, False, i * (-1 if invert else 1))
-          if last_line_pos[i] is not None:
-            self.drawSegment(last_line_pos[i], linePos)
-          last_line_pos[i] = linePos
+      if not invert: # only draw half
+        if last_line_pos[0] is None or last_line_pos[0].distance_to(self.pixelWaveFunc(theta, False, 0)) > 0.4:
+          for i in range(lineCount):
+            linePos = self.pixelWaveFunc(theta, False, i * (-1 if invert else 1))
+            if last_line_pos[i] is not None:
+              self.drawSegment(last_line_pos[i], linePos)
+            last_line_pos[i] = linePos
 
       # space the pixels roughly evenly along the curve
       if last_placement.distance_to(pos) < self.pixelSpacing:
