@@ -1,5 +1,1720 @@
 (kicad_sch (version 20211123) (generator eeschema)
+
+  (uuid 1f30b1ea-44f0-467a-8ed8-643be513058b)
+
   (paper "A4")
-  (lib_symbols)
-  (symbol_instances)
+
+  (lib_symbols
+    (symbol "Connector_Generic:Conn_01x02" (pin_names (offset 1.016) hide) (in_bom yes) (on_board yes)
+      (property "Reference" "J" (id 0) (at 0 2.54 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Value" "Conn_01x02" (id 1) (at 0 -5.08 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Footprint" "" (id 2) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "~" (id 3) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_keywords" "connector" (id 4) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)" (id 5) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_fp_filters" "Connector*:*_1x??_*" (id 6) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "Conn_01x02_1_1"
+        (rectangle (start -1.27 -2.413) (end 0 -2.667)
+          (stroke (width 0.1524) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+        (rectangle (start -1.27 0.127) (end 0 -0.127)
+          (stroke (width 0.1524) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+        (rectangle (start -1.27 1.27) (end 1.27 -3.81)
+          (stroke (width 0.254) (type default) (color 0 0 0 0))
+          (fill (type background))
+        )
+        (pin passive line (at -5.08 0 0) (length 3.81)
+          (name "Pin_1" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+        (pin passive line (at -5.08 -2.54 0) (length 3.81)
+          (name "Pin_2" (effects (font (size 1.27 1.27))))
+          (number "2" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
+    (symbol "Connector_Generic:Conn_01x04" (pin_names (offset 1.016) hide) (in_bom yes) (on_board yes)
+      (property "Reference" "J" (id 0) (at 0 5.08 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Value" "Conn_01x04" (id 1) (at 0 -7.62 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Footprint" "" (id 2) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "~" (id 3) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_keywords" "connector" (id 4) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)" (id 5) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_fp_filters" "Connector*:*_1x??_*" (id 6) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "Conn_01x04_1_1"
+        (rectangle (start -1.27 -4.953) (end 0 -5.207)
+          (stroke (width 0.1524) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+        (rectangle (start -1.27 -2.413) (end 0 -2.667)
+          (stroke (width 0.1524) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+        (rectangle (start -1.27 0.127) (end 0 -0.127)
+          (stroke (width 0.1524) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+        (rectangle (start -1.27 2.667) (end 0 2.413)
+          (stroke (width 0.1524) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+        (rectangle (start -1.27 3.81) (end 1.27 -6.35)
+          (stroke (width 0.254) (type default) (color 0 0 0 0))
+          (fill (type background))
+        )
+        (pin passive line (at -5.08 2.54 0) (length 3.81)
+          (name "Pin_1" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+        (pin passive line (at -5.08 0 0) (length 3.81)
+          (name "Pin_2" (effects (font (size 1.27 1.27))))
+          (number "2" (effects (font (size 1.27 1.27))))
+        )
+        (pin passive line (at -5.08 -2.54 0) (length 3.81)
+          (name "Pin_3" (effects (font (size 1.27 1.27))))
+          (number "3" (effects (font (size 1.27 1.27))))
+        )
+        (pin passive line (at -5.08 -5.08 0) (length 3.81)
+          (name "Pin_4" (effects (font (size 1.27 1.27))))
+          (number "4" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
+    (symbol "power:+5V" (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
+      (property "Reference" "#PWR" (id 0) (at 0 -3.81 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Value" "+5V" (id 1) (at 0 3.556 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Footprint" "" (id 2) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "" (id 3) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_keywords" "power-flag" (id 4) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "Power symbol creates a global label with name \"+5V\"" (id 5) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "+5V_0_1"
+        (polyline
+          (pts
+            (xy -0.762 1.27)
+            (xy 0 2.54)
+          )
+          (stroke (width 0) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+        (polyline
+          (pts
+            (xy 0 0)
+            (xy 0 2.54)
+          )
+          (stroke (width 0) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+        (polyline
+          (pts
+            (xy 0 2.54)
+            (xy 0.762 1.27)
+          )
+          (stroke (width 0) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+      )
+      (symbol "+5V_1_1"
+        (pin power_in line (at 0 0 90) (length 0) hide
+          (name "+5V" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
+    (symbol "power:GND" (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
+      (property "Reference" "#PWR" (id 0) (at 0 -6.35 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Value" "GND" (id 1) (at 0 -3.81 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Footprint" "" (id 2) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "" (id 3) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_keywords" "power-flag" (id 4) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "Power symbol creates a global label with name \"GND\" , ground" (id 5) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "GND_0_1"
+        (polyline
+          (pts
+            (xy 0 0)
+            (xy 0 -1.27)
+            (xy 1.27 -1.27)
+            (xy 0 -2.54)
+            (xy -1.27 -1.27)
+            (xy 0 -1.27)
+          )
+          (stroke (width 0) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+      )
+      (symbol "GND_1_1"
+        (pin power_in line (at 0 0 270) (length 0) hide
+          (name "GND" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
+  )
+
+  (junction (at 116.205 48.895) (diameter 0) (color 0 0 0 0)
+    (uuid 0833be49-b64b-4aa5-b6fd-f55a2ec13e1e)
+  )
+  (junction (at 154.305 29.21) (diameter 0) (color 0 0 0 0)
+    (uuid 413234be-9991-4566-bf6c-72eee84b9ea0)
+  )
+  (junction (at 90.17 48.895) (diameter 0) (color 0 0 0 0)
+    (uuid 45dbd099-7e7c-4927-900a-362c981f8412)
+  )
+  (junction (at 154.305 48.895) (diameter 0) (color 0 0 0 0)
+    (uuid 4cb630a0-02b9-4e6e-b046-1a8298ac210e)
+  )
+  (junction (at 90.17 29.21) (diameter 0) (color 0 0 0 0)
+    (uuid 519eb0ae-6b43-4307-8a05-05e5711565c6)
+  )
+  (junction (at 116.205 29.21) (diameter 0) (color 0 0 0 0)
+    (uuid 880aabc8-c801-46d9-ab5e-915ade46879f)
+  )
+  (junction (at 62.865 34.925) (diameter 0) (color 0 0 0 0)
+    (uuid 885c0388-a21b-4b70-9a13-92aa63d03747)
+  )
+  (junction (at 62.865 42.545) (diameter 0) (color 0 0 0 0)
+    (uuid b679ff9c-f81e-4beb-bd69-f7ccceeabb95)
+  )
+
+  (no_connect (at 141.605 37.465) (uuid 60761622-591d-4c26-8d3a-330d3587cf81))
+  (no_connect (at 141.605 40.005) (uuid 60761622-591d-4c26-8d3a-330d3587cf81))
+
+  (wire (pts (xy 45.72 42.545) (xy 62.865 42.545))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 027878aa-5cbe-4f0d-a3d1-d67a8d15bcae)
+  )
+  (wire (pts (xy 62.865 42.545) (xy 66.04 42.545))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 09d19e0c-9c20-4956-9fae-c48396308fcb)
+  )
+  (wire (pts (xy 62.865 29.21) (xy 90.17 29.21))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 09f1fc78-b0ad-40ca-a22c-c8c7714f2905)
+  )
+  (wire (pts (xy 92.075 37.465) (xy 88.265 37.465))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 160d1cdf-4e10-44e9-8977-0157cc0b7fac)
+  )
+  (wire (pts (xy 116.205 29.21) (xy 116.205 34.925))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 16609e3b-9f45-45b8-8a48-e0b7e427b169)
+  )
+  (wire (pts (xy 90.17 34.925) (xy 92.075 34.925))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 1b4985be-23ef-4299-852d-f605ffa62b45)
+  )
+  (wire (pts (xy 90.17 29.21) (xy 116.205 29.21))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 2d89b1b1-77ce-410f-af2e-5d09dd3872eb)
+  )
+  (wire (pts (xy 140.335 37.465) (xy 141.605 37.465))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 45a9abb4-4371-45e9-b011-dcbda4582f2c)
+  )
+  (wire (pts (xy 45.72 37.465) (xy 66.04 37.465))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 48b72539-b8cf-4a85-901f-2d7ce4473fda)
+  )
+  (wire (pts (xy 90.17 48.895) (xy 116.205 48.895))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 50421b14-f002-4873-88db-c25021d6aa7a)
+  )
+  (wire (pts (xy 66.04 40.005) (xy 45.72 40.005))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 51eea68b-8c2b-4363-877e-60265ca45a92)
+  )
+  (wire (pts (xy 62.865 42.545) (xy 62.865 48.895))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 5317e80d-5933-44b9-b0f0-2f43970395d4)
+  )
+  (wire (pts (xy 116.205 42.545) (xy 118.11 42.545))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 5977d961-48f6-418f-a67c-2e035330cc95)
+  )
+  (wire (pts (xy 90.17 42.545) (xy 92.075 42.545))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 6b2e1102-9c40-4f14-94c0-93ee80419d61)
+  )
+  (wire (pts (xy 116.205 48.895) (xy 116.205 42.545))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 6dc91671-4b2a-4b97-a640-b82ff487a627)
+  )
+  (wire (pts (xy 154.305 29.21) (xy 154.305 37.465))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 752a1da6-1413-464d-976c-e09245e942f7)
+  )
+  (wire (pts (xy 62.865 48.895) (xy 90.17 48.895))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 7ea17b5f-ed94-4c48-9118-5bd64ba733f7)
+  )
+  (wire (pts (xy 90.17 29.21) (xy 90.17 34.925))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 864fba1d-ba57-404d-8f0e-8f45f12d1992)
+  )
+  (wire (pts (xy 90.17 48.895) (xy 90.17 42.545))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 87277217-3f17-4be7-b857-94330a85d847)
+  )
+  (wire (pts (xy 62.865 34.925) (xy 66.04 34.925))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 8e67b6b5-847f-4cca-96cf-81f109c153c5)
+  )
+  (wire (pts (xy 140.335 40.005) (xy 141.605 40.005))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 99df7a4d-9d31-4fff-ae98-f2390aa26c35)
+  )
+  (wire (pts (xy 45.72 34.925) (xy 62.865 34.925))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 9a2ba5d9-6c68-4ff4-8b00-a44043ce2172)
+  )
+  (wire (pts (xy 154.305 40.005) (xy 154.305 48.895))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 9a38cf67-4876-4dc6-ba88-42e163c24339)
+  )
+  (wire (pts (xy 114.3 37.465) (xy 118.11 37.465))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 9df92e3f-8eaa-4cb0-84bc-b03373aff0c5)
+  )
+  (wire (pts (xy 116.205 34.925) (xy 118.11 34.925))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 9e1b9295-a4e4-48b5-9eae-f61df56b4c7b)
+  )
+  (wire (pts (xy 62.865 34.925) (xy 62.865 29.21))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid a12d786c-572d-4f2b-9389-cc5b923beb08)
+  )
+  (wire (pts (xy 116.205 29.21) (xy 154.305 29.21))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid bb239160-e66e-4fea-9a24-9e2a6b0ac4fb)
+  )
+  (wire (pts (xy 88.265 40.005) (xy 92.075 40.005))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid cfea9c7b-3418-49fe-bef1-c9d02a18abf2)
+  )
+  (wire (pts (xy 154.305 48.895) (xy 116.205 48.895))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid e2a1d4c5-b54d-4e80-813f-adf3359431c5)
+  )
+  (wire (pts (xy 118.11 40.005) (xy 114.3 40.005))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid e4bd8232-b25d-44ff-8ce4-4497aa32bb73)
+  )
+
+  (label "LED_SDI1" (at 50.165 40.005 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 52f28897-9da0-49ad-aa8e-7edff69e07d4)
+  )
+  (label "LED_CKI1" (at 50.165 37.465 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid eac05b45-130a-428e-95a4-02aab94c034f)
+  )
+
+  (symbol (lib_id "Connector_Generic:Conn_01x02") (at 159.385 40.005 0) (mirror x) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid 2722e5af-1768-4d51-9444-badc534c4f69)
+    (property "Reference" "J2" (id 0) (at 159.385 32.4952 0))
+    (property "Value" "Conn_01x02" (id 1) (at 159.385 35.0321 0))
+    (property "Footprint" "helixloop:SMD_Pad_01x02_2.54mm" (id 2) (at 159.385 40.005 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (id 3) (at 159.385 40.005 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 3f0271ed-62a2-4737-b00c-eb13fc7f4cc3))
+    (pin "2" (uuid 9857efbc-ce2e-42c4-a385-ec90028ee025))
+  )
+
+  (symbol (lib_id "Connector_Generic:Conn_01x04") (at 40.64 40.005 180) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid 6eb29551-831f-4d71-8857-bc1702884c51)
+    (property "Reference" "J1" (id 0) (at 40.64 29.9552 0))
+    (property "Value" "Conn_01x04" (id 1) (at 40.64 32.4921 0))
+    (property "Footprint" "helixloop:SMD_Pad_01x04_2.54mm" (id 2) (at 40.64 40.005 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (id 3) (at 40.64 40.005 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid f4b414a0-84e1-4ee5-b5ae-96b432365b0a))
+    (pin "2" (uuid 8561e77e-5c5a-4a34-bf7d-6d4200d14e70))
+    (pin "3" (uuid 6c54355a-3c56-4e29-ac24-e31746a7bfeb))
+    (pin "4" (uuid 296eaad5-ea66-4f32-a35e-56244c3191ab))
+  )
+
+  (symbol (lib_id "power:GND") (at 154.305 29.21 180) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid a5e2fef8-d573-4c1a-af80-33076399da04)
+    (property "Reference" "#PWR0101" (id 0) (at 154.305 22.86 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (id 1) (at 154.305 25.6342 0))
+    (property "Footprint" "" (id 2) (at 154.305 29.21 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (id 3) (at 154.305 29.21 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 8542c381-0219-46c1-bd30-501a525f5c47))
+  )
+
+  (symbol (lib_id "power:+5V") (at 154.305 48.895 180) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid f63796dd-8a1e-4163-8cac-13c2def3fcc8)
+    (property "Reference" "#PWR0102" (id 0) (at 154.305 45.085 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (id 1) (at 154.305 53.3384 0))
+    (property "Footprint" "" (id 2) (at 154.305 48.895 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (id 3) (at 154.305 48.895 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid ec497a18-00ca-4af3-8187-72a5a6766109))
+  )
+
+  (sheet (at 92.075 33.655) (size 22.225 10.795) (fields_autoplaced)
+    (stroke (width 0) (type solid) (color 0 0 0 0))
+    (fill (color 0 0 0 0.0000))
+    (uuid b3ea67e2-d6fd-46e0-84ab-375c056fa43b)
+    (property "Sheet name" "SK9822 LED Array 2" (id 0) (at 92.075 32.9434 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheet file" "leds.kicad_sch" (id 1) (at 92.075 45.0346 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (pin "LED_SDI" input (at 92.075 40.005 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid 0a435ee5-212d-44f2-8648-8e21ee5beffe)
+    )
+    (pin "LED_CKI" input (at 92.075 37.465 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid 58a151be-2a1e-45a2-a02a-fc7030eed334)
+    )
+    (pin "+5V" input (at 92.075 42.545 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid 26700b7a-2c60-45fb-981e-15d65d36dbdb)
+    )
+    (pin "GND" input (at 92.075 34.925 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid 4a01fbdc-928a-49d7-8b39-36e626e891df)
+    )
+    (pin "LED_SDO" input (at 114.3 40.005 0)
+      (effects (font (size 1.27 1.27)) (justify right))
+      (uuid ffe66918-25ed-42d8-89cc-6965cb958943)
+    )
+    (pin "LED_CKO" input (at 114.3 37.465 0)
+      (effects (font (size 1.27 1.27)) (justify right))
+      (uuid df211c80-ea57-45a9-b4aa-8972491b3bf0)
+    )
+  )
+
+  (sheet (at 66.04 33.655) (size 22.225 10.795) (fields_autoplaced)
+    (stroke (width 0) (type solid) (color 0 0 0 0))
+    (fill (color 0 0 0 0.0000))
+    (uuid b7ef0c2d-d029-4ee4-8532-c6efa483cf4c)
+    (property "Sheet name" "SK9822 LED Array 1" (id 0) (at 66.04 32.9434 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheet file" "leds.kicad_sch" (id 1) (at 66.04 45.0346 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (pin "LED_SDI" input (at 66.04 40.005 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid c78e4db0-a7bd-4395-9248-a2911d7b66ad)
+    )
+    (pin "LED_CKI" input (at 66.04 37.465 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid 860c4d4e-29a4-445f-9559-010a886ca508)
+    )
+    (pin "+5V" input (at 66.04 42.545 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid b7bc840e-ad53-41e6-a67c-d53b38cbe435)
+    )
+    (pin "GND" input (at 66.04 34.925 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid 380fb9d0-ba6a-4807-be21-abfcc54227ba)
+    )
+    (pin "LED_SDO" input (at 88.265 40.005 0)
+      (effects (font (size 1.27 1.27)) (justify right))
+      (uuid f7a5e355-af74-498f-a00d-d836c26b030f)
+    )
+    (pin "LED_CKO" input (at 88.265 37.465 0)
+      (effects (font (size 1.27 1.27)) (justify right))
+      (uuid 9f284b07-490b-4341-843a-3a491cbf7911)
+    )
+  )
+
+  (sheet (at 118.11 33.655) (size 22.225 10.795) (fields_autoplaced)
+    (stroke (width 0) (type solid) (color 0 0 0 0))
+    (fill (color 0 0 0 0.0000))
+    (uuid d131acfe-d677-4af6-b93b-d90d3bb9d07c)
+    (property "Sheet name" "SK9822 LED Array 3" (id 0) (at 118.11 32.9434 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheet file" "leds.kicad_sch" (id 1) (at 118.11 45.0346 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (pin "LED_SDI" input (at 118.11 40.005 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid a9880fb4-435d-4257-a8d3-ab4ac2e19c1d)
+    )
+    (pin "LED_CKI" input (at 118.11 37.465 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid f9da877b-1caf-40be-b711-455a589cb2b4)
+    )
+    (pin "+5V" input (at 118.11 42.545 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid 81551523-036c-4965-a567-db3c573f9e1b)
+    )
+    (pin "GND" input (at 118.11 34.925 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid 0df459ad-e37d-44ec-879b-27b9c9475ab0)
+    )
+    (pin "LED_SDO" input (at 140.335 40.005 0)
+      (effects (font (size 1.27 1.27)) (justify right))
+      (uuid 8de7d0d1-db08-4234-8fcc-3dcc9bc4aec4)
+    )
+    (pin "LED_CKO" input (at 140.335 37.465 0)
+      (effects (font (size 1.27 1.27)) (justify right))
+      (uuid e1789133-0068-45d4-8fa8-1a4064c9932c)
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c" (page "2"))
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b" (page "3"))
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c" (page "4"))
+  )
+
+  (symbol_instances
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/3920556e-65c4-4b0d-9623-6dd318b1f4a1"
+      (reference "#FLG0101") (unit 1) (value "PWR_FLAG") (footprint "")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/3920556e-65c4-4b0d-9623-6dd318b1f4a1"
+      (reference "#FLG0102") (unit 1) (value "PWR_FLAG") (footprint "")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/3920556e-65c4-4b0d-9623-6dd318b1f4a1"
+      (reference "#FLG0103") (unit 1) (value "PWR_FLAG") (footprint "")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/c9907421-584e-47f5-8205-6f22a1dfdef8"
+      (reference "#FLG0104") (unit 1) (value "PWR_FLAG") (footprint "")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/c9907421-584e-47f5-8205-6f22a1dfdef8"
+      (reference "#FLG0105") (unit 1) (value "PWR_FLAG") (footprint "")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/c9907421-584e-47f5-8205-6f22a1dfdef8"
+      (reference "#FLG0106") (unit 1) (value "PWR_FLAG") (footprint "")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/5e73091b-0b2d-47a3-9f49-c17af0de4119"
+      (reference "#PWR01") (unit 1) (value "+5V") (footprint "")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/045bd8bd-3437-4af0-aa48-64577dee730a"
+      (reference "#PWR02") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/5d552790-adbc-47f1-976c-a6485fe71eb6"
+      (reference "#PWR03") (unit 1) (value "+5V") (footprint "")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/8fa68d15-aec8-4a90-90bc-3b66b390a1b1"
+      (reference "#PWR04") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/a5e2fef8-d573-4c1a-af80-33076399da04"
+      (reference "#PWR0101") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/f63796dd-8a1e-4163-8cac-13c2def3fcc8"
+      (reference "#PWR0102") (unit 1) (value "+5V") (footprint "")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/5e73091b-0b2d-47a3-9f49-c17af0de4119"
+      (reference "#PWR0103") (unit 1) (value "+5V") (footprint "")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/8fa68d15-aec8-4a90-90bc-3b66b390a1b1"
+      (reference "#PWR0104") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/045bd8bd-3437-4af0-aa48-64577dee730a"
+      (reference "#PWR0105") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/5d552790-adbc-47f1-976c-a6485fe71eb6"
+      (reference "#PWR0106") (unit 1) (value "+5V") (footprint "")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/5e73091b-0b2d-47a3-9f49-c17af0de4119"
+      (reference "#PWR0107") (unit 1) (value "+5V") (footprint "")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/8fa68d15-aec8-4a90-90bc-3b66b390a1b1"
+      (reference "#PWR0108") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/045bd8bd-3437-4af0-aa48-64577dee730a"
+      (reference "#PWR0109") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/5d552790-adbc-47f1-976c-a6485fe71eb6"
+      (reference "#PWR0110") (unit 1) (value "+5V") (footprint "")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/e5639c70-98d2-40ea-b831-829e12089cc3"
+      (reference "D1") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/52e12166-2fa5-4cb6-83a3-7486fdc8f6f3"
+      (reference "D2") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/c1793335-75ec-4ca0-ae21-9441cd51c89e"
+      (reference "D3") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/5a2ec7b0-ddbe-4c13-819c-1c59b9f5ece8"
+      (reference "D4") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/461a8fc8-86c9-4c66-aaa2-876f8476e51c"
+      (reference "D5") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/d3f8f560-83a5-4c05-b2fd-1e31e9453938"
+      (reference "D6") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/b144e372-b225-44f4-a753-67aa4439ebbf"
+      (reference "D7") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/66803ff7-fcca-4bcc-b784-433a192d7b81"
+      (reference "D8") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/8f8b8bda-8fab-48ea-9182-cbf17a6ee880"
+      (reference "D9") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/8ac4a98a-a520-49b5-ad5e-10b24940d4da"
+      (reference "D10") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/77bfd1d4-5196-49c6-b285-8a5e54613d06"
+      (reference "D11") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/66963ff0-4da7-4243-b4ee-8b2a63e48c65"
+      (reference "D12") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/184c8581-c9b7-4fff-b791-939b04ceab00"
+      (reference "D13") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/03ac36a8-fe86-430e-ba1b-da6ceabbe17e"
+      (reference "D14") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/3cc617d4-5353-41f6-b320-01cbde595d48"
+      (reference "D15") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/0a55023a-51b3-4ac1-85fc-f0cf33917b03"
+      (reference "D16") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/75ee1473-178b-4856-88bd-1bdef640ade5"
+      (reference "D17") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/67f1aea1-e097-4210-adf1-38bed3430ea5"
+      (reference "D18") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/fee3551a-d3df-4caf-a450-bbc60082b6cf"
+      (reference "D19") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/7b72cb17-73f9-4c53-b481-6a6de6a7f30f"
+      (reference "D20") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/506ba6f8-81a3-4533-9a33-64b8966c07d4"
+      (reference "D21") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/a581c0d9-3a23-49a4-a250-26ac05c14259"
+      (reference "D22") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/c16895a8-3d3e-452e-86df-a5a54b1a4c92"
+      (reference "D23") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/5ab6c5c2-2617-4f56-ad88-facbf9adc071"
+      (reference "D24") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/d086578f-757d-4cba-b4e5-f2c05692a498"
+      (reference "D25") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/2c87aaa7-2299-45b8-a5fe-727c3067cab4"
+      (reference "D26") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/92f72421-1151-4bf4-85ad-16e38cb5c32a"
+      (reference "D27") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/b2f1bdb7-7391-4bb5-ae2c-0ca1493e9d24"
+      (reference "D28") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/dfc45585-577d-4854-aa14-3020e667aae7"
+      (reference "D29") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/6cb9c12c-787e-40c0-aff3-ba524bcc148e"
+      (reference "D30") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/a6f91e99-2fc9-4962-829d-e4ab8110bff5"
+      (reference "D31") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/d54e55d2-61d6-4172-b280-61c6930a2ecd"
+      (reference "D32") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/e2f9e0e4-6810-4b46-b2c9-46fb4133ebb3"
+      (reference "D33") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/4131068b-13c3-4dfa-ad0c-38ba1f5a04b5"
+      (reference "D34") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/b8bcaf99-53d2-4f99-b67e-87997173fd41"
+      (reference "D35") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/a04fb1e6-77e7-4f22-8b78-3459b216b582"
+      (reference "D36") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/60451e54-dbc1-40f2-a650-cff9e6dc28a4"
+      (reference "D37") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/24d37ea7-9f68-406f-a352-5d0684e43e98"
+      (reference "D38") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/d3e59eef-5e38-424c-9015-dfffaec48227"
+      (reference "D39") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/512aba49-a315-4935-9d43-f2334a30c4be"
+      (reference "D40") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/4c4c61f0-9811-495c-ac1a-f676b3009b81"
+      (reference "D41") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/9e264e67-4eea-40b9-bbb8-1b26d1debf61"
+      (reference "D42") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/a8d69f78-a304-43cd-af8c-9d0b6a67c5e3"
+      (reference "D43") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/c199fa74-bf19-4b29-899b-c17c06f6dc2e"
+      (reference "D44") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/0decc6d9-ce1d-4b9a-af4f-67af9bde3962"
+      (reference "D45") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/f76550b8-443d-4c71-a925-750de89f5af6"
+      (reference "D46") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/2bfa44f2-85a5-466c-9dc1-b64efbbd639b"
+      (reference "D47") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/95c4221f-4b08-4915-8373-1a18c71eccaf"
+      (reference "D48") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/c19d4798-3418-4144-8eac-5792ae453ed3"
+      (reference "D49") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/24904f68-16aa-47d3-824e-dd1ce98ea93d"
+      (reference "D50") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/3dc898eb-95d8-4532-a44c-b2766be7fd30"
+      (reference "D51") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/41a9f145-f36e-475d-b873-988f8fb5b541"
+      (reference "D52") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/37a121e9-791f-437e-abbb-0808f1592a1a"
+      (reference "D53") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/dd5175eb-424d-453b-b166-5f9ba6e7379d"
+      (reference "D54") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/4e63e65b-620f-46c3-9460-550e6a06767f"
+      (reference "D55") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/1082e15e-2c25-408e-9e05-01c34568d191"
+      (reference "D56") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/9f44021a-a461-4660-b5e9-953951c1b6df"
+      (reference "D57") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/dbf0168e-6bc9-4bc5-a01b-d3bbe6e92b85"
+      (reference "D58") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/92d3af67-2a74-481a-95e9-f28bce0dc594"
+      (reference "D59") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/3096268e-d83b-4007-b182-167c11feebf7"
+      (reference "D60") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/78b2578b-99d7-43f6-9783-a07f973a86cc"
+      (reference "D61") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/0ee2430d-7b27-4504-b55d-2cea3d37e16c"
+      (reference "D62") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/8ad223ed-539f-4481-9281-9bd799ae9c42"
+      (reference "D63") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/242b113a-4a60-4a04-a5ac-3fd8f2cdd34e"
+      (reference "D64") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/dc6b0fa6-be8d-4643-aaaa-6d8269117a52"
+      (reference "D65") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/c2f22460-9a14-46dd-ad63-691eeebdd73d"
+      (reference "D66") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/c97a4467-12bf-4e25-ad82-047ad5cb27f3"
+      (reference "D67") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/cc01c659-1cd4-41a7-9ca7-6793847d8607"
+      (reference "D68") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/a5546ccf-1eef-42d4-bd35-cd06cb60ea82"
+      (reference "D69") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/9eca308f-6ff5-4468-a2de-3734c99fba0c"
+      (reference "D70") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/a6175e9b-1810-4291-af83-70478849ab34"
+      (reference "D71") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/f3972595-71ec-41cc-975c-2f1fd06cb7ff"
+      (reference "D72") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/4912a571-5bec-4fc4-9030-6f6f08e2b0ec"
+      (reference "D73") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/65105130-90de-4949-8038-7816bc4c8d3e"
+      (reference "D74") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/ff085f5d-725c-4882-9be9-353055f1fca3"
+      (reference "D75") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/19ab4f42-c699-4d6a-96c9-ac0f939c2762"
+      (reference "D76") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/da311065-891e-418a-a567-d146c780b18f"
+      (reference "D77") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/e5b6e9d7-d556-4d21-83eb-0bad75e63a03"
+      (reference "D78") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/205ef6ff-d6c2-4594-9301-39704fd1ee4b"
+      (reference "D79") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/f3aef44d-1ae3-43be-8278-fd54dc315e25"
+      (reference "D80") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/4355d697-f62a-43c4-a02e-9875d35acee6"
+      (reference "D81") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/0293938b-9145-4cce-9b0d-92e4031b8f02"
+      (reference "D82") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/694d3db2-740a-4b9b-9d6e-97a0eacf60c7"
+      (reference "D83") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/fd13eaa4-495e-4bb5-b334-fe08e0d59b36"
+      (reference "D84") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/6bad50dc-18a5-4acf-960d-18b47c24c3a0"
+      (reference "D85") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/c18ca24a-1d93-437a-8883-f7bc2e97d9c4"
+      (reference "D86") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/efc26038-ddbd-4b97-8556-0172e4de8b5b"
+      (reference "D87") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/3cc2ff58-51c7-47b3-95c7-296a0a042409"
+      (reference "D88") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/27784f21-4da1-4ab3-9a8a-1e91362b115c"
+      (reference "D89") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/b14670d5-6443-46b4-8e0b-bf3333a9a189"
+      (reference "D90") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/d8b74d9f-91b4-4fd9-91c6-89f00082a6cb"
+      (reference "D91") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/bf8cfda6-9bb8-48ed-9916-68fe08afb306"
+      (reference "D92") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/ae783f8c-cbf2-4150-8cda-3b9a326ad0e4"
+      (reference "D93") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/538e516f-c085-4a34-b68c-973584c16800"
+      (reference "D94") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/bbb2396a-4025-4850-abc9-968e143c7bc0"
+      (reference "D95") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/468291c4-0c8c-42e7-9e5a-aaceb35856bf"
+      (reference "D96") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/f64ff8b4-b685-44b1-8b75-3d0fdef0a38c"
+      (reference "D97") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/bd0db52e-0c94-48ab-86bc-64883265c07d"
+      (reference "D98") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/d23e6256-3301-4120-9dcb-eca2fdda63d2"
+      (reference "D99") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/ca754270-89bc-4f05-98ed-460e42601c4e"
+      (reference "D100") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/f7866d17-5d2b-43e6-b7da-0ca02a20a052"
+      (reference "D101") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/53c47ab1-47c2-4a99-81ca-451112b47718"
+      (reference "D102") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/08d643d4-d8fa-4669-bddd-7ee6298f5bb6"
+      (reference "D103") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/88ebb784-548f-44fb-9f9d-270ed8d699c9"
+      (reference "D104") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/8d84a9c2-4110-4c73-a320-d977bf96d4c5"
+      (reference "D105") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/69326b0d-ebcb-4071-bcb3-ab5e56c9adc3"
+      (reference "D106") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/7e94d85a-844b-4b9c-82a1-ba1e526944e1"
+      (reference "D107") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/466f9bdc-195e-4d64-8f1b-804154d014ba"
+      (reference "D108") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/8fa44f92-78a3-4a29-8199-a9470f30aa1b"
+      (reference "D109") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/2fce4336-715a-4aa9-bdc1-af9a9c1ed7f7"
+      (reference "D110") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/e844a069-223e-4b5e-9111-81bc29bed59b"
+      (reference "D111") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/a17befef-aec3-419d-b4fe-3fd112730a6a"
+      (reference "D112") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/82fbd143-19b6-444a-bb4b-908c7976d968"
+      (reference "D113") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/4009fb47-23cb-4b9f-9928-0bebfa7e1c5d"
+      (reference "D114") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/21b8d847-bdf4-414a-acd6-01ed27f6f61f"
+      (reference "D115") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/c38d1d44-ba57-43fa-b0af-d2b7d2a18547"
+      (reference "D116") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/81f5248f-fdbd-4f24-a692-ce878661f0ed"
+      (reference "D117") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/f43f5396-a1fd-4da3-8320-b5ea87d02eba"
+      (reference "D118") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/254588e7-1d3c-4751-b0ca-acab3554b96e"
+      (reference "D119") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/73c481c6-a399-4d5e-a9db-943581fecb1b"
+      (reference "D120") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/c114a975-3a11-43c9-a1ea-2d406c198254"
+      (reference "D121") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/9aff191f-3aaa-400e-a125-d69503fc25d1"
+      (reference "D122") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b7ef0c2d-d029-4ee4-8532-c6efa483cf4c/e3c38a1d-44f5-478c-a270-8042e7c2f17f"
+      (reference "D123") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/e5639c70-98d2-40ea-b831-829e12089cc3"
+      (reference "D124") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/52e12166-2fa5-4cb6-83a3-7486fdc8f6f3"
+      (reference "D125") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/c1793335-75ec-4ca0-ae21-9441cd51c89e"
+      (reference "D126") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/5a2ec7b0-ddbe-4c13-819c-1c59b9f5ece8"
+      (reference "D127") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/461a8fc8-86c9-4c66-aaa2-876f8476e51c"
+      (reference "D128") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/d3f8f560-83a5-4c05-b2fd-1e31e9453938"
+      (reference "D129") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/b144e372-b225-44f4-a753-67aa4439ebbf"
+      (reference "D130") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/66803ff7-fcca-4bcc-b784-433a192d7b81"
+      (reference "D131") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/8f8b8bda-8fab-48ea-9182-cbf17a6ee880"
+      (reference "D132") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/8ac4a98a-a520-49b5-ad5e-10b24940d4da"
+      (reference "D133") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/77bfd1d4-5196-49c6-b285-8a5e54613d06"
+      (reference "D134") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/66963ff0-4da7-4243-b4ee-8b2a63e48c65"
+      (reference "D135") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/184c8581-c9b7-4fff-b791-939b04ceab00"
+      (reference "D136") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/03ac36a8-fe86-430e-ba1b-da6ceabbe17e"
+      (reference "D137") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/3cc617d4-5353-41f6-b320-01cbde595d48"
+      (reference "D138") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/0a55023a-51b3-4ac1-85fc-f0cf33917b03"
+      (reference "D139") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/75ee1473-178b-4856-88bd-1bdef640ade5"
+      (reference "D140") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/67f1aea1-e097-4210-adf1-38bed3430ea5"
+      (reference "D141") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/fee3551a-d3df-4caf-a450-bbc60082b6cf"
+      (reference "D142") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/7b72cb17-73f9-4c53-b481-6a6de6a7f30f"
+      (reference "D143") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/506ba6f8-81a3-4533-9a33-64b8966c07d4"
+      (reference "D144") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/a581c0d9-3a23-49a4-a250-26ac05c14259"
+      (reference "D145") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/c16895a8-3d3e-452e-86df-a5a54b1a4c92"
+      (reference "D146") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/5ab6c5c2-2617-4f56-ad88-facbf9adc071"
+      (reference "D147") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/d086578f-757d-4cba-b4e5-f2c05692a498"
+      (reference "D148") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/2c87aaa7-2299-45b8-a5fe-727c3067cab4"
+      (reference "D149") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/92f72421-1151-4bf4-85ad-16e38cb5c32a"
+      (reference "D150") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/b2f1bdb7-7391-4bb5-ae2c-0ca1493e9d24"
+      (reference "D151") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/dfc45585-577d-4854-aa14-3020e667aae7"
+      (reference "D152") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/6cb9c12c-787e-40c0-aff3-ba524bcc148e"
+      (reference "D153") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/a6f91e99-2fc9-4962-829d-e4ab8110bff5"
+      (reference "D154") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/d54e55d2-61d6-4172-b280-61c6930a2ecd"
+      (reference "D155") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/e2f9e0e4-6810-4b46-b2c9-46fb4133ebb3"
+      (reference "D156") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/4131068b-13c3-4dfa-ad0c-38ba1f5a04b5"
+      (reference "D157") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/b8bcaf99-53d2-4f99-b67e-87997173fd41"
+      (reference "D158") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/a04fb1e6-77e7-4f22-8b78-3459b216b582"
+      (reference "D159") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/60451e54-dbc1-40f2-a650-cff9e6dc28a4"
+      (reference "D160") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/24d37ea7-9f68-406f-a352-5d0684e43e98"
+      (reference "D161") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/d3e59eef-5e38-424c-9015-dfffaec48227"
+      (reference "D162") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/512aba49-a315-4935-9d43-f2334a30c4be"
+      (reference "D163") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/4c4c61f0-9811-495c-ac1a-f676b3009b81"
+      (reference "D164") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/9e264e67-4eea-40b9-bbb8-1b26d1debf61"
+      (reference "D165") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/a8d69f78-a304-43cd-af8c-9d0b6a67c5e3"
+      (reference "D166") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/c199fa74-bf19-4b29-899b-c17c06f6dc2e"
+      (reference "D167") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/0decc6d9-ce1d-4b9a-af4f-67af9bde3962"
+      (reference "D168") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/f76550b8-443d-4c71-a925-750de89f5af6"
+      (reference "D169") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/2bfa44f2-85a5-466c-9dc1-b64efbbd639b"
+      (reference "D170") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/95c4221f-4b08-4915-8373-1a18c71eccaf"
+      (reference "D171") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/c19d4798-3418-4144-8eac-5792ae453ed3"
+      (reference "D172") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/24904f68-16aa-47d3-824e-dd1ce98ea93d"
+      (reference "D173") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/3dc898eb-95d8-4532-a44c-b2766be7fd30"
+      (reference "D174") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/41a9f145-f36e-475d-b873-988f8fb5b541"
+      (reference "D175") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/37a121e9-791f-437e-abbb-0808f1592a1a"
+      (reference "D176") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/dd5175eb-424d-453b-b166-5f9ba6e7379d"
+      (reference "D177") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/4e63e65b-620f-46c3-9460-550e6a06767f"
+      (reference "D178") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/1082e15e-2c25-408e-9e05-01c34568d191"
+      (reference "D179") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/9f44021a-a461-4660-b5e9-953951c1b6df"
+      (reference "D180") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/dbf0168e-6bc9-4bc5-a01b-d3bbe6e92b85"
+      (reference "D181") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/92d3af67-2a74-481a-95e9-f28bce0dc594"
+      (reference "D182") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/3096268e-d83b-4007-b182-167c11feebf7"
+      (reference "D183") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/78b2578b-99d7-43f6-9783-a07f973a86cc"
+      (reference "D184") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/0ee2430d-7b27-4504-b55d-2cea3d37e16c"
+      (reference "D185") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/8ad223ed-539f-4481-9281-9bd799ae9c42"
+      (reference "D186") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/242b113a-4a60-4a04-a5ac-3fd8f2cdd34e"
+      (reference "D187") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/dc6b0fa6-be8d-4643-aaaa-6d8269117a52"
+      (reference "D188") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/c2f22460-9a14-46dd-ad63-691eeebdd73d"
+      (reference "D189") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/c97a4467-12bf-4e25-ad82-047ad5cb27f3"
+      (reference "D190") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/cc01c659-1cd4-41a7-9ca7-6793847d8607"
+      (reference "D191") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/a5546ccf-1eef-42d4-bd35-cd06cb60ea82"
+      (reference "D192") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/9eca308f-6ff5-4468-a2de-3734c99fba0c"
+      (reference "D193") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/a6175e9b-1810-4291-af83-70478849ab34"
+      (reference "D194") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/f3972595-71ec-41cc-975c-2f1fd06cb7ff"
+      (reference "D195") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/4912a571-5bec-4fc4-9030-6f6f08e2b0ec"
+      (reference "D196") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/65105130-90de-4949-8038-7816bc4c8d3e"
+      (reference "D197") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/ff085f5d-725c-4882-9be9-353055f1fca3"
+      (reference "D198") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/19ab4f42-c699-4d6a-96c9-ac0f939c2762"
+      (reference "D199") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/da311065-891e-418a-a567-d146c780b18f"
+      (reference "D200") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/e5b6e9d7-d556-4d21-83eb-0bad75e63a03"
+      (reference "D201") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/205ef6ff-d6c2-4594-9301-39704fd1ee4b"
+      (reference "D202") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/f3aef44d-1ae3-43be-8278-fd54dc315e25"
+      (reference "D203") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/4355d697-f62a-43c4-a02e-9875d35acee6"
+      (reference "D204") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/0293938b-9145-4cce-9b0d-92e4031b8f02"
+      (reference "D205") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/694d3db2-740a-4b9b-9d6e-97a0eacf60c7"
+      (reference "D206") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/fd13eaa4-495e-4bb5-b334-fe08e0d59b36"
+      (reference "D207") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/6bad50dc-18a5-4acf-960d-18b47c24c3a0"
+      (reference "D208") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/c18ca24a-1d93-437a-8883-f7bc2e97d9c4"
+      (reference "D209") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/efc26038-ddbd-4b97-8556-0172e4de8b5b"
+      (reference "D210") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/3cc2ff58-51c7-47b3-95c7-296a0a042409"
+      (reference "D211") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/27784f21-4da1-4ab3-9a8a-1e91362b115c"
+      (reference "D212") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/b14670d5-6443-46b4-8e0b-bf3333a9a189"
+      (reference "D213") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/d8b74d9f-91b4-4fd9-91c6-89f00082a6cb"
+      (reference "D214") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/bf8cfda6-9bb8-48ed-9916-68fe08afb306"
+      (reference "D215") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/ae783f8c-cbf2-4150-8cda-3b9a326ad0e4"
+      (reference "D216") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/538e516f-c085-4a34-b68c-973584c16800"
+      (reference "D217") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/bbb2396a-4025-4850-abc9-968e143c7bc0"
+      (reference "D218") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/468291c4-0c8c-42e7-9e5a-aaceb35856bf"
+      (reference "D219") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/f64ff8b4-b685-44b1-8b75-3d0fdef0a38c"
+      (reference "D220") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/bd0db52e-0c94-48ab-86bc-64883265c07d"
+      (reference "D221") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/d23e6256-3301-4120-9dcb-eca2fdda63d2"
+      (reference "D222") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/ca754270-89bc-4f05-98ed-460e42601c4e"
+      (reference "D223") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/f7866d17-5d2b-43e6-b7da-0ca02a20a052"
+      (reference "D224") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/53c47ab1-47c2-4a99-81ca-451112b47718"
+      (reference "D225") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/08d643d4-d8fa-4669-bddd-7ee6298f5bb6"
+      (reference "D226") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/88ebb784-548f-44fb-9f9d-270ed8d699c9"
+      (reference "D227") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/8d84a9c2-4110-4c73-a320-d977bf96d4c5"
+      (reference "D228") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/69326b0d-ebcb-4071-bcb3-ab5e56c9adc3"
+      (reference "D229") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/7e94d85a-844b-4b9c-82a1-ba1e526944e1"
+      (reference "D230") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/466f9bdc-195e-4d64-8f1b-804154d014ba"
+      (reference "D231") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/8fa44f92-78a3-4a29-8199-a9470f30aa1b"
+      (reference "D232") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/2fce4336-715a-4aa9-bdc1-af9a9c1ed7f7"
+      (reference "D233") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/e844a069-223e-4b5e-9111-81bc29bed59b"
+      (reference "D234") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/a17befef-aec3-419d-b4fe-3fd112730a6a"
+      (reference "D235") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/82fbd143-19b6-444a-bb4b-908c7976d968"
+      (reference "D236") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/4009fb47-23cb-4b9f-9928-0bebfa7e1c5d"
+      (reference "D237") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/21b8d847-bdf4-414a-acd6-01ed27f6f61f"
+      (reference "D238") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/c38d1d44-ba57-43fa-b0af-d2b7d2a18547"
+      (reference "D239") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/81f5248f-fdbd-4f24-a692-ce878661f0ed"
+      (reference "D240") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/f43f5396-a1fd-4da3-8320-b5ea87d02eba"
+      (reference "D241") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/254588e7-1d3c-4751-b0ca-acab3554b96e"
+      (reference "D242") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/73c481c6-a399-4d5e-a9db-943581fecb1b"
+      (reference "D243") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/c114a975-3a11-43c9-a1ea-2d406c198254"
+      (reference "D244") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/9aff191f-3aaa-400e-a125-d69503fc25d1"
+      (reference "D245") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/b3ea67e2-d6fd-46e0-84ab-375c056fa43b/e3c38a1d-44f5-478c-a270-8042e7c2f17f"
+      (reference "D246") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/e5639c70-98d2-40ea-b831-829e12089cc3"
+      (reference "D247") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/52e12166-2fa5-4cb6-83a3-7486fdc8f6f3"
+      (reference "D248") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/c1793335-75ec-4ca0-ae21-9441cd51c89e"
+      (reference "D249") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/5a2ec7b0-ddbe-4c13-819c-1c59b9f5ece8"
+      (reference "D250") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/461a8fc8-86c9-4c66-aaa2-876f8476e51c"
+      (reference "D251") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/d3f8f560-83a5-4c05-b2fd-1e31e9453938"
+      (reference "D252") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/b144e372-b225-44f4-a753-67aa4439ebbf"
+      (reference "D253") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/66803ff7-fcca-4bcc-b784-433a192d7b81"
+      (reference "D254") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/8f8b8bda-8fab-48ea-9182-cbf17a6ee880"
+      (reference "D255") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/8ac4a98a-a520-49b5-ad5e-10b24940d4da"
+      (reference "D256") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/77bfd1d4-5196-49c6-b285-8a5e54613d06"
+      (reference "D257") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/66963ff0-4da7-4243-b4ee-8b2a63e48c65"
+      (reference "D258") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/184c8581-c9b7-4fff-b791-939b04ceab00"
+      (reference "D259") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/03ac36a8-fe86-430e-ba1b-da6ceabbe17e"
+      (reference "D260") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/3cc617d4-5353-41f6-b320-01cbde595d48"
+      (reference "D261") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/0a55023a-51b3-4ac1-85fc-f0cf33917b03"
+      (reference "D262") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/75ee1473-178b-4856-88bd-1bdef640ade5"
+      (reference "D263") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/67f1aea1-e097-4210-adf1-38bed3430ea5"
+      (reference "D264") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/fee3551a-d3df-4caf-a450-bbc60082b6cf"
+      (reference "D265") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/7b72cb17-73f9-4c53-b481-6a6de6a7f30f"
+      (reference "D266") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/506ba6f8-81a3-4533-9a33-64b8966c07d4"
+      (reference "D267") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/a581c0d9-3a23-49a4-a250-26ac05c14259"
+      (reference "D268") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/c16895a8-3d3e-452e-86df-a5a54b1a4c92"
+      (reference "D269") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/5ab6c5c2-2617-4f56-ad88-facbf9adc071"
+      (reference "D270") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/d086578f-757d-4cba-b4e5-f2c05692a498"
+      (reference "D271") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/2c87aaa7-2299-45b8-a5fe-727c3067cab4"
+      (reference "D272") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/92f72421-1151-4bf4-85ad-16e38cb5c32a"
+      (reference "D273") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/b2f1bdb7-7391-4bb5-ae2c-0ca1493e9d24"
+      (reference "D274") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/dfc45585-577d-4854-aa14-3020e667aae7"
+      (reference "D275") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/6cb9c12c-787e-40c0-aff3-ba524bcc148e"
+      (reference "D276") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/a6f91e99-2fc9-4962-829d-e4ab8110bff5"
+      (reference "D277") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/d54e55d2-61d6-4172-b280-61c6930a2ecd"
+      (reference "D278") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/e2f9e0e4-6810-4b46-b2c9-46fb4133ebb3"
+      (reference "D279") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/4131068b-13c3-4dfa-ad0c-38ba1f5a04b5"
+      (reference "D280") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/b8bcaf99-53d2-4f99-b67e-87997173fd41"
+      (reference "D281") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/a04fb1e6-77e7-4f22-8b78-3459b216b582"
+      (reference "D282") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/60451e54-dbc1-40f2-a650-cff9e6dc28a4"
+      (reference "D283") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/24d37ea7-9f68-406f-a352-5d0684e43e98"
+      (reference "D284") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/d3e59eef-5e38-424c-9015-dfffaec48227"
+      (reference "D285") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/512aba49-a315-4935-9d43-f2334a30c4be"
+      (reference "D286") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/4c4c61f0-9811-495c-ac1a-f676b3009b81"
+      (reference "D287") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/9e264e67-4eea-40b9-bbb8-1b26d1debf61"
+      (reference "D288") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/a8d69f78-a304-43cd-af8c-9d0b6a67c5e3"
+      (reference "D289") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/c199fa74-bf19-4b29-899b-c17c06f6dc2e"
+      (reference "D290") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/0decc6d9-ce1d-4b9a-af4f-67af9bde3962"
+      (reference "D291") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/f76550b8-443d-4c71-a925-750de89f5af6"
+      (reference "D292") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/2bfa44f2-85a5-466c-9dc1-b64efbbd639b"
+      (reference "D293") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/95c4221f-4b08-4915-8373-1a18c71eccaf"
+      (reference "D294") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/c19d4798-3418-4144-8eac-5792ae453ed3"
+      (reference "D295") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/24904f68-16aa-47d3-824e-dd1ce98ea93d"
+      (reference "D296") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/3dc898eb-95d8-4532-a44c-b2766be7fd30"
+      (reference "D297") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/41a9f145-f36e-475d-b873-988f8fb5b541"
+      (reference "D298") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/37a121e9-791f-437e-abbb-0808f1592a1a"
+      (reference "D299") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/dd5175eb-424d-453b-b166-5f9ba6e7379d"
+      (reference "D300") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/4e63e65b-620f-46c3-9460-550e6a06767f"
+      (reference "D301") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/1082e15e-2c25-408e-9e05-01c34568d191"
+      (reference "D302") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/9f44021a-a461-4660-b5e9-953951c1b6df"
+      (reference "D303") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/dbf0168e-6bc9-4bc5-a01b-d3bbe6e92b85"
+      (reference "D304") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/92d3af67-2a74-481a-95e9-f28bce0dc594"
+      (reference "D305") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/3096268e-d83b-4007-b182-167c11feebf7"
+      (reference "D306") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/78b2578b-99d7-43f6-9783-a07f973a86cc"
+      (reference "D307") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/0ee2430d-7b27-4504-b55d-2cea3d37e16c"
+      (reference "D308") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/8ad223ed-539f-4481-9281-9bd799ae9c42"
+      (reference "D309") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/242b113a-4a60-4a04-a5ac-3fd8f2cdd34e"
+      (reference "D310") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/dc6b0fa6-be8d-4643-aaaa-6d8269117a52"
+      (reference "D311") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/c2f22460-9a14-46dd-ad63-691eeebdd73d"
+      (reference "D312") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/c97a4467-12bf-4e25-ad82-047ad5cb27f3"
+      (reference "D313") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/cc01c659-1cd4-41a7-9ca7-6793847d8607"
+      (reference "D314") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/a5546ccf-1eef-42d4-bd35-cd06cb60ea82"
+      (reference "D315") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/9eca308f-6ff5-4468-a2de-3734c99fba0c"
+      (reference "D316") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/a6175e9b-1810-4291-af83-70478849ab34"
+      (reference "D317") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/f3972595-71ec-41cc-975c-2f1fd06cb7ff"
+      (reference "D318") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/4912a571-5bec-4fc4-9030-6f6f08e2b0ec"
+      (reference "D319") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/65105130-90de-4949-8038-7816bc4c8d3e"
+      (reference "D320") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/ff085f5d-725c-4882-9be9-353055f1fca3"
+      (reference "D321") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/19ab4f42-c699-4d6a-96c9-ac0f939c2762"
+      (reference "D322") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/da311065-891e-418a-a567-d146c780b18f"
+      (reference "D323") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/e5b6e9d7-d556-4d21-83eb-0bad75e63a03"
+      (reference "D324") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/205ef6ff-d6c2-4594-9301-39704fd1ee4b"
+      (reference "D325") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/f3aef44d-1ae3-43be-8278-fd54dc315e25"
+      (reference "D326") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/4355d697-f62a-43c4-a02e-9875d35acee6"
+      (reference "D327") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/0293938b-9145-4cce-9b0d-92e4031b8f02"
+      (reference "D328") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/694d3db2-740a-4b9b-9d6e-97a0eacf60c7"
+      (reference "D329") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/fd13eaa4-495e-4bb5-b334-fe08e0d59b36"
+      (reference "D330") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/6bad50dc-18a5-4acf-960d-18b47c24c3a0"
+      (reference "D331") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/c18ca24a-1d93-437a-8883-f7bc2e97d9c4"
+      (reference "D332") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/efc26038-ddbd-4b97-8556-0172e4de8b5b"
+      (reference "D333") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/3cc2ff58-51c7-47b3-95c7-296a0a042409"
+      (reference "D334") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/27784f21-4da1-4ab3-9a8a-1e91362b115c"
+      (reference "D335") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/b14670d5-6443-46b4-8e0b-bf3333a9a189"
+      (reference "D336") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/d8b74d9f-91b4-4fd9-91c6-89f00082a6cb"
+      (reference "D337") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/bf8cfda6-9bb8-48ed-9916-68fe08afb306"
+      (reference "D338") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/ae783f8c-cbf2-4150-8cda-3b9a326ad0e4"
+      (reference "D339") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/538e516f-c085-4a34-b68c-973584c16800"
+      (reference "D340") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/bbb2396a-4025-4850-abc9-968e143c7bc0"
+      (reference "D341") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/468291c4-0c8c-42e7-9e5a-aaceb35856bf"
+      (reference "D342") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/f64ff8b4-b685-44b1-8b75-3d0fdef0a38c"
+      (reference "D343") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/bd0db52e-0c94-48ab-86bc-64883265c07d"
+      (reference "D344") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/d23e6256-3301-4120-9dcb-eca2fdda63d2"
+      (reference "D345") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/ca754270-89bc-4f05-98ed-460e42601c4e"
+      (reference "D346") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/f7866d17-5d2b-43e6-b7da-0ca02a20a052"
+      (reference "D347") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/53c47ab1-47c2-4a99-81ca-451112b47718"
+      (reference "D348") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/08d643d4-d8fa-4669-bddd-7ee6298f5bb6"
+      (reference "D349") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/88ebb784-548f-44fb-9f9d-270ed8d699c9"
+      (reference "D350") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/8d84a9c2-4110-4c73-a320-d977bf96d4c5"
+      (reference "D351") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/69326b0d-ebcb-4071-bcb3-ab5e56c9adc3"
+      (reference "D352") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/7e94d85a-844b-4b9c-82a1-ba1e526944e1"
+      (reference "D353") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/466f9bdc-195e-4d64-8f1b-804154d014ba"
+      (reference "D354") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/8fa44f92-78a3-4a29-8199-a9470f30aa1b"
+      (reference "D355") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/2fce4336-715a-4aa9-bdc1-af9a9c1ed7f7"
+      (reference "D356") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/e844a069-223e-4b5e-9111-81bc29bed59b"
+      (reference "D357") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/a17befef-aec3-419d-b4fe-3fd112730a6a"
+      (reference "D358") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/82fbd143-19b6-444a-bb4b-908c7976d968"
+      (reference "D359") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/4009fb47-23cb-4b9f-9928-0bebfa7e1c5d"
+      (reference "D360") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/21b8d847-bdf4-414a-acd6-01ed27f6f61f"
+      (reference "D361") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/c38d1d44-ba57-43fa-b0af-d2b7d2a18547"
+      (reference "D362") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/81f5248f-fdbd-4f24-a692-ce878661f0ed"
+      (reference "D363") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/f43f5396-a1fd-4da3-8320-b5ea87d02eba"
+      (reference "D364") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/254588e7-1d3c-4751-b0ca-acab3554b96e"
+      (reference "D365") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/73c481c6-a399-4d5e-a9db-943581fecb1b"
+      (reference "D366") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/c114a975-3a11-43c9-a1ea-2d406c198254"
+      (reference "D367") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/9aff191f-3aaa-400e-a125-d69503fc25d1"
+      (reference "D368") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/d131acfe-d677-4af6-b93b-d90d3bb9d07c/e3c38a1d-44f5-478c-a270-8042e7c2f17f"
+      (reference "D369") (unit 1) (value "SK9822-EC20") (footprint "helixloop:LED-SK9822-EC20")
+    )
+    (path "/6eb29551-831f-4d71-8857-bc1702884c51"
+      (reference "J1") (unit 1) (value "Conn_01x04") (footprint "helixloop:SMD_Pad_01x04_2.54mm")
+    )
+    (path "/2722e5af-1768-4d51-9444-badc534c4f69"
+      (reference "J2") (unit 1) (value "Conn_01x02") (footprint "helixloop:SMD_Pad_01x02_2.54mm")
+    )
+  )
 )

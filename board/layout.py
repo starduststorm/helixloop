@@ -113,6 +113,7 @@ class Point(object):
     raise IndexError("index out of range")
 
   def distance_to(self, other):
+    other = Point(other)
     return sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2)
 
   def __str__(self):
@@ -313,7 +314,7 @@ class KiCadPCB(object):
 class PCBLayout(object):
   center = Point(100,100)
   edge_cut_line_thickness = 0.05
-  pixel_pad_map = {"3": "1", "4": "6"} # connect SCK and SD* for SK9822-EC20
+  pixel_pad_map = {"1": "3", "6": "4"} # connect SCK and SD* for SK9822-EC20
   pixel_pad_names = {"GND": "2"}
   drawPixelLinesOnly = False
   
@@ -339,7 +340,6 @@ class PCBLayout(object):
 
   def placeSeriesPixel(self, point, orientation, allowOverlaps=True):
     reference = "D%i" % self.series_pixel_count
-    self.series_pixel_count += 1
     
     if self.pixel_prototype is None:
       print("Loading pixel footprint...")
@@ -363,10 +363,20 @@ class PCBLayout(object):
           orientationTweakSign = 1 if abs(fpOrientation%(pi/2) - orientation%(pi/2)) > pi/4 else -1
           newOrientation = fpOrientation + (fpOrientation%(pi/2) - orientation%(pi/2)) / 2 * orientationTweakSign
           print("Pixel", reference, "overlaps", fp.GetReference(), "first", fpPoint, "@", fpOrientation, "second", absPoint, "@", orientation, " => ", newPt, "@", newOrientation)
-          fp.SetPosition(newPt.wxPoint())
+          
+          movedPads = [pad.GetPosition() for pad in fp.Pads()]
+          
           fp.SetOrientation(180/pi*10*newOrientation)
+          fp.SetPosition(newPt.wxPoint())
 
-          # print("Skipping pixel %s at point %s due to overlap" % (reference, point))
+          # adjust any traces that were connected to this pixel
+          for padNum in range(len(movedPads)):
+            for track in self.kicadpcb.board._obj.GetTracks():
+              if Point(track.GetStart()).distance_to(movedPads[padNum]) < 0.1:
+                track.SetStart(fp.Pads()[padNum].GetPosition())
+              elif Point(track.GetEnd()).distance_to(movedPads[padNum]) < 0.1:
+                track.SetEnd(fp.Pads()[padNum].GetPosition())
+          
           return
 
     print("Placing pixel %s at point %s (relative center %s) orientation %f" % (reference, point, self.center, orientation));
@@ -383,6 +393,8 @@ class PCBLayout(object):
         self.drawSegment(Point.fromWxPoint(self.prev_series_pixel.GetPosition()) - self.center, point, width = 0.35)
     else:
       self.kicadpcb.board._obj.Add(pixel)
+    
+    self.series_pixel_count += 1
 
     for pad in pixel.Pads():
       if not args.skip_traces and pad.GetPadName() == self.pixel_pad_names['GND']:
@@ -526,7 +538,7 @@ class LayoutHelixLoop(PCBLayout):
       else:
         first_placement = pos
       
-      orientation = pi/2 - theta + (-1 if invert else 1) * cos(theta * self.helixCycles) * self.pixelRotationFudge
+      orientation = -pi/2 - theta + (-1 if invert else 1) * cos(theta * self.helixCycles) * self.pixelRotationFudge
       self.placeSeriesPixel(pos, orientation, allowOverlaps=False)
       last_placement = pos
 
@@ -550,25 +562,26 @@ class LayoutHelixLoop(PCBLayout):
       spiralStartRadius = 0.45 * self.helixRadius
       spiralStartTheta = i * 2*pi/3 + 7/self.helixCycles/2
       spiralCenter = circle_pt(spiralStartTheta, spiralStartRadius)
-      spiralRadiusPerLoop = 9.52
+      spiralRadiusPerLoop = 8.25
 
       last_placement = Point(inf, inf)
       last_line = Point(inf, inf)
       segments = 80000
-      extendedSegments = int(segments * 1.16)
+      extendedSegments = int(segments * 1.14)
       
-      loops = 2.1
+      loops = 2.36
 
-      # linear adjust tweaks the spiral tail so it lines up with the helix
       linear_adjust_start = 3.7 * pi
       for s in range(extendedSegments):
         radius = 2 + loops * spiralRadiusPerLoop * s / segments
-        spiralTheta = 2*pi * loops * s / segments - 0.391
+        spiralTheta = 2*pi * loops * s / segments - 0.3535 - 2 * pi * loops + 2.1*2*pi
         theta = spiralTheta - spiralStartTheta
-        orientation = pi + theta-0.1
+        orientation = theta-0.1
         extraRadius = 0
+
+        # linear adjust tweaks the spiral tail so it lines up with the helix
         if spiralTheta > linear_adjust_start:
-          extraRadius = 3.2 * (spiralTheta -linear_adjust_start)
+          extraRadius = 3.5 * (spiralTheta - linear_adjust_start)
           radius += extraRadius
           orientation -= 0.12
           pass
