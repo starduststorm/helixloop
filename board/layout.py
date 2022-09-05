@@ -490,7 +490,15 @@ class LayoutHelixLoop(PCBLayout):
     firstPos = None
     for s in range(0,segments):
       theta = s*2*pi/segments
-      radius = self.edgeRadius + 0.9*self.helixAmplitude * abs(sin(theta * self.helixCycles))
+      # the two radii define two shapes to track the sine curve of the leds on the outside, but curve gently on the inside
+      radius1 = self.edgeRadius + 0.9*self.helixAmplitude * abs(sin(theta * self.helixCycles))
+      radius2 = self.edgeRadius + 0.4*self.helixAmplitude * sin(theta * self.helixCycles*2 - pi/2) + 7.85
+
+      if radius1 > 66.15 or radius2 > 66.15: # magic inflection point
+        radius = radius1
+      else:
+        radius = radius2
+
       pos = Point(radius * sin(theta), radius * cos(theta))
       
       if lastPos is not None:
