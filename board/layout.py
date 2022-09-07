@@ -477,9 +477,8 @@ class LayoutHelixLoop(PCBLayout):
   edgeRadius = 60#mm
   pixelSpacing = 3.810
   helixRadius = 53.8
-  helixAmplitude = 12.00
+  helixAmplitude = 11.54
   helixCycles = 6
-  pixelRotationFudge = 1.0
 
   def drawEdgeCuts(self):
     super().drawEdgeCuts()
@@ -492,9 +491,10 @@ class LayoutHelixLoop(PCBLayout):
       theta = s*2*pi/segments
       # the two radii define two shapes to track the sine curve of the leds on the outside, but curve gently on the inside
       radius1 = self.edgeRadius + 0.9*self.helixAmplitude * abs(sin(theta * self.helixCycles))
-      radius2 = self.edgeRadius + 0.4*self.helixAmplitude * sin(theta * self.helixCycles*2 - pi/2) + 7.85
+      radius2 = self.edgeRadius + 0.4*self.helixAmplitude * sin(theta * self.helixCycles*2 - pi/2) + 7.54
 
-      if radius1 > 66.15 or radius2 > 66.15: # magic inflection point
+      magic = 65.84 # smoothly join the two curves
+      if radius1 > magic or radius2 > magic:
         radius = radius1
       else:
         radius = radius2
@@ -513,45 +513,49 @@ class LayoutHelixLoop(PCBLayout):
       amplitude = self.helixAmplitude
     radius = self.helixRadius + (-1 if flip else 1) * amplitude * sin(theta * self.helixCycles)
     pos = Point(radius * cos(theta), radius * sin(theta))
-    return pos
+    return pos, radius
 
   def placePixelWave(self, invert):
-    segments = 80000
     last_placement = Point(inf, inf)
     first_placement = None
     lineCount = int(self.helixAmplitude)
     last_line_pos = [None] * lineCount
 
     print("Placing Pixel Wave flipped", invert)
-    for s in range(0,segments):
-      theta = s*2*pi/segments
-      pos = self.pixelWaveFunc(theta, invert)
+    for cycle in range(self.helixCycles):
+      segments = 15000 # step through the sine wave placing equidistant pixels
+      for s in range(0,segments):
+        theta = -s*2*pi/self.helixCycles/segments - cycle*2*pi/self.helixCycles
+        pos, radius = self.pixelWaveFunc(theta, invert)
 
-      # decorate the inner helix
-      if not invert: # only draw half
-        if last_line_pos[0] is None or last_line_pos[0].distance_to(self.pixelWaveFunc(theta, False, 0)) > 0.4:
-          for i in range(lineCount):
-            linePos = self.pixelWaveFunc(theta, False, i * (-1 if invert else 1))
-            if last_line_pos[i] is not None:
-              self.drawSegment(last_line_pos[i], linePos)
-            last_line_pos[i] = linePos
+        # spent way too much time trying to align the outer and inner wave bits, instead just tweak the spacing on the other pixels
+        localPixelSpacing = self.pixelSpacing + (-0.11 if radius > self.helixRadius else 0)
 
-      # space the pixels roughly evenly along the curve
-      if last_placement.distance_to(pos) < self.pixelSpacing:
-        continue
-      # skip overlap at the endpoints
-      if first_placement is not None:
-        if first_placement.distance_to(pos) < self.pixelSpacing*0.9:
+        # decorate the inner helix
+        if not invert: # only draw half
+          if last_line_pos[0] is None or last_line_pos[0].distance_to(self.pixelWaveFunc(theta, False, 0)[0]) > 0.5:
+            for i in range(lineCount):
+              linePos, temprad = self.pixelWaveFunc(theta, False, i * (-1 if invert else 1))
+              if last_line_pos[i] is not None:
+                self.drawSegment(last_line_pos[i], linePos)
+              last_line_pos[i] = linePos
+
+        # space the pixels roughly evenly along the curve
+        if last_placement.distance_to(pos) < localPixelSpacing:
           continue
-      else:
-        first_placement = pos
-      
-      orientation = -pi/2 - theta + (-1 if invert else 1) * cos(theta * self.helixCycles) * self.pixelRotationFudge
-      self.placeSeriesPixel(pos, orientation, allowOverlaps=False)
-      last_placement = pos
+        # skip overlap at the endpoints
+        if first_placement is not None:
+          if first_placement.distance_to(pos) < localPixelSpacing*0.9:
+            continue
+        else:
+          first_placement = pos
+        
+        orientation = pi/2 - theta + (-1 if invert else 1) * cos(theta * self.helixCycles) * (0.92 if radius > self.helixRadius else 0.98)
+        self.placeSeriesPixel(pos, orientation, allowOverlaps=False)
+        last_placement = pos
 
     self.seriesPixelDiscontinuity()
-  
+    
   def placePixels(self):
     self.drawPixelLinesOnly = False
     super().placePixels()
@@ -589,9 +593,9 @@ class LayoutHelixLoop(PCBLayout):
 
         # linear adjust tweaks the spiral tail so it lines up with the helix
         if spiralTheta > linear_adjust_start:
-          extraRadius = 3.5 * (spiralTheta - linear_adjust_start)
+          extraRadius = 3.88 * (spiralTheta - linear_adjust_start)
           radius += extraRadius
-          orientation -= 0.12
+          orientation -= 0.10
           pass
         
         pos = spiralCenter + Point(radius*sin(theta), radius*cos(theta))
@@ -613,13 +617,13 @@ class LayoutHelixLoop(PCBLayout):
           minHelixRadius = self.helixRadius - self.helixAmplitude
           while linePos1.radius > minHelixRadius and error > 1:
             startRadius = linePos1.radius
-            clip1 = self.pixelWaveFunc(linePos1.theta, False)
-            clip2 = self.pixelWaveFunc(linePos1.theta, True)
+            clip1 = self.pixelWaveFunc(linePos1.theta, False)[0]
+            clip2 = self.pixelWaveFunc(linePos1.theta, True)[0]
             linePos1 -= spiralCenter
             linePos1.radius -= startRadius - min(clip1.radius, clip2.radius)
             linePos1 += spiralCenter
 
-            error = min(linePos1.distance_to(self.pixelWaveFunc(linePos1.theta, True)), linePos1.distance_to(self.pixelWaveFunc(linePos1.theta, False)))
+            error = min(linePos1.distance_to(self.pixelWaveFunc(linePos1.theta, True)[0]), linePos1.distance_to(self.pixelWaveFunc(linePos1.theta, False)[0]))
 
           lineThickness = 0.127 + 0.27 * (sin(11*pi*s/extendedSegments - pi/2)+1)/2
           self.drawSegment(linePos2, linePos1, layer='F.Silkscreen', width=lineThickness)
@@ -650,6 +654,12 @@ class LayoutHelixLoop(PCBLayout):
   def decorateSilkScreen(self):
     super().decorateSilkScreen()
     self.insertFootprint("spiraldrawing", self.center)
+
+    # guides = 24
+    # for i in range(guides):
+    #   theta = i * 2 * pi/guides
+    #   self.drawSegment((0,0), circle_pt(theta,self.edgeRadius+self.helixAmplitude))
+
 
 class Timing(object):
   @classmethod
