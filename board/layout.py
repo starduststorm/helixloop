@@ -315,7 +315,7 @@ class PCBLayout(object):
   center = Point(100,100)
   edge_cut_line_thickness = 0.05
   pixel_pad_map = {"1": "3", "6": "4"} # connect SCK and SD* for SK9822-EC20
-  pixel_pad_names = {"GND": "2"}
+  pixel_pad_names = {"GND": "2", "+5V": "5"}
   drawPixelLinesOnly = False
   
   ####
@@ -397,15 +397,25 @@ class PCBLayout(object):
     self.series_pixel_count += 1
 
     for pad in pixel.Pads():
-      if not args.skip_traces and pad.GetPadName() == self.pixel_pad_names['GND']:
-        # draw trace outward from ground
-        end = Point(pad.GetPosition()).polar_translated(0.8, -pi/2-orientation)
-        self.kicadpcb.add_copper_trace(pad.GetPosition(), end.wxPoint(), pad.GetNet())
+      if not args.skip_traces:
+        if pad.GetPadName() == self.pixel_pad_names['GND']:
+          # draw trace outward from ground
+          end = Point(pad.GetPosition()).polar_translated(0.8, -pi/2-orientation)
+          self.kicadpcb.add_copper_trace(pad.GetPosition(), end.wxPoint(), pad.GetNet())
 
-        # add a via
-        self.kicadpcb.add_via(end.wxPoint(), pad.GetNet())
-
-        break
+          # add a via
+          self.kicadpcb.add_via(end.wxPoint(), pad.GetNet())
+        elif pad.GetPadName() == self.pixel_pad_names['+5V']:
+          def get5VTranceEnd(pad, orientation):
+            return Point(pad.GetPosition()).polar_translated(1.0, pi/2-orientation)
+          # draw trace outward from 5V
+          end = get5VTranceEnd(pad, orientation)
+          self.kicadpcb.add_copper_trace(pad.GetPosition(), end.wxPoint(), pad.GetNet())
+          # and connect +5V from previous
+          if self.prev_series_pixel is not None:
+            prevPad = [pad for pad in self.prev_series_pixel.Pads() if pad.GetPadName() == self.pixel_pad_names['+5V']][0]
+            prevEnd = get5VTranceEnd(prevPad, self.prev_series_pixel.GetOrientation()/10*pi/180)
+            self.kicadpcb.add_copper_trace(prevEnd.wxPoint(), end.wxPoint(), pad.GetNet())
 
     # Add tracks from the previous pixel, connecting pad 5 to pad 2 and pad 4 to pad 3
     if not args.skip_traces and self.prev_series_pixel is not None:
@@ -429,8 +439,6 @@ class PCBLayout(object):
               end = pad.GetPosition()
               print("Adding track from pixel {} pad {} to pixel {} pad {}".format(self.prev_series_pixel.GetReference(), prev_pad.GetPadName(), pixel.GetReference(), pad.GetPadName()))
               self.kicadpcb.add_copper_trace(start, end, pad.GetNet())
-
-           # FIXME: Draw GND and +5V traces?
 
     self.prev_series_pixel = pixel
 
@@ -462,7 +470,6 @@ class PCBLayout(object):
       if re.match("^D\d+$",fp.GetReference()):
         print("Removing old footprint for pixel %s" % fp.GetReference())
         self.kicadpcb.board._obj.Delete(fp)
-    
     
     self.kicadpcb.deleteAllTraces()
   
