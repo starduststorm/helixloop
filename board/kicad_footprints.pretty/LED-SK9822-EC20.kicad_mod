@@ -32,12 +32,12 @@
   (fp_line (start -0.5 -1) (end -1 -0.5) (layer "F.Fab") (width 0.1) (tstamp 4a67ed9b-cf0b-480d-82cb-b3d00b1b4f7a))
   (fp_line (start 1 1) (end -1 1) (layer "F.Fab") (width 0.1) (tstamp 7d736179-f0b9-47bb-8bac-c668cedf6e3d))
   (fp_line (start -0.5 -1) (end 1 -1) (layer "F.Fab") (width 0.1) (tstamp 88db9e75-c3e2-45cf-a8db-9c64183a43da))
-  (pad "1" smd rect (at 0.9 -0.85 270) (size 0.8 0.5) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp c2f9da17-dacc-4ba2-8c48-2ceb35595e71))
-  (pad "2" smd rect (at 0 -0.85 270) (size 0.8 0.4) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 0c1508c6-004a-411a-a2b3-1f9118b461a0))
-  (pad "3" smd rect (at -0.9 -0.85 270) (size 0.8 0.5) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 759bc32c-4cf3-4cf8-904a-9f91faae40e1))
-  (pad "4" smd rect (at -0.9 0.85 270) (size 0.8 0.5) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp ecbdd643-d2d8-4f75-a00e-ad19159c0aef))
-  (pad "5" smd rect (at 0 0.85 270) (size 0.8 0.4) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 1299d3bb-85bb-493c-a22d-a37070d909ab))
-  (pad "6" smd rect (at 0.9 0.85 270) (size 0.8 0.5) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 32997924-a0cf-48bb-a402-2a865f2d95ce))
+  (pad "1" smd rect (at 0.875 -0.775) (size 0.55 0.95) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp c2f9da17-dacc-4ba2-8c48-2ceb35595e71))
+  (pad "2" smd rect (at 0 -0.775) (size 0.4 0.95) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 0c1508c6-004a-411a-a2b3-1f9118b461a0))
+  (pad "3" smd rect (at -0.875 -0.775) (size 0.55 0.9) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 759bc32c-4cf3-4cf8-904a-9f91faae40e1))
+  (pad "4" smd rect (at -0.875 0.775) (size 0.55 0.95) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp ecbdd643-d2d8-4f75-a00e-ad19159c0aef))
+  (pad "5" smd rect (at 0 0.775) (size 0.4 0.95) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 1299d3bb-85bb-493c-a22d-a37070d909ab))
+  (pad "6" smd rect (at 0.875 0.775) (size 0.55 0.95) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 32997924-a0cf-48bb-a402-2a865f2d95ce))
   (group "" (id dd8a34c9-7e6a-4db3-817d-7ccd2c5aba7e)
     (members
       0151739c-fcbe-4ce6-9d6f-6e0b4cd8c2b6
