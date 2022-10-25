@@ -38,7 +38,7 @@ extern char *__brkval;
 
 #include <functional>
 
-#define WAIT_FOR_SERIAL 0
+#define WAIT_FOR_SERIAL 1
 
 DrawingContext ctx;
 
@@ -99,16 +99,16 @@ void setup() {
   delay(2000);
   Serial.println("Done waiting at boot.");
 #endif
-  randomSeed(lsb_noise(UNCONNECTED_PIN_1, 8 * sizeof(uint32_t)));
-  random16_add_entropy(lsb_noise(UNCONNECTED_PIN_2, 8 * sizeof(uint16_t)));
+  // randomSeed(lsb_noise(UNCONNECTED_PIN_1, 8 * sizeof(uint32_t)));
+  // random16_add_entropy(lsb_noise(UNCONNECTED_PIN_2, 8 * sizeof(uint16_t)));
 
   // use the alternate sercoms each of these SPI ports (SERCOM3)
   // pinPeripheral(LEDS_MISO, PIO_SERCOM_ALT);
   // pinPeripheral(LEDS_SCK,  PIO_SERCOM_ALT);
   // pinPeripheral(LEDS_MOSI, PIO_SERCOM_ALT);
 
-  FastLED.addLeds<SK9822, LEDS_MOSI, LEDS_SCK, BGR>(ctx.leds, ctx.leds.size());
-  FastLED.setBrightness(0);
+  FastLED.addLeds<SK9822, BGR>(ctx.leds, ctx.leds.size());
+  FastLED.setBrightness(127);
 
   fc.tick();
 
@@ -130,25 +130,20 @@ void serialTimeoutIndicator() {
   delay(20);
 }
 
-void testPalette(CRGBPalette256 &palette) {
-  for (unsigned i = 0; i < circleleds.size(); ++i) {
-    ctx.leds[circleleds[i]] = ColorFromPalette(palette, 0xFF * i / circleleds.size());
-  }
-}
-
 void loop() {
   if (serialTimeout && millis() - setupDoneTime < 1000) {
     serialTimeoutIndicator();
     return;
   }
 
-  static bool firstLoop = true;
-  if (firstLoop) {
-    startupWelcome();
-    firstLoop = false;
-  }
+  // static bool firstLoop = true;
+  // if (firstLoop) {
+  //   startupWelcome();
+  //   firstLoop = false;
+  // }
 
   patternManager.loop();
+  // graphTest(ctx);
   
   FastLED.show();
 

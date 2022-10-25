@@ -32,17 +32,11 @@ class PatternManager {
     return testIdlePattern;
   }
 
-  
-
-  void setupButtons() {
-    controls.update();
-  }
-
 public:
   ColorManager *colorManager;
 
   PatternManager(BufferType &ctx) : ctx(ctx) {
-    patternConstructors.push_back(&(construct<DownstreamPattern>));
+    patternConstructors.push_back(&(construct<DevPattern>));
   }
 
   ~PatternManager() {
@@ -80,35 +74,6 @@ public:
       activePattern = NULL;
     }
   }
-  
-  // Palettes
-
-  void nextPalette() {
-    colorManager->pauseRotation = true;
-    colorManager->nextPalette();
-    if (activePattern) {
-      activePattern->colorModeChanged();
-    }
-  }
-
-  void previousPalette() {
-  
-    colorManager->pauseRotation = true;
-    colorManager->previousPalette();
-    if (activePattern) {
-      activePattern->colorModeChanged();
-    }
-  }
-
-  void enablePaletteAutoRotate() {
-    logf("Enable palette autorotate");
-    colorManager->pauseRotation = false;
-    // paletteAutorotateWelcome();
-    colorManager->randomizePalette();
-    if (activePattern) {
-      activePattern->colorModeChanged();
-    }
-  }
 
 private:
   bool startPatternAtIndex(int index) {
@@ -128,7 +93,6 @@ public:
     stopPattern();
     if (pattern->wantsToRun()) {
       pattern->colorManager = colorManager;
-      pattern->colorModeChanged();
       pattern->start();
       activePattern = pattern;
       return true;

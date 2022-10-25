@@ -10,7 +10,7 @@
 #include "ledgraph.h"
 #include "drawing.h"
 
-typedef PaletteRotation<PaletteType> * ColorManager;
+typedef PaletteRotation<CRGBPalette32> ColorManager;
 
 class Pattern {
 private:  
@@ -18,7 +18,7 @@ private:
   long stopTime = -1;
   long lastUpdateTime = -1;
 public:
-  ColorManager colorManager;
+  ColorManager *colorManager;
   DrawingContext ctx;
   virtual ~Pattern() { }
 
@@ -66,8 +66,6 @@ public:
   unsigned long frameTime() {
     return (lastUpdateTime == -1 ? 0 : millis() - lastUpdateTime);
   }
-
-  virtual void colorModeChanged() { }
 };
 
 /* ------------------------------------------------------------------------------------------------------ */
@@ -86,7 +84,7 @@ public:
   public:
     uint8_t colorIndex; // storage only
     
-    uint8_t px;
+    PixelIndex px;
     EdgeTypesPair directions;
     
     unsigned long lifespan;
@@ -132,8 +130,8 @@ private:
       uint8_t bit[EdgeTypesCount] = {0};
       uint8_t bitcount = 0;
       for (int i = 0; i < EdgeTypesCount; ++i) {
-        uint8_t nybble = bitDirections.pair >> (n * EdgeTypesCount);
-        if (nybble & 1 << i) {
+        uint8_t byte = bitDirections.pair >> (n * EdgeTypesCount);
+        if (byte & 1 << i) {
           bit[bitcount++] = i;
         }
       }
@@ -151,29 +149,33 @@ private:
   }
 
   void killBit(uint8_t bitIndex) {
+    handleKillBit(bits[bitIndex]);
     bits.erase(bits.begin() + bitIndex);
   }
 
-  void splitBit(Bit &bit, uint8_t toIndex) {
+  void splitBit(Bit &bit, PixelIndex toIndex) {
     Bit &split = makeBit(&bit);
     split.px = toIndex;
   }
 
-  bool isIndexAllowed(uint8_t index) {
+  bool isIndexAllowed(PixelIndex index) {
     if (allowedPixels) {
       return allowedPixels->end() != allowedPixels->find(index);
     }
     return true;
   }
 
-  vector<uint8_t> nextIndexes(uint8_t index, EdgeTypesPair bitDirections) {
-    vector<uint8_t> next;
+  vector<Edge> edgeCandidates(PixelIndex index, EdgeTypesPair bitDirections) {
+    vector<Edge> nextEdges;
     switch (flowRule) {
       case priority: {
         auto adj = ledgraph.adjacencies(index, bitDirections);
         for (auto edge : adj) {
+          // logf("edgeCandidates: index %i has %i adjacencies matching directions %i (%i,%i)", 
+              // index, adj.size(), (int)bitDirections.pair, bitDirections.edgeTypes.first, bitDirections.edgeTypes.second);
+          // loglf("checking if adj index %i is allowed for edge from %i types %i...", (int)edge.to, (int)edge.from, (int)edge.types);
           if (isIndexAllowed(edge.to)) {
-            next.push_back(edge.to);
+            nextEdges.push_back(edge);
             break;
           }
         }
@@ -181,7 +183,6 @@ private:
       }
       case random:
       case split: {
-        vector<Edge> nextEdges;
         auto adj = ledgraph.adjacencies(index, bitDirections);
         for (auto a : adj) {
           if (isIndexAllowed(a.to)) {
@@ -191,37 +192,37 @@ private:
         if (flowRule == split) {
           if (nextEdges.size() == 1) {
             // flow normally if we're not actually splitting
-            next.push_back(nextEdges.front().to);
+            nextEdges.push_back(nextEdges.front());
           } else {
             // split along all allowed split directions, or none if none are allowed
             for (Edge nextEdge : nextEdges) {
-              if (splitDirections & nextEdge.type) {
-                next.push_back(nextEdge.to);
+              if (splitDirections & nextEdge.types) {
+                nextEdges.push_back(nextEdge);
               }
             }
           }
         } else if (nextEdges.size() > 0) {
           // FIXME: EdgeType::random behavior doesn't work right with the way fadeUp is implemented
-          next.push_back(nextEdges.at(random8()%nextEdges.size()).to);
+          nextEdges.push_back(nextEdges.at(random8()%nextEdges.size()));
         }
         break;
       }
     }
     // TODO: does not handle duplicates in the case of the same vertex being reachable via multiple edges
-    assert(next.size() <= 4, "no pixel in this design has more than 4 adjacencies but index %i had %u", index, next.size());
-    return next;
+    assert(nextEdges.size() <= 4, "no pixel in this design has more than 4 adjacencies but index %i had %u", index, nextEdges.size());
+    return nextEdges;
   }
 
   bool flowBit(uint8_t bitIndex) {
-    vector<uint8_t> next = nextIndexes(bits[bitIndex].px, bits[bitIndex].directions);
-    if (next.size() == 0) {
+    vector<Edge> nextEdges = edgeCandidates(bits[bitIndex].px, bits[bitIndex].directions);
+    if (nextEdges.size() == 0) {
       // leaf behavior
       killBit(bitIndex);
       return false;
     } else {
-      bits[bitIndex].px = next.front();
-      for (unsigned i = 1; i < next.size(); ++i) {
-        splitBit(bits[bitIndex], next[i]);
+      bits[bitIndex].px = nextEdges.front().to;
+      for (unsigned i = 1; i < nextEdges.size(); ++i) {
+        splitBit(bits[bitIndex], nextEdges[i].to);
       }
     }
     return true;
@@ -256,34 +257,35 @@ public:
   uint8_t fadeUpDistance = 0; // fade up n pixels ahead of bit motion
   EdgeTypes splitDirections = EdgeType::all; // if flowRule is split, which directions are allowed to split
   
-  const vector<uint8_t> *spawnPixels = NULL; // list of pixels to automatically spawn bits on
-  const set<uint8_t> *allowedPixels = NULL; // set of pixels that bits are allowed to travel to
+  const vector<PixelIndex> *spawnPixels = NULL; // list of pixels to automatically spawn bits on
+  const set<PixelIndex> *allowedPixels = NULL; // set of pixels that bits are allowed to travel to
 
   function<void(Bit &)> handleNewBit = [](Bit &bit){};
   function<void(Bit &)> handleUpdateBit = [](Bit &bit){};
+  function<void(Bit &)> handleKillBit = [](Bit &bit){};
 
-  BitsFiller(EVMDrawingContext &ctx, uint8_t maxSpawnBits, uint8_t speed, unsigned long lifespan, vector<EdgeTypes> bitDirections)
+  BitsFiller(DrawingContext &ctx, uint8_t maxSpawnBits, uint8_t speed, unsigned long lifespan, vector<EdgeTypes> bitDirections)
     : ctx(ctx), maxSpawnBits(maxSpawnBits), speed(speed), lifespan(lifespan) {
       this->bitDirections = MakeEdgeTypesPair(bitDirections);
     bits.reserve(maxSpawnBits);
   };
 
-  void fadeUpForBit(Bit &bit, uint8_t px, int distanceRemaining, unsigned long lastMove) {
-    vector<uint8_t> next = nextIndexes(px, bit.directions);
+  void fadeUpForBit(Bit &bit, PixelIndex px, int distanceRemaining, unsigned long lastMove) {
+    vector<Edge> nextEdges = edgeCandidates(px, bit.directions);
 
     unsigned long mils = millis();
     unsigned long fadeUpDuration = 1000 * fadeUpDistance / speed;
-    for (uint8_t n : next) {
+    for (Edge edge : nextEdges) {
       unsigned long fadeTimeSoFar = mils - lastMove + distanceRemaining * 1000/speed;
       uint8_t progress = 0xFF * fadeTimeSoFar / fadeUpDuration;
 
-      CRGB existing = ctx.leds[n];
+      CRGB existing = ctx.leds[edge.to];
       CRGB blended = blend(existing, bit.color, dim8_raw(progress));
       blended.nscale8(bit.brightness);
-      ctx.leds[n] = blended;
+      ctx.leds[edge.to] = blended;
       
       if (distanceRemaining > 0) {
-        fadeUpForBit(bit, n, distanceRemaining-1, lastMove);
+        fadeUpForBit(bit, edge.to, distanceRemaining-1, lastMove);
       }
     }
   }
@@ -370,20 +372,43 @@ public:
 
 /* ------------------------------------------------------------------------------- */
 
-class DownstreamPattern : public Pattern {
+class DevPattern : public Pattern, PaletteRotation<CRGBPalette256> {
 protected:
   BitsFiller *bitsFiller;
-  unsigned circleBits = 0;
-  unsigned numAutoRotateColors = 3;
-  unsigned numAutoRotatePaletteCycles = 1;
 public:
-  DownstreamPattern() {
-    EdgeType circledirection = (random8()%2 ? EdgeType::clockwise : EdgeType::counterclockwise);
-    vector<EdgeTypes> directions = {circledirection, EdgeType::outbound};
-    bitsFiller = new BitsFiller(ctx, 0, 24, 0, directions);
-    bitsFiller->flowRule = BitsFiller::split;
+  DevPattern() {
+    logf("Making bitsfiller");
+    vector<EdgeTypes> directions = {EdgeType::none};
+    bitsFiller = new BitsFiller(ctx, 16, 42, 8192, directions);
+    bitsFiller->fadeDown = 2;
+    bitsFiller->flowRule = BitsFiller::priority;
+    bitsFiller->spawnRule = BitsFiller::maintainPopulation;
+    bitsFiller->maxBitsPerSecond = 2;
+
+    bitsFiller->handleKillBit = [](BitsFiller::Bit &bit) {
+      logf("bit is dying");
+    };
+
+    bitsFiller->handleNewBit = [this](BitsFiller::Bit &bit) {
+      bit.directions = MakeEdgeTypesPair(Edge::loop2|Edge::counterclockwise, Edge::outbound);
+      bit.colorIndex = random8();
+      bit.color = getPaletteColor(bit.colorIndex);
+      bit.px = HLSpiralCenters[random8(ARRAY_SIZE(HLSpiralCenters))];
+    };
+
+    bitsFiller->handleUpdateBit = [this](BitsFiller::Bit &bit) {
+      bit.color = this->colorManager->getPaletteColor(bit.colorIndex);
+      if (bit.age() > bit.lifespan >> 1) {
+        bit.directions.edgeTypes.first = Edge::loop1 | Edge::clockwise;
+        bit.directions.edgeTypes.second = Edge::clockwise;
+      }
+      if (bit.age() > bit.lifespan - (bit.lifespan >> 3)) {
+        bit.brightness = 0xFF * (bit.lifespan - bit.age()) / (bit.lifespan >> 3);
+      }
+    };
   }
-  ~DownstreamPattern() {
+
+  ~DevPattern() {
     delete bitsFiller;
   }
 
@@ -396,31 +421,8 @@ public:
     colorManager->paletteRotationTick();
   }
 
-  virtual void colorModeChanged() {
-    unsigned oldCircleBits = circleBits;
-    if (colorManager->pauseRotation) {
-      // color manager will track flag bands
-      circleBits = colorManager->trackedColorsCount();
-    } else {
-      // keep it simple with 3 bits with doing full palette rotation
-      colorManager->prepareTrackedColors(numAutoRotateColors, numAutoRotatePaletteCycles);
-      circleBits = numAutoRotateColors;
-    }
-     
-    if (circleBits != oldCircleBits) {
-      bitsFiller->removeAllBits();
-      for (unsigned i = 0; i < circleBits; ++i) {
-        BitsFiller::Bit &bit = bitsFiller->addBit();
-        bit.px = circleleds[i * circleleds.size() / circleBits];
-      }
-    }
-
-    bitsFiller->fadeDown = circleBits+1;
-    bitsFiller->fadeUpDistance = max(2, 6-(int)circleBits);
-  }
-
   const char *description() {
-    return "downstream";
+    return "DevPattern";
   }
 };
 
