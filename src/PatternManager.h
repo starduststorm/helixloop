@@ -36,7 +36,7 @@ public:
   ColorManager *colorManager;
 
   PatternManager(BufferType &ctx) : ctx(ctx) {
-    patternConstructors.push_back(&(construct<DevPattern>));
+    patternConstructors.push_back(&(construct<SwarmPattern>));
   }
 
   ~PatternManager() {

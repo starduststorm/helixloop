@@ -372,12 +372,11 @@ public:
 
 /* ------------------------------------------------------------------------------- */
 
-class DevPattern : public Pattern, PaletteRotation<CRGBPalette256> {
+class SwarmPattern : public Pattern, PaletteRotation<CRGBPalette256> {
 protected:
   BitsFiller *bitsFiller;
 public:
-  DevPattern() {
-    logf("Making bitsfiller");
+  SwarmPattern() {
     vector<EdgeTypes> directions = {EdgeType::none};
     bitsFiller = new BitsFiller(ctx, 16, 42, 8192, directions);
     bitsFiller->fadeDown = 2;
@@ -386,7 +385,6 @@ public:
     bitsFiller->maxBitsPerSecond = 2;
 
     bitsFiller->handleKillBit = [](BitsFiller::Bit &bit) {
-      logf("bit is dying");
     };
 
     bitsFiller->handleNewBit = [this](BitsFiller::Bit &bit) {
@@ -408,7 +406,7 @@ public:
     };
   }
 
-  ~DevPattern() {
+  ~SwarmPattern() {
     delete bitsFiller;
   }
 
@@ -422,7 +420,7 @@ public:
   }
 
   const char *description() {
-    return "DevPattern";
+    return "SwarmPattern";
   }
 };
 

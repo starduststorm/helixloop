@@ -28,6 +28,7 @@ extern char *__brkval;
 /* --------------------------------- */
 
 #define FASTLED_USE_PROGMEM 1
+#define FASTLED_USE_GLOBAL_BRIGHTNESS 1
 // #define FASTLED_ALLOW_INTERRUPTS 0
 #include <FastLED.h>
 
