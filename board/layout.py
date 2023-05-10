@@ -332,7 +332,7 @@ class PCBLayout(object):
     if type(start) is tuple:
       start = Point(start[0], start[1])
     if type(end) is tuple:
-      end = Point(start[0], start[1])
+      end = Point(end[0], end[1])
     self.kicadpcb.draw_segment(self.center+start, self.center+end, layer, width)
 
   def seriesPixelDiscontinuity(self):
