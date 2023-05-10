@@ -24,6 +24,16 @@ typedef union {
   uint16_t pair;
 } EdgeTypesPair;
 
+typedef union {
+  struct {
+    EdgeTypes first;
+    EdgeTypes second;
+    EdgeTypes third;
+    EdgeTypes fourth;
+  } edgeTypes;
+  uint32_t quad;
+} EdgeTypesQuad;
+
 struct Edge {
     typedef enum : uint8_t {
         none             = 0,
@@ -67,6 +77,15 @@ EdgeTypesPair MakeEdgeTypesPair(EdgeTypes first, EdgeTypes second) {
     return pair;
 }
 
+EdgeTypesQuad MakeEdgeTypesQuad(EdgeTypes first, EdgeTypes second=0, EdgeTypes third=0, EdgeTypes fourth=0) {
+    EdgeTypesQuad pair;
+    pair.edgeTypes.first = first;
+    pair.edgeTypes.second = second;
+    pair.edgeTypes.third = third;
+    pair.edgeTypes.fourth = fourth;
+    return pair;
+}
+
 EdgeTypesPair MakeEdgeTypesPair(vector<EdgeTypes> vec) {
     assert(vec.size() <= 2, "only two edge type directions allowed");
     unsigned size = vec.size();
@@ -76,6 +95,25 @@ EdgeTypesPair MakeEdgeTypesPair(vector<EdgeTypes> vec) {
     }
     if (size > 1) {
         pair.edgeTypes.second = vec[1];
+    }
+    return pair;
+}
+
+EdgeTypesQuad MakeEdgeTypesQuad(vector<EdgeTypes> vec) {
+    assert(vec.size() <= 4, "only four edge type directions allowed");
+    unsigned size = vec.size();
+    EdgeTypesQuad pair = {0};
+    if (size > 0) {
+        pair.edgeTypes.first = vec[0];
+    }
+    if (size > 1) {
+        pair.edgeTypes.second = vec[1];
+    }
+     if (size > 2) {
+        pair.edgeTypes.third = vec[2];
+    }
+     if (size > 3) {
+        pair.edgeTypes.fourth = vec[3];
     }
     return pair;
 }
@@ -106,6 +144,15 @@ public:
         return adjList;
     }
 
+    vector<Edge> adjacencies(PixelIndex vertex, EdgeTypesQuad quad) {
+        vector<Edge> adjList;
+        getAdjacencies(vertex, quad.edgeTypes.first, adjList);
+        getAdjacencies(vertex, quad.edgeTypes.second, adjList);
+        getAdjacencies(vertex, quad.edgeTypes.third, adjList);
+        getAdjacencies(vertex, quad.edgeTypes.fourth, adjList);
+        return adjList;
+    }
+
     void getAdjacencies(PixelIndex vertex, EdgeTypes matching, std::vector<Edge> &insertInto) {
         if (matching == 0) {
             return;
@@ -129,7 +176,7 @@ Graph ledgraph;
 #define SPIRAL_LED_COUNT 47
 static_assert(PRIMARY_HELIX_LED_COUNT + SECONDARY_HELIX_LED_COUNT + 3 * SPIRAL_LED_COUNT == LED_COUNT, "LED_COUNT issue");
 
-#define SPIRAL_FIRST_ENTRANCE_INDEX 133
+#define SPIRAL_FIRST_ENTRANCE_INDEX 134
 #define SPIRAL_FIRST_INDEX 228
 
 const vector<PixelIndex> someleds = {};

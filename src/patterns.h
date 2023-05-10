@@ -85,14 +85,14 @@ public:
     uint8_t colorIndex; // storage only
     
     PixelIndex px;
-    EdgeTypesPair directions;
+    EdgeTypesQuad directions;
     
     unsigned long lifespan;
 
     CRGB color;
     uint8_t brightness = 0xFF;
 
-    Bit(int px, EdgeTypesPair directions, unsigned long lifespan) 
+    Bit(int px, EdgeTypesQuad directions, unsigned long lifespan) 
       : px(px), directions(directions), lifespan(lifespan) {
       reset();
     }
@@ -124,19 +124,19 @@ private:
 
   Bit &makeBit(Bit *fromBit=NULL) {
     // the bit directions at the BitsFiller level may contain multiple options, choose one at random for this bit
-    EdgeTypesPair directionsForBit = {0};
+    EdgeTypesQuad directionsForBit = {0};
 
-    for (int n = 0; n < 2; ++n) {
+    for (int n = 0; n < 4; ++n) {
       uint8_t bit[EdgeTypesCount] = {0};
       uint8_t bitcount = 0;
       for (int i = 0; i < EdgeTypesCount; ++i) {
-        uint8_t byte = bitDirections.pair >> (n * EdgeTypesCount);
+        uint8_t byte = bitDirections.quad >> (n * EdgeTypesCount);
         if (byte & 1 << i) {
           bit[bitcount++] = i;
         }
       }
       if (bitcount) {
-        directionsForBit.pair |= 1 << (bit[random8()%bitcount] + n * EdgeTypesCount);
+        directionsForBit.quad |= 1 << (bit[random8()%bitcount] + n * EdgeTypesCount);
       }
     }
 
@@ -165,7 +165,7 @@ private:
     return true;
   }
 
-  vector<Edge> edgeCandidates(PixelIndex index, EdgeTypesPair bitDirections) {
+  vector<Edge> edgeCandidates(PixelIndex index, EdgeTypesQuad bitDirections) {
     vector<Edge> nextEdges;
     switch (flowRule) {
       case priority: {
@@ -217,6 +217,7 @@ private:
     vector<Edge> nextEdges = edgeCandidates(bits[bitIndex].px, bits[bitIndex].directions);
     if (nextEdges.size() == 0) {
       // leaf behavior
+      logf("no path for bit");
       killBit(bitIndex);
       return false;
     } else {
@@ -237,7 +238,7 @@ public:
       logf("Bit %i: px=%i, birthmilli=%lu, colorIndex=%u", b, bit.px, bit.birthmilli, bit.colorIndex);
       Serial.print("  Directions: 0b");
       for (int i = 2*EdgeTypesCount - 1; i >= 0; --i) {
-        Serial.print(bit.directions.pair & (1 << i));
+        Serial.print(bit.directions.quad & (1 << i));
       }
       Serial.println();
     }
@@ -248,7 +249,7 @@ public:
   uint8_t maxSpawnBits;
   uint8_t maxBitsPerSecond = 0; // limit how fast new bits are spawned, 0 = no limit
   uint8_t speed; // in pixels/second
-  EdgeTypesPair bitDirections;
+  EdgeTypesQuad bitDirections;
 
   unsigned long lifespan = 0; // in milliseconds, forever if 0
 
@@ -266,7 +267,7 @@ public:
 
   BitsFiller(DrawingContext &ctx, uint8_t maxSpawnBits, uint8_t speed, unsigned long lifespan, vector<EdgeTypes> bitDirections)
     : ctx(ctx), maxSpawnBits(maxSpawnBits), speed(speed), lifespan(lifespan) {
-      this->bitDirections = MakeEdgeTypesPair(bitDirections);
+      this->bitDirections = MakeEdgeTypesQuad(bitDirections);
     bits.reserve(maxSpawnBits);
   };
 
@@ -314,6 +315,7 @@ public:
         }
         bool bitAlive = flowBit(i);
         if (bitAlive && bits[i].lifespan != 0 && bits[i].age() > bits[i].lifespan) {
+          logf("bit end of life");
           killBit(i);
         }
       }
@@ -388,7 +390,7 @@ public:
     };
 
     bitsFiller->handleNewBit = [this](BitsFiller::Bit &bit) {
-      bit.directions = MakeEdgeTypesPair(Edge::loop2|Edge::counterclockwise, Edge::outbound);
+      bit.directions = MakeEdgeTypesQuad(Edge::loop2|Edge::counterclockwise, Edge::outbound);
       bit.colorIndex = random8();
       bit.color = getPaletteColor(bit.colorIndex);
       bit.px = HLSpiralCenters[random8(ARRAY_SIZE(HLSpiralCenters))];
@@ -421,6 +423,74 @@ public:
 
   const char *description() {
     return "SwarmPattern";
+  }
+};
+
+
+
+class WanderingFew : public Pattern, PaletteRotation<CRGBPalette256> {
+protected:
+  BitsFiller *bitsFiller;
+public:
+  WanderingFew() {
+    vector<EdgeTypes> directions = {EdgeType::none};
+    BitsFiller(ctx, 32, 9, 90000, directions);
+    bitsFiller = new BitsFiller(ctx, 9, 42, 9000, directions);
+    bitsFiller->fadeDown = 3;
+    bitsFiller->fadeUpDistance = 3;
+    bitsFiller->flowRule = BitsFiller::priority;
+    bitsFiller->spawnRule = BitsFiller::maintainPopulation;
+    bitsFiller->maxBitsPerSecond = 1;
+
+    bitsFiller->handleKillBit = [](BitsFiller::Bit &bit) {
+    };
+
+    bitsFiller->handleNewBit = [this](BitsFiller::Bit &bit) {
+      bit.directions = MakeEdgeTypesQuad(Edge::outbound, Edge::loop2|Edge::counterclockwise, 0);
+      bit.colorIndex = random8();
+      bit.color = getPaletteColor(bit.colorIndex);
+      bit.px = HLSpiralCenters[random8(ARRAY_SIZE(HLSpiralCenters))];
+    };
+
+    bitsFiller->handleUpdateBit = [this](BitsFiller::Bit &bit) {
+      bit.color = this->colorManager->getPaletteColor(bit.colorIndex);
+      if (bit.age() > bit.lifespan - (bit.lifespan >> 3)) {
+        bit.brightness = 0xFF * (bit.lifespan - bit.age()) / (bit.lifespan >> 3);
+      }
+
+      // turn every 10 seconds or so?
+      if (random16() < 64) {
+        if (ledgraph.adjacencies(bit.px, MakeEdgeTypesQuad(bit.directions.edgeTypes.first, bit.directions.edgeTypes.second)).size() > 0) { // only turn if on primary path
+          bit.directions.edgeTypes.third = bit.directions.edgeTypes.second;
+          bit.directions.edgeTypes.second = (random8(2) == 0) ? Edge::clockwise : Edge::counterclockwise;
+          bit.directions.edgeTypes.second |= (random8(2) == 0) ? Edge::loop1 : Edge::loop2;
+        }
+      }
+      if (random16() < 16) {
+        if (bit.directions.edgeTypes.first & Edge::inbound) {
+          bit.directions.edgeTypes.first = Edge::outbound;
+        } else {
+          bit.directions.edgeTypes.first = Edge::inbound;
+        }
+      }
+    };
+  }
+
+  ~WanderingFew() {
+    delete bitsFiller;
+  }
+
+  void update() {
+    bitsFiller->update();
+
+    for (int i = 0; i < colorManager->trackedColorsCount(); ++i) {
+      bitsFiller->bits[i].color = colorManager->getTrackedColor(i);
+    }
+    colorManager->paletteRotationTick();
+  }
+
+  const char *description() {
+    return "WanderingFew";
   }
 };
 

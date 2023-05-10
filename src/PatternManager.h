@@ -28,6 +28,7 @@ class PatternManager {
   Pattern *TestIdlePattern() {
     static Pattern *testIdlePattern = NULL;
     if (testIdlePattern == NULL) {
+      testIdlePattern = new WanderingFew();
     }
     return testIdlePattern;
   }
@@ -104,7 +105,6 @@ public:
   void setup() {
     assert(colorManager == NULL, "colorManager is not null");
     colorManager = new ColorManager();
-    startPatternAtIndex(0);
   }
 
   void loop() {
