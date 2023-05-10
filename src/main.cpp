@@ -36,10 +36,11 @@ extern char *__brkval;
 #include "drawing.h"
 #include "PatternManager.h"
 #include "ledgraph.h"
+#include "motor.h"
 
 #include <functional>
 
-#define WAIT_FOR_SERIAL 1
+#define WAIT_FOR_SERIAL 0
 
 DrawingContext ctx;
 
@@ -109,7 +110,6 @@ void setup() {
   // pinPeripheral(LEDS_MOSI, PIO_SERCOM_ALT);
 
   FastLED.addLeds<SK9822, BGR>(ctx.leds, ctx.leds.size());
-  FastLED.setBrightness(127);
 
   fc.tick();
 
@@ -119,10 +119,11 @@ void setup() {
   assert(ledgraph.adjList.size() == LED_COUNT, "adjlist size should match LED_COUNT");
 
   setupDoneTime = millis();
+  motorsetup();
 }
 
 void serialTimeoutIndicator() {
-  FastLED.setBrightness(50);
+  FastLED.setBrightness(20);
   ctx.leds.fill_solid(CRGB::Black);
   if ((millis() - setupDoneTime) % 250 < 100) {
     ctx.leds.fill_solid(CRGB::Red);
@@ -143,10 +144,13 @@ void loop() {
   //   firstLoop = false;
   // }
 
+  FastLED.setBrightness(255);
+
   patternManager.loop();
   // graphTest(ctx);
   
   FastLED.show();
+  motorloop();
 
   fc.tick();
   fc.clampToFramerate(120);
