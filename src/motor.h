@@ -13,30 +13,28 @@
 
 
 #include <AccelStepper.h>
-const int stepsPerRevolution = 2038;
+static const int stepsPerRevolution = 2038;
 #define MotorInterfaceType 4
-AccelStepper myStepper(MotorInterfaceType, IN1, IN3, IN2, IN4);
+static AccelStepper stepper(MotorInterfaceType, IN1, IN3, IN2, IN4);
 
+static int phase = 0;
 void motorsetup() {
-  myStepper.setMaxSpeed(1000.0);
-	myStepper.setAcceleration(100.0);
-	myStepper.setSpeed(800);
+  stepper.setMaxSpeed(1000.0);
+	stepper.setAcceleration(100.0);
+	stepper.setSpeed(800);
+
+  // begin with some random movements to avoid synchronizing
+  phase = random16(2 * stepsPerRevolution) - stepsPerRevolution;
+  stepper.move(phase);
 }
-static int loopcount = 0;
-bool flip = false;
+
+static bool flip = false;
 void motorloop() {
-  // if (loopcount > 500) {
-  //   	myStepper.moveTo((flip ? stepsPerRevolution/2 : 0));
-  //     flip = !flip;
-  //     loopcount = 0;
-  //     logf("flip! %i", (int)flip);
-  // }
-  if (myStepper.distanceToGo() == 0) {
-    myStepper.moveTo((flip ? stepsPerRevolution/2 : 0));
+
+  if (stepper.distanceToGo() == 0) {
+    stepper.moveTo((flip ? stepsPerRevolution/2 : 0));
     flip = !flip;
   }
-  // logf("distanceToGo = %i, currentPosition = %i", myStepper.distanceToGo(), myStepper.currentPosition());
 
-	myStepper.run();
-	loopcount++;
+	stepper.run();
 }

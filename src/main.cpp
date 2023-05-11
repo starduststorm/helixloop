@@ -27,6 +27,11 @@ extern char *__brkval;
 
 /* --------------------------------- */
 
+#if SEEED
+#define UNCONNECTED_PIN_1 A4
+#define UNCONNECTED_PIN_2 A5
+#endif
+
 #define FASTLED_USE_PROGMEM 1
 #define FASTLED_USE_GLOBAL_BRIGHTNESS 1
 // #define FASTLED_ALLOW_INTERRUPTS 0
@@ -101,8 +106,8 @@ void setup() {
   delay(2000);
   Serial.println("Done waiting at boot.");
 #endif
-  // randomSeed(lsb_noise(UNCONNECTED_PIN_1, 8 * sizeof(uint32_t)));
-  // random16_add_entropy(lsb_noise(UNCONNECTED_PIN_2, 8 * sizeof(uint16_t)));
+  randomSeed(lsb_noise(UNCONNECTED_PIN_1, 8 * sizeof(uint32_t)));
+  random16_add_entropy(lsb_noise(UNCONNECTED_PIN_2, 8 * sizeof(uint16_t)));
 
   // use the alternate sercoms each of these SPI ports (SERCOM3)
   // pinPeripheral(LEDS_MISO, PIO_SERCOM_ALT);
