@@ -179,8 +179,6 @@ static_assert(PRIMARY_HELIX_LED_COUNT + SECONDARY_HELIX_LED_COUNT + 3 * SPIRAL_L
 #define SPIRAL_FIRST_ENTRANCE_INDEX 134
 #define SPIRAL_FIRST_INDEX 228
 
-const vector<PixelIndex> someleds = {};
-
 #define SPIRAL_CENTERS 228,275,322
 const PixelIndex HLSpiralCenters[] = {SPIRAL_CENTERS};
 
