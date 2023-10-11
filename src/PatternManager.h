@@ -12,7 +12,7 @@ class PatternManager {
   Pattern *activePattern = NULL;
   uint8_t activePatternBrightness = 0xFF;
 
-  bool patternAutoRotate = false;
+  bool patternAutoRotate = false; // FIXME: need pattern swapping that plays bits to EOL
   unsigned long patternTimeout = 40*1000;
 
   std::vector<Pattern * (*)(void)> patternConstructors;
@@ -28,7 +28,8 @@ class PatternManager {
   Pattern *TestIdlePattern() {
     static Pattern *testIdlePattern = NULL;
     if (testIdlePattern == NULL) {
-      testIdlePattern = new WanderingFew();
+      // testIdlePattern = new WanderingFew();
+      // testIdlePattern = new SpiralSource();
     }
     return testIdlePattern;
   }
@@ -37,7 +38,9 @@ public:
   ColorManager *colorManager;
 
   PatternManager(BufferType &ctx) : ctx(ctx) {
-    patternConstructors.push_back(&(construct<SwarmPattern>));
+    // patternConstructors.push_back(&(construct<SwarmPattern>));
+    patternConstructors.push_back(&(construct<SpiralSource>));
+    patternConstructors.push_back(&(construct<WanderingFew>));
   }
 
   ~PatternManager() {

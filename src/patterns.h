@@ -103,6 +103,10 @@ public:
     }
 
     unsigned long age() {
+      return min(millis() - birthmilli, lifespan);
+    }
+protected:
+    unsigned long exactAge() {
       return millis() - birthmilli;
     }
   };
@@ -314,8 +318,7 @@ public:
           continue;
         }
         bool bitAlive = flowBit(i);
-        if (bitAlive && bits[i].lifespan != 0 && bits[i].age() > bits[i].lifespan) {
-          logf("bit end of life");
+        if (bitAlive && bits[i].lifespan != 0 && bits[i].exactAge() > bits[i].lifespan) {
           killBit(i);
         }
       }
@@ -434,7 +437,6 @@ protected:
 public:
   WanderingFew() {
     vector<EdgeTypes> directions = {EdgeType::none};
-    BitsFiller(ctx, 32, 9, 90000, directions);
     bitsFiller = new BitsFiller(ctx, 9, 42, 9000, directions);
     bitsFiller->fadeDown = 3;
     bitsFiller->fadeUpDistance = 3;
@@ -491,6 +493,68 @@ public:
 
   const char *description() {
     return "WanderingFew";
+  }
+};
+
+class SpiralSource : public Pattern, PaletteRotation<CRGBPalette256> {
+protected:
+  BitsFiller *bitsFiller;
+public:
+  SpiralSource() {
+    vector<EdgeTypes> directions = {EdgeType::none};
+    bitsFiller = new BitsFiller(ctx, 0, 42, 2400, directions);
+    bitsFiller->fadeDown = 8;
+    bitsFiller->fadeUpDistance = 2;
+    bitsFiller->flowRule = BitsFiller::priority;
+    bitsFiller->maxBitsPerSecond = 1;
+
+    bitsFiller->handleUpdateBit = [this](BitsFiller::Bit &bit) {
+      bit.color = this->colorManager->getPaletteColor(bit.colorIndex);
+      if (bit.age() > bit.lifespan - (bit.lifespan / 2)) {
+        bit.brightness = 0xFF * (bit.lifespan - bit.age()) / (bit.lifespan / 2);
+        bit.brightness = dim8_raw(bit.brightness);
+      }
+
+      // switch loops sometimes
+      if (random16() < 512) {
+          bool choice = random8(2);
+          bit.directions.edgeTypes.second = Edge::counterclockwise | ((choice == 0) ? Edge::loop1 : Edge::loop2);
+          bit.directions.edgeTypes.third = Edge::counterclockwise | ((choice == 0) ? Edge::loop2 : Edge::loop1);
+      }
+    };
+  }
+
+  ~SpiralSource() {
+    delete bitsFiller;
+  }
+
+  unsigned long lastSpawn = 0;
+  uint8_t spiralIndex = 0; //0-2
+
+  void update() {
+    bitsFiller->update();
+
+    for (int i = 0; i < colorManager->trackedColorsCount(); ++i) {
+      bitsFiller->bits[i].color = colorManager->getTrackedColor(i);
+    }
+    colorManager->paletteRotationTick();
+
+    if (millis() - lastSpawn > beatsin88((uint16_t)(1.8*256), 40, 120)) {
+      BitsFiller::Bit &bit = bitsFiller->addBit();
+      bit.directions = MakeEdgeTypesQuad(Edge::outbound, Edge::loop2|Edge::counterclockwise, 0);
+      bit.colorIndex = 0xFF*millis()/1000/4;
+      bit.color = getPaletteColor(bit.colorIndex);
+      bit.px = HLSpiralCenters[spiralIndex];
+      bit.lifespan = beatsin88((uint16_t)(3.14*256), 1000, 3000) + random8();
+      spiralIndex = (spiralIndex + 1) % 3;
+      bitsFiller->speed = beatsin88((uint16_t)(2.2*256), 32, 48);
+
+      lastSpawn = millis();
+    }
+  }
+
+  const char *description() {
+    return "SpiralSource";
   }
 };
 
