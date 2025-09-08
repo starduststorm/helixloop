@@ -7,7 +7,7 @@
 #include <set>
 #include <util.h>
 
-#include "drawing.h"
+#include <drawing.h>
 
 using namespace std;
 
@@ -166,8 +166,6 @@ public:
     }
 };
 
-#define LED_COUNT (369)
-
 Graph ledgraph;
 
 #define PRIMARY_HELIX_LED_COUNT 120
@@ -232,8 +230,6 @@ void initLEDGraph() {
     }
 }
 
-typedef CustomDrawingContext<LED_COUNT, 1, CRGB, CRGBArray<LED_COUNT> > DrawingContext;
-
 void graphTest(DrawingContext &ctx) {
     ctx.leds.fill_solid(CRGB::Black);
     int leader = (360+millis() / 200) % LED_COUNT;
@@ -247,7 +243,6 @@ void graphTest(DrawingContext &ctx) {
             ctx.leds[edge.to] = (edge.types & EdgeType::counterclockwise ? CRGB::Green : CRGB::Red);
         }
     }
-    
 }
 
 #endif

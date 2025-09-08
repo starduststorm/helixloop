@@ -5,68 +5,13 @@
 #include <vector>
 #include <functional>
 
-#include "util.h"
-#include "palettes.h"
+#include <paletting.h>
+#include <patterning.h>
+
+#include <util.h>
+#include <drawing.h>
+
 #include "ledgraph.h"
-#include "drawing.h"
-
-typedef PaletteRotation<CRGBPalette32> ColorManager;
-
-class Pattern {
-private:  
-  long startTime = -1;
-  long stopTime = -1;
-  long lastUpdateTime = -1;
-public:
-  ColorManager *colorManager;
-  DrawingContext ctx;
-  virtual ~Pattern() { }
-
-  void start() {
-    logf("Starting %s", description());
-    startTime = millis();
-    stopTime = -1;
-    setup();
-  }
-
-  void loop() {
-    update();
-    lastUpdateTime = millis();
-  }
-
-  virtual bool wantsToIdleStop() {
-    return true;
-  }
-
-  virtual bool wantsToRun() {
-    // for idle patterns that require microphone input and may opt not to run if there is no sound
-    return true;
-  }
-
-  virtual void setup() { }
-
-  void stop() {
-    logf("Stopping %s", description());
-    startTime = -1;
-  }
-
-  virtual void update() { }
-  
-  virtual const char *description() = 0;
-
-public:
-  bool isRunning() {
-    return startTime != -1;
-  }
-
-  unsigned long runTime() {
-    return startTime == -1 ? 0 : millis() - startTime;
-  }
-
-  unsigned long frameTime() {
-    return (lastUpdateTime == -1 ? 0 : millis() - lastUpdateTime);
-  }
-};
 
 /* ------------------------------------------------------------------------------------------------------ */
 
@@ -169,6 +114,7 @@ private:
     return true;
   }
 
+  // FIXME: changing this to vector<Edge> in dfa09ce5 broke split behavior but we don't use split here, so didn't notice
   vector<Edge> edgeCandidates(PixelIndex index, EdgeTypesQuad bitDirections) {
     vector<Edge> nextEdges;
     switch (flowRule) {
@@ -400,7 +346,7 @@ public:
     };
 
     bitsFiller->handleUpdateBit = [this](BitsFiller::Bit &bit) {
-      bit.color = this->colorManager->getPaletteColor(bit.colorIndex);
+      bit.color = getPaletteColor(bit.colorIndex);
       if (bit.age() > bit.lifespan >> 1) {
         bit.directions.edgeTypes.first = Edge::loop1 | Edge::clockwise;
         bit.directions.edgeTypes.second = Edge::clockwise;
@@ -418,10 +364,9 @@ public:
   void update() {
     bitsFiller->update();
 
-    for (int i = 0; i < colorManager->trackedColorsCount(); ++i) {
-      bitsFiller->bits[i].color = colorManager->getTrackedColor(i);
+    for (unsigned i = 0; i < bitsFiller->bits.size(); ++i) {
+      bitsFiller->bits[i].color = getShiftingPaletteColor(10 * i / bitsFiller->bits.size());
     }
-    colorManager->paletteRotationTick();
   }
 
   const char *description() {
@@ -455,7 +400,7 @@ public:
     };
 
     bitsFiller->handleUpdateBit = [this](BitsFiller::Bit &bit) {
-      bit.color = this->colorManager->getPaletteColor(bit.colorIndex);
+      bit.color = getPaletteColor(bit.colorIndex);
       if (bit.age() > bit.lifespan - (bit.lifespan >> 3)) {
         bit.brightness = 0xFF * (bit.lifespan - bit.age()) / (bit.lifespan >> 3);
       }
@@ -485,10 +430,9 @@ public:
   void update() {
     bitsFiller->update();
 
-    for (int i = 0; i < colorManager->trackedColorsCount(); ++i) {
-      bitsFiller->bits[i].color = colorManager->getTrackedColor(i);
+    for (unsigned i = 0; i < bitsFiller->bits.size(); ++i) {
+      bitsFiller->bits[i].color = getShiftingPaletteColor(10 * i / bitsFiller->bits.size());
     }
-    colorManager->paletteRotationTick();
   }
 
   const char *description() {
@@ -509,9 +453,12 @@ public:
     bitsFiller->maxBitsPerSecond = 1;
 
     bitsFiller->handleUpdateBit = [this](BitsFiller::Bit &bit) {
-      bit.color = this->colorManager->getPaletteColor(bit.colorIndex);
+      bit.color = getPaletteColor(bit.colorIndex);
       if (bit.age() > bit.lifespan - (bit.lifespan / 2)) {
         bit.brightness = 0xFF * (bit.lifespan - bit.age()) / (bit.lifespan / 2);
+        bit.brightness = dim8_raw(bit.brightness);
+      } else if (bit.age() < 100) {
+        bit.brightness = max(20u, 0xFF * bit.age() / 100);
         bit.brightness = dim8_raw(bit.brightness);
       }
 
@@ -534,10 +481,9 @@ public:
   void update() {
     bitsFiller->update();
 
-    for (int i = 0; i < colorManager->trackedColorsCount(); ++i) {
-      bitsFiller->bits[i].color = colorManager->getTrackedColor(i);
+    for (unsigned i = 0; i < bitsFiller->bits.size(); ++i) {
+      bitsFiller->bits[i].color = getShiftingPaletteColor(10 * i / bitsFiller->bits.size());
     }
-    colorManager->paletteRotationTick();
 
     if (millis() - lastSpawn > beatsin88((uint16_t)(1.8*256), 40, 120)) {
       BitsFiller::Bit &bit = bitsFiller->addBit();
@@ -547,7 +493,7 @@ public:
       bit.px = HLSpiralCenters[spiralIndex];
       bit.lifespan = beatsin88((uint16_t)(3.14*256), 1000, 3000) + random8();
       spiralIndex = (spiralIndex + 1) % 3;
-      bitsFiller->speed = beatsin88((uint16_t)(2.2*256), 32, 48);
+      bitsFiller->speed = beatsin88((uint16_t)(2.2*256), 36, 48);
 
       lastSpawn = millis();
     }

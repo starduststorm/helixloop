@@ -1,4 +1,5 @@
 #define DEBUG 0
+#define WAIT_FOR_SERIAL 0
 
 // for memory logging
 #ifdef __arm__
@@ -8,12 +9,17 @@ extern char *__brkval;
 #endif
 
 #include <Arduino.h>
+
+
+#if SAMD
+
 // Arduino on samd21 defines min and max differently than the STL so we need to undefine them
 #undef min
 #undef max
-
 // since we're using the native port of the "arduino zero", not the programming port
 #define Serial SerialUSB
+
+#endif // SAMD
 
 #include <SPI.h>
 #include "wiring_private.h" // pinPeripheral() function
@@ -27,9 +33,12 @@ extern char *__brkval;
 
 /* --------------------------------- */
 
-#if SEEED
+#if SAMD
 #define UNCONNECTED_PIN_1 A4
 #define UNCONNECTED_PIN_2 A5
+#else
+#define UNCONNECTED_PIN_1 A0
+#define UNCONNECTED_PIN_2 A1
 #endif
 
 #define FASTLED_USE_PROGMEM 1
@@ -37,20 +46,24 @@ extern char *__brkval;
 // #define FASTLED_ALLOW_INTERRUPTS 0
 #include <FastLED.h>
 
-#include "util.h"
-#include "drawing.h"
-#include "PatternManager.h"
+#define LED_COUNT 369
+
+#include <util.h>
+#include <drawing.h>
+#include <patterning.h>
 #include "ledgraph.h"
+#if SAMD
 #include "motor.h"
+#endif
+
+#include "patterns.h"
 
 #include <functional>
-
-#define WAIT_FOR_SERIAL 0
 
 DrawingContext ctx;
 
 FrameCounter fc;
-PatternManager<DrawingContext> patternManager(ctx);
+PatternManager patternManager(ctx);
 
 static bool serialTimeout = false;
 static unsigned long setupDoneTime;
@@ -60,7 +73,7 @@ void startupWelcome() {
   for (int i = 0; i < LED_COUNT; ++i) {
     pixelIndices[i] = i;
   }
-  shuffle<LED_COUNT>(pixelIndices);
+  shuffle<int, LED_COUNT>(pixelIndices);
 
   const uint8_t colorShift = random8(2, 0xFF); // exclude 0,1 to avoid low color distribution
   const int sprinkleDuration = 500;
@@ -106,7 +119,6 @@ void setup() {
   delay(2000);
   Serial.println("Done waiting at boot.");
 #endif
-  randomSeed(lsb_noise(UNCONNECTED_PIN_1, 8 * sizeof(uint32_t)));
   random16_add_entropy(lsb_noise(UNCONNECTED_PIN_2, 8 * sizeof(uint16_t)));
 
   // use the alternate sercoms each of these SPI ports (SERCOM3)
@@ -114,17 +126,29 @@ void setup() {
   // pinPeripheral(LEDS_SCK,  PIO_SERCOM_ALT);
   // pinPeripheral(LEDS_MOSI, PIO_SERCOM_ALT);
 
-  FastLED.addLeds<SK9822, BGR>(ctx.leds, ctx.leds.size());
+  // FastLED.addLeds<SK9822, BGR>(ctx.leds, ctx.leds.size());
+#if SAMD
+  FastLED.addLeds<SK9822HD, 9, 8, BGR, DATA_RATE_MHZ(16)>(ctx.leds, ctx.leds.size());
+#else
+  FastLED.addLeds<SK9822HD, 3, 2, BGR, DATA_RATE_MHZ(16)>(ctx.leds, ctx.leds.size());
+#endif
 
-  fc.tick();
+  fc.loop();
 
   patternManager.setup();
+  patternManager.registerPattern<SwarmPattern>();
+  patternManager.registerPattern<SpiralSource>();
+  patternManager.registerPattern<WanderingFew>();
 
+  patternManager.setupRandomRunner(50*1000);
+  
   initLEDGraph();
   assert(ledgraph.adjList.size() == LED_COUNT, "adjlist size should match LED_COUNT");
 
   setupDoneTime = millis();
+#if SAMD
   motorsetup();
+#endif
 }
 
 void serialTimeoutIndicator() {
@@ -149,14 +173,15 @@ void loop() {
   //   firstLoop = false;
   // }
 
-  FastLED.setBrightness(255);
+  FastLED.setBrightness(50);
 
   patternManager.loop();
-  // graphTest(ctx);
   
   FastLED.show();
+#if SAMD
   motorloop();
+#endif
 
-  fc.tick();
+  fc.loop();
   fc.clampToFramerate(120);
 }
