@@ -2922,6 +2922,88 @@
 				)
 			)
 		)
+		(symbol "Mechanical:MountingHole"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim yes)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "H"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "MountingHole"
+				(at 0 3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Mounting Hole without connection"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "mounting hole"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "MountingHole*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "MountingHole_0_1"
+				(circle
+					(center 0 0)
+					(radius 1.27)
+					(stroke
+						(width 1.27)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+		)
 		(symbol "Power_Protection:USBLC6-2P6"
 			(pin_names hide)
 			(exclude_from_sim no)
@@ -5433,6 +5515,10 @@
 		(uuid "004a257a-9c44-49ac-81ab-84b3f0500686")
 	)
 	(no_connect
+		(at 224.79 54.61)
+		(uuid "02318a01-7456-4ae9-9205-0ca8a141f632")
+	)
+	(no_connect
 		(at 43.18 68.58)
 		(uuid "185f4548-9c20-4e41-a8dd-46f3e72ef9b4")
 	)
@@ -5443,6 +5529,10 @@
 	(no_connect
 		(at 43.18 76.2)
 		(uuid "28dfe26b-ef34-4a03-a876-9a6e60226d88")
+	)
+	(no_connect
+		(at 224.79 52.07)
+		(uuid "33262b17-8c87-4788-96e8-52720c254201")
 	)
 	(no_connect
 		(at 224.79 77.47)
@@ -7739,7 +7829,7 @@
 	)
 	(text "pio requirement:\ntouch pins must be contiguous gpios"
 		(exclude_from_sim no)
-		(at 235.966 53.34 0)
+		(at 232.664 53.34 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7750,7 +7840,7 @@
 	)
 	(text "LRCLK gpio must be CLK+1"
 		(exclude_from_sim no)
-		(at 237.49 95.25 0)
+		(at 229.362 97.536 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8617,6 +8707,79 @@
 			(project "helixloop"
 				(path "/1f30b1ea-44f0-467a-8ed8-643be513058b"
 					(reference "C31")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 99.06 68.58 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "17215a2b-619d-48ff-b2ba-dd01fff4ce28")
+		(property "Reference" "H1"
+			(at 101.6 67.3678 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 101.6 69.7921 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_2.5mm"
+			(at 99.06 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 99.06 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 99.06 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Designation" ""
+			(at 99.06 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project ""
+				(path "/1f30b1ea-44f0-467a-8ed8-643be513058b"
+					(reference "H1")
 					(unit 1)
 				)
 			)
@@ -9771,15 +9934,15 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 236.22 49.53 270)
+		(at 236.22 44.45 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "45c17d47-2080-45ff-98c3-943693ebb02e")
-		(property "Reference" "TP3"
-			(at 235.204 48.514 90)
+		(property "Reference" "TP1"
+			(at 235.204 43.434 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9788,7 +9951,7 @@
 			)
 		)
 		(property "Value" "TouchPoint"
-			(at 241.554 49.53 90)
+			(at 241.554 44.45 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9796,8 +9959,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D2.5mm"
-			(at 236.22 54.61 0)
+		(property "Footprint" "helixloop:TouchPoint"
+			(at 236.22 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9806,7 +9969,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 236.22 54.61 0)
+			(at 236.22 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9815,7 +9978,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 236.22 49.53 0)
+			(at 236.22 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9824,7 +9987,7 @@
 			)
 		)
 		(property "Designation" ""
-			(at 236.22 49.53 0)
+			(at 236.22 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9838,7 +10001,7 @@
 		(instances
 			(project "helixloop"
 				(path "/1f30b1ea-44f0-467a-8ed8-643be513058b"
-					(reference "TP3")
+					(reference "TP1")
 					(unit 1)
 				)
 			)
@@ -12173,15 +12336,15 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 236.22 46.99 270)
+		(at 236.22 49.53 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "8c9dda12-df94-43ad-a5cd-bcb7796dd55d")
-		(property "Reference" "TP2"
-			(at 235.204 45.974 90)
+		(property "Reference" "TP3"
+			(at 235.204 48.514 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12190,7 +12353,7 @@
 			)
 		)
 		(property "Value" "TouchPoint"
-			(at 241.554 46.99 90)
+			(at 241.554 49.53 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12198,8 +12361,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D2.5mm"
-			(at 236.22 52.07 0)
+		(property "Footprint" "helixloop:TouchPoint"
+			(at 236.22 54.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12208,7 +12371,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 236.22 52.07 0)
+			(at 236.22 54.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12217,7 +12380,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 236.22 46.99 0)
+			(at 236.22 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12226,7 +12389,7 @@
 			)
 		)
 		(property "Designation" ""
-			(at 236.22 46.99 0)
+			(at 236.22 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12240,7 +12403,7 @@
 		(instances
 			(project "helixloop"
 				(path "/1f30b1ea-44f0-467a-8ed8-643be513058b"
-					(reference "TP2")
+					(reference "TP3")
 					(unit 1)
 				)
 			)
@@ -15885,15 +16048,15 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 236.22 44.45 270)
+		(at 236.22 46.99 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "eb508978-1de9-4f77-bf9a-c09ea19b34f9")
-		(property "Reference" "TP1"
-			(at 235.204 43.434 90)
+		(property "Reference" "TP2"
+			(at 235.204 45.974 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15902,7 +16065,7 @@
 			)
 		)
 		(property "Value" "TouchPoint"
-			(at 241.554 44.45 90)
+			(at 241.554 46.99 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15910,8 +16073,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D2.5mm"
-			(at 236.22 49.53 0)
+		(property "Footprint" "helixloop:TouchPoint"
+			(at 236.22 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15920,7 +16083,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 236.22 49.53 0)
+			(at 236.22 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15929,7 +16092,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 236.22 44.45 0)
+			(at 236.22 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15938,7 +16101,7 @@
 			)
 		)
 		(property "Designation" ""
-			(at 236.22 44.45 0)
+			(at 236.22 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15952,7 +16115,7 @@
 		(instances
 			(project "helixloop"
 				(path "/1f30b1ea-44f0-467a-8ed8-643be513058b"
-					(reference "TP1")
+					(reference "TP2")
 					(unit 1)
 				)
 			)
