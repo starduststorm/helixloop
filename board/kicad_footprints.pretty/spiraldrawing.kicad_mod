@@ -1,7 +1,6 @@
 (footprint "spiraldrawing" (version 20211014) (generator pcbnew)
   (layer "F.Cu")
   (tedit 63070DF5)
-  (descr "Imported from /Users/opal/src/helixloop/board/resources/spiraldrawing_flattened.svg")
   (tags "svg2mod")
   (attr smd)
   (fp_text reference "svg2mod" (at 0 -51.949359) (layer "F.SilkS") hide

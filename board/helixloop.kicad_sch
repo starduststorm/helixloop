@@ -8984,7 +8984,7 @@
 				)
 			)
 		)
-		(property "Footprint" "easyeda2kicad:MIC-SMD_5P-L3.5-W2.7-TL_MMICT390200012"
+		(property "Footprint" "helixloop:KEY-SMD_L3.0-W2.5-LS4.0"
 			(at 105.156 51.816 0)
 			(effects
 				(font
