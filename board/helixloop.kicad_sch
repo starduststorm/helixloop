@@ -206,6 +206,252 @@
 				)
 			)
 		)
+		(symbol "Connector:Conn_01x04_Socket"
+			(pin_names
+				(offset 1.016) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x04_Socket"
+				(at 0 -7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x04, script generated"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_locked" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Conn_01x04_Socket_1_1"
+				(arc
+					(start 0 -4.572)
+					(mid -0.5058 -5.08)
+					(end 0 -5.588)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 -2.032)
+					(mid -0.5058 -2.54)
+					(end 0 -3.048)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -5.08) (xy -0.508 -5.08)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -2.54) (xy -0.508 -2.54)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 0) (xy -0.508 0)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 2.54) (xy -0.508 2.54)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 0.508)
+					(mid -0.5058 0)
+					(end 0 -0.508)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 3.048)
+					(mid -0.5058 2.54)
+					(end 0 2.032)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -5.08 0)
+					(length 3.81)
+					(name "Pin_4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "Connector:TestPoint"
 			(pin_numbers hide)
 			(pin_names
@@ -5539,10 +5785,6 @@
 		(uuid "35ce0f14-ae92-4933-8b75-60b435f38457")
 	)
 	(no_connect
-		(at 224.79 113.03)
-		(uuid "3a96cb47-aa97-45e9-b9e1-55dfbaf8ed6f")
-	)
-	(no_connect
 		(at 224.79 85.09)
 		(uuid "3fda0e7e-fe2d-4031-a656-86a2c34eb645")
 	)
@@ -5571,10 +5813,6 @@
 		(uuid "6a2f9774-836b-4d73-92d3-27a4b35106fc")
 	)
 	(no_connect
-		(at 224.79 120.65)
-		(uuid "6d35bfc1-dd55-42b6-bb45-d2fda5595ed5")
-	)
-	(no_connect
 		(at 224.79 97.79)
 		(uuid "71274a1e-38fc-45a9-bc25-15cdf408f890")
 	)
@@ -5585,10 +5823,6 @@
 	(no_connect
 		(at 43.18 81.28)
 		(uuid "77e6cd71-5a3b-4735-836e-a4def1684421")
-	)
-	(no_connect
-		(at 224.79 115.57)
-		(uuid "82a3090d-52a9-404d-8ea2-a441cd0c7f1e")
 	)
 	(no_connect
 		(at 43.18 53.34)
@@ -5617,10 +5851,6 @@
 	(no_connect
 		(at 224.79 57.15)
 		(uuid "ade45481-00a8-45d3-a166-bad7e856d635")
-	)
-	(no_connect
-		(at 224.79 118.11)
-		(uuid "af110c66-d786-4e40-bb89-63f492f04412")
 	)
 	(no_connect
 		(at 224.79 67.31)
@@ -6388,6 +6618,16 @@
 	)
 	(wire
 		(pts
+			(xy 224.79 118.11) (xy 228.6 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "566788c0-a0cb-460d-9923-21f09169328b")
+	)
+	(wire
+		(pts
 			(xy 201.93 22.86) (xy 209.55 22.86)
 		)
 		(stroke
@@ -6395,6 +6635,16 @@
 			(type default)
 		)
 		(uuid "58728153-8796-4131-b82c-012b4e725fad")
+	)
+	(wire
+		(pts
+			(xy 224.79 120.65) (xy 228.6 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "589fc9e4-afbb-4d19-a663-b97ad95ea627")
 	)
 	(wire
 		(pts
@@ -6725,6 +6975,16 @@
 			(type default)
 		)
 		(uuid "7a4d27d9-7c6f-4588-b0b6-9e4a5181c089")
+	)
+	(wire
+		(pts
+			(xy 224.79 113.03) (xy 228.6 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7a57d6a7-570d-42eb-bc01-7093b0dc0ac9")
 	)
 	(wire
 		(pts
@@ -7465,6 +7725,16 @@
 			(type default)
 		)
 		(uuid "d1dfb4a7-766b-4ac6-ae13-dab5cf3be4dc")
+	)
+	(wire
+		(pts
+			(xy 224.79 115.57) (xy 228.6 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d2de38fc-3a72-48b2-b5e1-4a59fde17fd1")
 	)
 	(wire
 		(pts
@@ -8984,7 +9254,7 @@
 				)
 			)
 		)
-		(property "Footprint" "helixloop:KEY-SMD_L3.0-W2.5-LS4.0"
+		(property "Footprint" "helixloop:MIC_T3902"
 			(at 105.156 51.816 0)
 			(effects
 				(font
@@ -11349,7 +11619,7 @@
 				)
 			)
 		)
-		(property "Value" "Conn_01x03_Pin"
+		(property "Value" "Conn_01x03_Socket"
 			(at 150.876 114.046 90)
 			(effects
 				(font
@@ -11357,7 +11627,7 @@
 				)
 			)
 		)
-		(property "Footprint" "penta:SMD_Pad_01x03_1.27mm"
+		(property "Footprint" "helixloop:MinimalPinSocket_1x03_P1.27mm_Vertical"
 			(at 152.4 111.76 0)
 			(effects
 				(font
@@ -12924,6 +13194,91 @@
 			(project "helixloop"
 				(path "/1f30b1ea-44f0-467a-8ed8-643be513058b"
 					(reference "C49")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x04_Socket")
+		(at 233.68 115.57 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "972c2e1c-d0b3-48be-9fcc-42f1a085302a")
+		(property "Reference" "J9"
+			(at 234.3912 115.6278 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Conn_01x04_Socket"
+			(at 234.3912 118.0521 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "helixloop:MinimalPinSocket_1x04_P1.27mm_Vertical"
+			(at 233.68 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 233.68 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x04, script generated"
+			(at 233.68 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Designation" ""
+			(at 233.68 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "6ce3d0e9-a0a6-4d7f-addd-693206dd25f7")
+		)
+		(pin "4"
+			(uuid "b56fe905-b9a2-4fdc-88aa-d3612536b623")
+		)
+		(pin "3"
+			(uuid "a6e7cee7-13a1-4d22-80d5-898d08f9effa")
+		)
+		(pin "1"
+			(uuid "09834b15-ee11-4ab8-a906-9cd6f69bfd17")
+		)
+		(instances
+			(project ""
+				(path "/1f30b1ea-44f0-467a-8ed8-643be513058b"
+					(reference "J9")
 					(unit 1)
 				)
 			)
