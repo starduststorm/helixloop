@@ -33,6 +33,30 @@ extern char *__brkval;
 
 /* --------------------------------- */
 
+#if HARDWARE_VERSION >= 2
+
+// these pins are unconnected but exported in a pin header
+#define UNCONNECTED_PIN_1 26
+#define UNCONNECTED_PIN_2 27
+
+#define LED_DATA_PIN 11
+#define LED_CLK_PIN 10
+
+#define TOUCH_PIN_0 0
+
+#define PIN_PDM_DIN 18
+#define PIN_PDM_CLK 19
+
+#else // HARDWARE_VERSION
+
+#if SAMD
+#define LED_DATA_PIN 9
+#define LED_CLK_PIN 8
+#else
+#define LED_DATA_PIN 3
+#define LED_CLK_PIN 2
+#endif // HARDWARE_VERSION
+
 #if SAMD
 #define UNCONNECTED_PIN_1 A4
 #define UNCONNECTED_PIN_2 A5
@@ -40,6 +64,8 @@ extern char *__brkval;
 #define UNCONNECTED_PIN_1 A0
 #define UNCONNECTED_PIN_2 A1
 #endif
+#endif
+
 
 #define FASTLED_USE_PROGMEM 1
 #define FASTLED_USE_GLOBAL_BRIGHTNESS 1
@@ -119,6 +145,7 @@ void setup() {
   delay(2000);
   Serial.println("Done waiting at boot.");
 #endif
+  randomSeed(lsb_noise(UNCONNECTED_PIN_1, 8 * sizeof(uint32_t)));
   random16_add_entropy(lsb_noise(UNCONNECTED_PIN_2, 8 * sizeof(uint16_t)));
 
   // use the alternate sercoms each of these SPI ports (SERCOM3)
@@ -127,11 +154,7 @@ void setup() {
   // pinPeripheral(LEDS_MOSI, PIO_SERCOM_ALT);
 
   // FastLED.addLeds<SK9822, BGR>(ctx.leds, ctx.leds.size());
-#if SAMD
-  FastLED.addLeds<SK9822HD, 9, 8, BGR, DATA_RATE_MHZ(16)>(ctx.leds, ctx.leds.size());
-#else
-  FastLED.addLeds<SK9822HD, 3, 2, BGR, DATA_RATE_MHZ(16)>(ctx.leds, ctx.leds.size());
-#endif
+  FastLED.addLeds<SK9822HD, LED_DATA_PIN, LED_CLK_PIN, BGR, DATA_RATE_MHZ(16)>(ctx.leds, ctx.leds.size());
 
   fc.loop();
 
