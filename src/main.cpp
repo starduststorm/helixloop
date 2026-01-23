@@ -113,6 +113,7 @@ void setup() {
   patternManager.registerPattern<SwarmPattern>();
   patternManager.registerPattern<SpiralSource>();
   patternManager.registerPattern<WanderingFew>();
+  // patternManager.setTestRunner<SpasticTriad>();
 
   patternManager.setupRandomRunner(50*1000, 2000);
   

@@ -166,4 +166,104 @@ public:
   }
 };
 
+class SpasticTriad : public Pattern, PaletteRotation<CRGBPalette256> {
+public:
+  int defaultSpeed = 333;
+  Particles particles;
+  unsigned long nextEvent[3] = {0};
+  uint8_t nextColorIndex = 0;
+  SpasticTriad() : particles(ledgraph, ctx, 3, 0, 0, {}) {
+    minBrightness = 20;
+    maxColorJump = 15;
+    particles.setFadeUpDistance(3);
+    particles.requireExactEdgeTypeMatch = false;
+    particles.preventReverseFlow = true;
+    particles.flowRule = Particles::priority;
+
+    particles.handleNewParticle = [this](Particle &p) {
+      int num = particles.particles.size()-1;
+      p.speed = defaultSpeed;
+      p.px = HLSpiralCenters[num];
+      p.directions = MakeEdgeTypesQuad(EdgeType::outbound, EdgeType::counterclockwise);
+      p.colorIndex = nextColorIndex;
+      nextColorIndex = num * 0xFF / 3;
+    };
+
+    particles.handleKillParticle = [this](Particle &p) {
+      // happens rarely, if particles end up with no where to go. reuse the color index if so.
+      nextColorIndex = p.colorIndex;
+      assert(false, "particle died: px:, directions quad: %i, %i, %i, %i, speed = %i", p.px,
+             p.directions.edgeTypes.first,
+             p.directions.edgeTypes.second,
+             p.directions.edgeTypes.third,
+             p.directions.edgeTypes.fourth, 
+             p.speed);
+    };
+
+    particles.handleUpdateParticle = [this](Particle &p, uint8_t index) {
+      p.color = getShiftingPaletteColor(p.colorIndex, 30);
+
+      for (int i = 0; i < ARRAY_SIZE(HLSpiralCenters); ++i) {
+        if (p.px == HLSpiralCenters[i] && (p.lastPx != HLSpiralCenters[0] && p.lastPx != HLSpiralCenters[1] && p.lastPx != HLSpiralCenters[2])) {
+        p.moveTo(HLSpiralCenters[random8(ARRAY_SIZE(HLSpiralCenters))]);
+          // we actually want first priority to be counterclockwise, but if we do that then an event might leave the particle with no path. 
+          // this will sometimes take an extra pixel when moving out of the spiral but that's fine especially at high speed.
+          p.directions.edgeTypes.first = EdgeType::outbound;
+          p.directions.edgeTypes.second = EdgeType::counterclockwise;
+          break;
+        }
+      }
+
+      int spiralPos = indexInSpiral(p.px);
+      if (spiralPos != -1) {
+        p.speed = max(3, defaultSpeed * (spiralPos+1)/SPIRAL_LED_COUNT);
+      } else if (p.speed < defaultSpeed) {
+        p.speed += 1;
+      }
+
+      if (millis() > nextEvent[index]) {
+        int event = random8(4);
+        switch (event) {
+          case 0:
+            p.directions.edgeTypes.first = (p.directions.edgeTypes.first & EdgeType::outbound
+                                            ? EdgeType::inbound
+                                            : EdgeType::outbound);
+            break;
+          case 1:
+            p.directions.edgeTypes.second = (p.directions.edgeTypes.second & EdgeType::clockwise
+                                             ? EdgeType::counterclockwise
+                                             : EdgeType::clockwise);
+            break;
+          case 2:
+            p.directions.edgeTypes.second |= (p.directions.edgeTypes.second & EdgeType::helix1
+                                             ? EdgeType::helix2
+                                             : EdgeType::helix1);
+            p.directions.edgeTypes.third = (p.directions.edgeTypes.second & EdgeType::helix1
+                                             ? EdgeType::helix2
+                                             : EdgeType::helix1);
+            break;
+          case 3:
+            p.directions.edgeTypes.first = EdgeType::inbound;
+            p.directions.edgeTypes.second = EdgeType::clockwise;
+            p.directions.edgeTypes.third = EdgeType::helix1;
+            break;
+          case 4:
+            p.directions.edgeTypes.first = EdgeType::all;
+            break;
+        }
+        p.lastPx = p.px; // override preventReverseFlow
+        nextEvent[index] = millis() + random16(500, 5000);
+      }
+    };
+  }
+  void update() {
+    defaultSpeed = beatsin16(1, 133, 333);
+    particles.fadeDown = beatsin16(3, 3 << 8, 6 << 8);
+    particles.update();
+  }
+  const char *description() {
+    return "SpasticTriad";
+  }
+};
+
 #endif

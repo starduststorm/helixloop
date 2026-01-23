@@ -14,7 +14,6 @@ using namespace std;
 
 typedef enum : uint8_t {
    none             = 0,
-   unused           = 1 << 6,
    helix1           = 1 << 5,
    helix2           = 1 << 4,
    inbound          = 1 << 3,
@@ -35,12 +34,21 @@ Graph ledgraph;
 static_assert(PRIMARY_HELIX_LED_COUNT + SECONDARY_HELIX_LED_COUNT + 3 * SPIRAL_LED_COUNT == LED_COUNT, "LED_COUNT issue");
 
 #define SPIRAL_FIRST_ENTRANCE_INDEX 134
-#define SPIRAL_FIRST_INDEX 228
 
 #define SPIRAL_CENTERS 228,275,322
 const PixelIndex HLSpiralCenters[] = {SPIRAL_CENTERS};
 
 const PixelIndex helixIntersections[]    = {9,   20,  29,  40,  49,  60,  69,  80,  89,  100, 109, 0};
+
+int indexInSpiral(PixelIndex index) {
+    for (int s = 0 ; s<SPIRAL_COUNT; ++s) {
+        PixelIndex spiralEntranceIndex = HLSpiralCenters[s] + SPIRAL_LED_COUNT-1;
+        if (index >= HLSpiralCenters[s] && index <= spiralEntranceIndex) {
+            return index - HLSpiralCenters[s];
+        }
+    }
+    return -1;
+}
 
 void initLEDGraph() {
     ledgraph = Graph({}, LED_COUNT);
@@ -85,13 +93,13 @@ void initLEDGraph() {
     // Three spirals
     for (int s = 0; s < SPIRAL_COUNT; ++s) {
         for (int i = 0; i < SPIRAL_LED_COUNT - 1; ++i) {
-            int px = SPIRAL_FIRST_INDEX + s * SPIRAL_LED_COUNT + i;
+            int px = HLSpiralCenters[0] + s * SPIRAL_LED_COUNT + i;
             ledgraph.addEdge(Edge(px, px+1, EdgeType::outbound));
         }
         // Connect the helix to the spiral entrance
         // Spiral entrances are asymmetric on edge types, so we can differentiate the three-pixel connection properly
         PixelIndex helixExitIndex = SPIRAL_FIRST_ENTRANCE_INDEX + s * SECONDARY_HELIX_LED_COUNT / 3;
-        PixelIndex spiralEntranceIndex = SPIRAL_FIRST_INDEX + (SPIRAL_COUNT-s) * SPIRAL_LED_COUNT - 1;
+        PixelIndex spiralEntranceIndex = HLSpiralCenters[0] + (SPIRAL_COUNT-s) * SPIRAL_LED_COUNT - 1;
         ledgraph.addEdge(Edge(helixExitIndex, spiralEntranceIndex, EdgeType::inbound), false);
         ledgraph.addEdge(Edge(spiralEntranceIndex, helixExitIndex, EdgeType::outbound | EdgeType::counterclockwise | EdgeType::helix2), false);
 
