@@ -60,6 +60,9 @@ public:
 class WanderingFew : public Pattern, PaletteRotation<CRGBPalette256> {
 protected:
   Particles particles;
+  static constexpr int baselineFPS = 141; // pre-perf baseline
+  BaselineStepper turnStepper;
+  int turnRolls = 0;
 public:
   WanderingFew() : particles(ledgraph, ctx, 9, 42, 9000, {}) {
     particles.requireExactEdgeTypeMatch = true;
@@ -82,25 +85,28 @@ public:
         p.brightness = 0xFF * (p.lifespan - p.age()) / (p.lifespan >> 3);
       }
 
-      // turn every 10 seconds or so?
-      if (random16() < 64) {
-        if (ledgraph.adjacencies(p.px, MakeEdgeTypesQuad(p.directions.edgeTypes.first, p.directions.edgeTypes.second)).size() > 0) { // only turn if on primary path
-          p.directions.edgeTypes.third = p.directions.edgeTypes.second;
-          p.directions.edgeTypes.second = (random8(2) == 0) ? EdgeType::clockwise : EdgeType::counterclockwise;
-          p.directions.edgeTypes.second |= (random8(2) == 0) ? EdgeType::helix1 : EdgeType::helix2;
+      for (int k = turnRolls; k > 0; --k) {
+        // turn every 10 seconds or so?
+        if (random16() < 64) {
+          if (ledgraph.adjacencies(p.px, MakeEdgeTypesQuad(p.directions.edgeTypes.first, p.directions.edgeTypes.second)).size() > 0) { // only turn if on primary path
+            p.directions.edgeTypes.third = p.directions.edgeTypes.second;
+            p.directions.edgeTypes.second = (random8(2) == 0) ? EdgeType::clockwise : EdgeType::counterclockwise;
+            p.directions.edgeTypes.second |= (random8(2) == 0) ? EdgeType::helix1 : EdgeType::helix2;
+          }
         }
-      }
-      if (random16() < 16) {
-        if (p.directions.edgeTypes.first & EdgeType::inbound) {
-          p.directions.edgeTypes.first = EdgeType::outbound;
-        } else {
-          p.directions.edgeTypes.first = EdgeType::inbound;
+        if (random16() < 16) {
+          if (p.directions.edgeTypes.first & EdgeType::inbound) {
+            p.directions.edgeTypes.first = EdgeType::outbound;
+          } else {
+            p.directions.edgeTypes.first = EdgeType::inbound;
+          }
         }
       }
     };
   }
 
   void update() {
+    turnRolls = turnStepper.steps(baselineFPS);
     particles.update();
   }
 
@@ -114,6 +120,10 @@ public:
 class SpiralSource : public Pattern, PaletteRotation<CRGBPalette256> {
 protected:
   Particles particles;
+  // per-frame random chance below was tuned at this observed framerate (mean; it swung 58-142 with particle count)
+  static constexpr int baselineFPS = 100;
+  BaselineStepper switchStepper;
+  int switchRolls = 0;
 public:
   SpiralSource() : particles(ledgraph, ctx, 0, 42, 2400, {}) {
     particles.requireExactEdgeTypeMatch = true;
@@ -132,10 +142,12 @@ public:
       }
 
       // switch loops sometimes
-      if (random16() < 512) {
+      for (int k = switchRolls; k > 0; --k) {
+        if (random16() < 512) {
           bool choice = random8(2);
           p.directions.edgeTypes.second = EdgeType::counterclockwise | ((choice == 0) ? EdgeType::helix1 : EdgeType::helix2);
           p.directions.edgeTypes.third = EdgeType::counterclockwise | ((choice == 0) ? EdgeType::helix2 : EdgeType::helix1);
+        }
       }
     };
   }
@@ -144,6 +156,7 @@ public:
   uint8_t spiralIndex = 0; //0-2
 
   void update() {
+    switchRolls = switchStepper.steps(baselineFPS);
     particles.update();
     
     particles.fadeDown = beatsin16(1, 3<<8, 8<<8);
@@ -173,6 +186,9 @@ public:
   Particles particles;
   unsigned long nextEvent[3] = {0};
   uint8_t nextColorIndex = 0;
+  static constexpr int baselineFPS = 141; // pre-perf baseline
+  BaselineStepper accelStepper;
+  int accelSteps = 0;
   SpasticTriad() : particles(ledgraph, ctx, 3, 0, 0, {}) {
     minBrightness = 20;
     maxColorJump = 15;
@@ -219,7 +235,7 @@ public:
       if (spiralPos != -1) {
         p.speed = max(3, defaultSpeed * (spiralPos+1)/SPIRAL_LED_COUNT);
       } else if (p.speed < defaultSpeed) {
-        p.speed += 1;
+        p.speed = min(defaultSpeed, p.speed + accelSteps);
       }
 
       if (millis() > nextEvent[index]) {
@@ -259,6 +275,7 @@ public:
   }
   void update() {
     defaultSpeed = beatsin16(1, 133, 333);
+    accelSteps = accelStepper.steps(baselineFPS);
     particles.fadeDown = beatsin16(3, 3 << 8, 6 << 8);
     particles.update();
   }
@@ -331,6 +348,10 @@ public:
 
   int bitLoudZoom = 70;
 
+  static constexpr int baselineFPS = 60; // pre-perf baseline
+  BaselineStepper frameStepper;
+  int frameSteps = 0;
+
   // avg spectrum level required for the pattern to be selected; tune to mic/environment
   static constexpr int ambientLevelThreshold = 4;
 
@@ -350,7 +371,6 @@ public:
     return (sum / (int32_t)frame.size > ambientLevelThreshold) ? 0xFF : 0;
   }
 
-
   
   SoundBits() : particles(ledgraph, ctx, 0, 0, 1200, {clockwise, counterclockwise}) {
     particles.preventReverseFlow = true;
@@ -360,8 +380,10 @@ public:
       if (bit.age() > bit.lifespan/2) {
         bit.brightness = min(0xFF, max(0, (int)(0xFF - 0xAF * (bit.age()-bit.lifespan/2) / (bit.lifespan-bit.lifespan/2))));
       }
-      if (bit.speed > bitLoudZoom - bitLoudZoom * bit.age() / bit.lifespan) {
-        bit.speed-=2;
+      for (int k = frameSteps; k > 0; --k) {
+        if (bit.speed > bitLoudZoom - bitLoudZoom * bit.age() / bit.lifespan) {
+          bit.speed -= min<uint16_t>(2, bit.speed);
+        }
       }
     };
   }
@@ -370,7 +392,8 @@ public:
     unsigned long mils = millis();
     
     FFTFrame frame = spectrumFrame();
-    for (unsigned freqBucket = 0; freqBucket < frame.size; ++freqBucket) {
+    frameSteps = frameStepper.steps(baselineFPS);
+    for (unsigned freqBucket = 0; frameSteps > 0 && freqBucket < frame.size; ++freqBucket) {
       int32_t level = frame.spectrum[freqBucket] - fftLevelThreshold;
       
       if (level > fftLevelThreshold && particles.particles.size() < 255) {
@@ -384,8 +407,8 @@ public:
         p.color = getPaletteColor(phase, brightness);
         p.speed = min(bitLoudZoom, 3*level);
       }
-      autoGainUpdate();
     }
+    autoGainUpdate();
     particles.update();
   }
 

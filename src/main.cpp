@@ -69,6 +69,9 @@
 #include <util.h>
 #include <drawing.h>
 #include <patterning.h>
+#if defined(ARDUINO_ARCH_RP2040)
+#include <apa102pio.h>
+#endif
 #include "ledgraph.h"
 #if SAMD
 #include "motor.h"
@@ -93,6 +96,10 @@ FFTProcessing fftProcessing(audioInput, 10, 128);
 DrawingContext ctx;
 
 PatternManager patternManager(ctx);
+CrossfadingPatternRunner *randomRunner = NULL;
+static const unsigned long kPatternRunDuration = 50*1000;
+
+#include "bench.h"
 
 static bool serialTimeout = false;
 static unsigned long setupDoneTime;
@@ -116,7 +123,13 @@ void setup() {
   randomSeed(lsb_noise(UNCONNECTED_PIN_1, 8 * sizeof(uint32_t)));
   random16_add_entropy(lsb_noise(UNCONNECTED_PIN_2, 8 * sizeof(uint16_t)));
 
+#if defined(ARDUINO_ARCH_RP2040)
+  // FastLED bitbangs spi chipsets on rp2040; use dustlib's PIO+DMA transport at 16MHz instead
+  static APA102PIOController<BGR> ledController(LED_DATA_PIN, LED_CLK_PIN, 16000000);
+  FastLED.addLeds(&ledController, &ctx.leds[0], ctx.leds.size());
+#else
   FastLED.addLeds<SK9822HD, LED_DATA_PIN, LED_CLK_PIN, BGR, DATA_RATE_MHZ(16)>(ctx.leds, ctx.leds.size());
+#endif
 
   fc.loop();
 
@@ -124,12 +137,12 @@ void setup() {
   patternManager.registerPattern<SwarmPattern>();
   patternManager.registerPattern<SpiralSource>();
   patternManager.registerPattern<WanderingFew>();
-#if HARDWARE_VERISON >= 2
+#if HARDWARE_VERSION >= 2
   patternManager.registerPattern<SoundBits>(0, &SoundBits::wantsToRun);
 #endif
   // patternManager.setTestRunner<SpasticTriad>();
 
-  patternManager.setupRandomRunner(50*1000, 2000);
+  randomRunner = patternManager.setupRandomRunner(kPatternRunDuration, 2000);
   
   initLEDGraph();
   assert(ledgraph.adjList.size() == LED_COUNT, "adjlist size should match LED_COUNT");
@@ -160,15 +173,21 @@ void loop() {
 
   FastLED.setBrightness(25);
 
+  BENCH_PERF_MARK();
   patternManager.loop();
+  BENCH_PERF_ACCUM(benchPerfPatternUS);
   
+  BENCH_PERF_MARK();
   FastLED.show();
+  BENCH_PERF_ACCUM(benchPerfShowUS);
 #if SAMD
   motorloop();
 #endif
 
   fftProcessing.frameReset();
 
+  benchLoop(readSerialLine());
+
   fc.loop();
-  fc.clampToFramerate(120);
+  fc.clampToFramerate(benchClampFPS);
 }
