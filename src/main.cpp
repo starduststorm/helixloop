@@ -34,7 +34,9 @@
 #define LED_DATA_PIN 11
 #define LED_CLK_PIN 10
 
+// TouchPoints sit at the spiral centers on contiguous gpios; pad i is at HLSpiralCenters[i]
 #define TOUCH_PIN_0 0
+#define TOUCH_POINT_COUNT 3
 
 #define PIN_PDM_DIN 18
 #define PIN_PDM_CLK 19
@@ -87,6 +89,11 @@ FrameCounter fc;
 AudioInputPDM audioInput(PDM_DATA, PDM_CLK, true);
 // TODO: fft numBins should be pattern-determined. how to rationalize this with a shared fft?
 FFTProcessing fftProcessing(audioInput, 10, 128);
+
+#include <controls.h>
+TouchPIO touchPIO;
+HardwareControls controls;
+bool touchHeld[TOUCH_POINT_COUNT] = {0};
 #endif
 
 #include "patterns.h"
@@ -143,7 +150,27 @@ void setup() {
   // patternManager.setTestRunner<SpasticTriad>();
 
   randomRunner = patternManager.setupRandomRunner(kPatternRunDuration, 2000);
-  
+
+#if HARDWARE_VERSION >= 2
+  if (touchPIO.begin(TOUCH_PIN_0, TOUCH_POINT_COUNT)) {
+    for (int i = 0; i < TOUCH_POINT_COUNT; ++i) {
+      TouchButton *button = new TouchButton(touchPIO, i);
+      button->onButtonDown([i]() { touchHeld[i] = true; });
+      button->onButtonUp([i]() { touchHeld[i] = false; });
+      controls.addControl(button);
+    }
+  }
+  // overlay on top of the random runner for as long as a TouchPoint is held or its particles are still around
+  patternManager.setupConditionalRunner<TouchParticleStream>([](PatternRunner &runner) -> uint8_t {
+    for (bool held : touchHeld) {
+      if (held) {
+        return 0xFF;
+      }
+    }
+    return (runner.pattern && !static_cast<TouchParticleStream *>(runner.pattern)->isIdle()) ? 0xFF : 0;
+  }, 1);
+#endif
+
   initLEDGraph();
   assert(ledgraph.adjList.size() == LED_COUNT, "adjlist size should match LED_COUNT");
 
@@ -172,6 +199,10 @@ void loop() {
   }
 
   FastLED.setBrightness(25);
+
+#if HARDWARE_VERSION >= 2
+  controls.update();
+#endif
 
   BENCH_PERF_MARK();
   patternManager.loop();

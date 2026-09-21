@@ -284,6 +284,83 @@ public:
   }
 };
 
+#if HARDWARE_VERSION >= 2
+
+class TouchParticleStream : public Pattern, PaletteRotation<CRGBPalette256> {
+  static constexpr unsigned spawnInterval = 120; // ms between particles per held TouchPoint
+  static constexpr unsigned maxParticles = 150;
+  static constexpr unsigned lingerDuration = 1500; // ms to keep running after the last particle so trails can fade out
+  static constexpr int spiralSpeed = 60;
+  unsigned long lastSpawn[TOUCH_POINT_COUNT] = {0};
+  unsigned long lastActive;
+public:
+  Particles particles;
+  TouchParticleStream() : particles(ledgraph, ctx, 0, spiralSpeed, 4000, {EdgeType::outbound}) {
+    minBrightness = 20;
+    particles.requireExactEdgeTypeMatch = true;
+    particles.fadeDown = 5<<8;
+    particles.setFadeUpDistance(2);
+    particles.flowRule = Particles::priority;
+    particles.spawnRule = Particles::manualSpawn;
+    lastActive = millis();
+
+    particles.handleUpdateParticle = [this](Particle &p, uint8_t index) {
+      p.color = getShiftingPaletteColor(p.colorIndex, 3);
+      if (p.age() > p.lifespan - (p.lifespan >> 2)) {
+        p.brightness = 0xFF * (p.lifespan - p.age()) / (p.lifespan >> 2);
+      }
+
+      if (indexInSpiral(p.px) != -1) {
+        return;
+      }
+      if (p.directions.edgeTypes.first == EdgeType::outbound) {
+        // just left the spiral; keep heading whichever way around the wreath the spiral exit took us
+        EdgeTypes heading = EdgeType::counterclockwise;
+        for (Edge &edge : ledgraph.adjList[p.lastPx]) {
+          if (edge.to == p.px && (edge.types & EdgeType::clockwise)) {
+            heading = EdgeType::clockwise;
+          }
+        }
+        // hop helixes at random at each intersection
+        p.directions = MakeEdgeTypesQuad(heading);
+      }
+    };
+  }
+
+  void update() {
+    unsigned long mils = millis();
+    for (int i = 0; i < TOUCH_POINT_COUNT; ++i) {
+      if (touchHeld[i] && mils - lastSpawn[i] > spawnInterval && particles.particles.size() < maxParticles) {
+        Particle &p = particles.addParticle();
+        p.px = HLSpiralCenters[i];
+        bool ccwFirst = random8(2);
+        p.directions = MakeEdgeTypesQuad(EdgeType::outbound,
+                                         ccwFirst ? EdgeType::counterclockwise : EdgeType::clockwise,
+                                         ccwFirst ? EdgeType::clockwise : EdgeType::counterclockwise);
+        p.colorIndex = i * 0xFF / TOUCH_POINT_COUNT + random8(40);
+        p.color = getShiftingPaletteColor(p.colorIndex, 3);
+        p.lifespan += random16(1500);
+        lastSpawn[i] = mils;
+      }
+    }
+    if (!particles.particles.empty()) {
+      lastActive = mils;
+    }
+    particles.update();
+  }
+
+  // nothing left to draw
+  bool isIdle() {
+    return millis() - lastActive > lingerDuration;
+  }
+
+  const char *description() {
+    return "TouchParticleStream";
+  }
+};
+
+#endif // HARDWARE_VERSION >= 2
+
 class SoundPattern : public Pattern, public FFTReceiver {
 public:
   unsigned long lastLevelThreshChange{0};
