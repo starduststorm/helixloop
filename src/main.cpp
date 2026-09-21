@@ -74,13 +74,24 @@
 #include "motor.h"
 #endif
 
+FrameCounter fc;
+
+#define PDM_DATA 18 
+#define PDM_CLK 19
+
+#if HARDWARE_VERSION >= 2
+#include <audio.h>
+AudioInputPDM audioInput(PDM_DATA, PDM_CLK, true);
+// TODO: fft numBins should be pattern-determined. how to rationalize this with a shared fft?
+FFTProcessing fftProcessing(audioInput, 10, 128);
+#endif
+
 #include "patterns.h"
 
 #include <functional>
 
 DrawingContext ctx;
 
-FrameCounter fc;
 PatternManager patternManager(ctx);
 
 static bool serialTimeout = false;
@@ -113,12 +124,17 @@ void setup() {
   patternManager.registerPattern<SwarmPattern>();
   patternManager.registerPattern<SpiralSource>();
   patternManager.registerPattern<WanderingFew>();
+#if HARDWARE_VERISON >= 2
+  patternManager.registerPattern<SoundBits>(0, &SoundBits::wantsToRun);
+#endif
   // patternManager.setTestRunner<SpasticTriad>();
 
   patternManager.setupRandomRunner(50*1000, 2000);
   
   initLEDGraph();
   assert(ledgraph.adjList.size() == LED_COUNT, "adjlist size should match LED_COUNT");
+
+  audioInput.subscribe();
 
   setupDoneTime = millis();
 #if SAMD
@@ -150,6 +166,8 @@ void loop() {
 #if SAMD
   motorloop();
 #endif
+
+  fftProcessing.frameReset();
 
   fc.loop();
   fc.clampToFramerate(120);

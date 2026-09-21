@@ -10,6 +10,7 @@
 
 #include <util.h>
 #include <drawing.h>
+#include <audio.h>
 #include <particles.h>
 using Particles = ParticleSim<LED_COUNT>;
 
@@ -263,6 +264,133 @@ public:
   }
   const char *description() {
     return "SpasticTriad";
+  }
+};
+
+class SoundPattern : public Pattern, public FFTReceiver {
+public:
+  unsigned long lastLevelThreshChange{0};
+  int minFFTLevelThreshold{3};
+  int fftLevelThreshold{minFFTLevelThreshold};
+  int autoGainAdjustmentInterval{600};
+
+  SoundPattern() : FFTReceiver(fftProcessing) {
+    // stop main loop from lowering framerate when we have nothing to draw, since that results in visibly-delayed response to sounds
+    fc.takeFPSAssertion(); 
+  }
+  ~SoundPattern() {
+    fc.releaseFPSAssertion();
+  }
+  void autoGainUpdate() {
+    FFTFrame frame = fftProcessing.getDataFrame();
+    unsigned long mils = millis();
+
+    int maxFrameValue = 0;
+    int32_t sumFrameValue = 0;
+    for (int i = 0 ; i < frame.size; ++i) {
+      if (frame.smoothSpectrum[i] > maxFrameValue) {
+        maxFrameValue = frame.smoothSpectrum[i];
+      }
+      sumFrameValue += frame.smoothSpectrum[i];
+    }
+    int avgFrameValue = sumFrameValue/frame.size;
+
+    int litCount{0};
+    for (int i = 0 ; i < LED_COUNT; ++i) {
+      litCount += ctx.leds[i] ? 1 : 0;
+    }
+    /* latch-ditch auto gain:
+     * slowly adjust threshold for drawing if to approach the average levels
+     * quickly move threshold for drawing if we're over- or under-drawing
+     * temporarily adjust thresholds at a fast interval at the start of pattern running to find a baseline
+    */
+   bool overDrawing = litCount > 95*LED_COUNT/100;
+   bool underDrawing = litCount < 2*LED_COUNT/10;
+   int adjustmentInterval = (runTime() > 3000 ? autoGainAdjustmentInterval : autoGainAdjustmentInterval/6);
+   if ((overDrawing || fftLevelThreshold < avgFrameValue) && mils - lastLevelThreshChange > adjustmentInterval) {
+      fftLevelThreshold++;
+      if (overDrawing) {
+        fftLevelThreshold += max(0, (maxFrameValue - fftLevelThreshold) / 20);
+      }
+      // logf("SoundPattern litCount = %i, frame value avg=%i,max=%i, fftLevelThreshold up to %i", litCount, avgFrameValue, maxFrameValue, fftLevelThreshold);
+      lastLevelThreshChange = mils;
+    } else if (fftLevelThreshold > minFFTLevelThreshold && (underDrawing || fftLevelThreshold > avgFrameValue) && mils - lastLevelThreshChange > adjustmentInterval) {
+      fftLevelThreshold--;
+      if (underDrawing) {
+        fftLevelThreshold = max(minFFTLevelThreshold, fftLevelThreshold + min(0, (maxFrameValue - fftLevelThreshold) / 10));
+      }
+      // logf("SoundPattern litCount = %i, frame value avg=%i,max=%i, fftLevelThreshold down to %i", litCount, avgFrameValue, maxFrameValue, fftLevelThreshold);
+      lastLevelThreshChange = mils;
+    }
+  }
+};
+
+class SoundBits : public SoundPattern, public PaletteRotation<CRGBPalette256> {
+public:
+  ParticleSim<LED_COUNT> particles;
+
+  int bitLoudZoom = 70;
+
+  // avg spectrum level required for the pattern to be selected; tune to mic/environment
+  static constexpr int ambientLevelThreshold = 4;
+
+  // registerPattern runCondition: only run when ambient sound is above threshold
+  static uint8_t wantsToRun(PatternRunner &runner) {
+    if (!audioInput.isStreaming()) {
+      return 0;
+    }
+    FFTFrame frame = fftProcessing.getDataFrame();
+    if (frame.size == 0 || !frame.spectrum) {
+      return 0;
+    }
+    int32_t sum = 0;
+    for (unsigned int i = 0; i < frame.size; ++i) {
+      sum += frame.spectrum[i];
+    }
+    return (sum / (int32_t)frame.size > ambientLevelThreshold) ? 0xFF : 0;
+  }
+
+
+  
+  SoundBits() : particles(ledgraph, ctx, 0, 0, 1200, {clockwise, counterclockwise}) {
+    particles.preventReverseFlow = true;
+    minBrightness = 20;
+    particles.setFadeUpDistance(1);
+    particles.handleUpdateParticle = [this](Particle &bit, uint8_t index) {
+      if (bit.age() > bit.lifespan/2) {
+        bit.brightness = min(0xFF, max(0, (int)(0xFF - 0xAF * (bit.age()-bit.lifespan/2) / (bit.lifespan-bit.lifespan/2))));
+      }
+      if (bit.speed > bitLoudZoom - bitLoudZoom * bit.age() / bit.lifespan) {
+        bit.speed-=2;
+      }
+    };
+  }
+  
+  void update() {
+    unsigned long mils = millis();
+    
+    FFTFrame frame = spectrumFrame();
+    for (unsigned freqBucket = 0; freqBucket < frame.size; ++freqBucket) {
+      int32_t level = frame.spectrum[freqBucket] - fftLevelThreshold;
+      
+      if (level > fftLevelThreshold && particles.particles.size() < 255) {
+        unsigned maxlifespan = 300;
+        Particle &p = particles.addParticle();
+        p.directions = ::all;
+        p.px = random16(LED_COUNT);
+        p.lifespan = max(1, min(maxlifespan, maxlifespan * level/30));
+        uint8_t phase = freqBucket*15+millis()/100;
+        uint8_t brightness = min(0xFF, level*10);
+        p.color = getPaletteColor(phase, brightness);
+        p.speed = min(bitLoudZoom, 3*level);
+      }
+      autoGainUpdate();
+    }
+    particles.update();
+  }
+
+  const char *description() {
+    return "SoundBits";
   }
 };
 
