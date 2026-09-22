@@ -5,12 +5,15 @@
 //   PATTERN <n>  crossfade to pattern index n and hold it (no auto-advance)
 //   AUTO         resume random auto-advance
 //   FAKEFFT <n>  drive the fft with a synthetic spectrum at level n, 0 to stop
+//   AUDIO        toggle ambient sound level logs for tuning sound run conditions
 //   PERF         toggle per-section frame timing logs
 //   FPS <n>      clamp the main loop to n fps to check patterns for framerate invariance, 0 to unclamp
 //   REBOOT
 
 static int benchClampFPS = 0;
 static bool benchPerfLogging = false;
+static bool benchAudioLogging = false;
+static unsigned long benchAudioLastLog = 0;
 static uint32_t benchPerfPatternUS = 0, benchPerfShowUS = 0, benchPerfFrames = 0;
 static unsigned long benchPerfMark = 0;
 
@@ -31,6 +34,9 @@ static inline void benchLoop(char *serialLine) {
     } else if (strncmp(serialLine, "FAKEFFT ", 8) == 0) {
       fftProcessing.benchTestLevel = atoi(serialLine + 8);
       logf("FAKEFFT %i requested", fftProcessing.benchTestLevel);
+    } else if (strcmp(serialLine, "AUDIO") == 0) {
+      benchAudioLogging = !benchAudioLogging;
+      logf("AUDIO logging %s", benchAudioLogging ? "on" : "off");
 #endif
     } else if (strncmp(serialLine, "FPS ", 4) == 0) {
       benchClampFPS = atoi(serialLine + 4);
@@ -53,6 +59,13 @@ static inline void benchLoop(char *serialLine) {
     logf("PERF avg over %u frames: patterns %uus, show %uus", benchPerfFrames, benchPerfPatternUS / benchPerfFrames, benchPerfShowUS / benchPerfFrames);
     benchPerfPatternUS = benchPerfShowUS = benchPerfFrames = 0;
   }
+
+#if HARDWARE_VERSION >= 2
+  if (benchAudioLogging && millis() - benchAudioLastLog > 250) {
+    benchAudioLastLog = millis();
+    logf("AUDIO ambient level %i, peak %i", ambientSound->ambientLevel(), audioInput.peakAmplitude());
+  }
+#endif
 }
 
 #endif

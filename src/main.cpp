@@ -89,6 +89,8 @@ FrameCounter fc;
 AudioInputPDM audioInput(PDM_DATA, PDM_CLK, true);
 // TODO: fft numBins should be pattern-determined. how to rationalize this with a shared fft?
 FFTProcessing fftProcessing(audioInput, 10, 128);
+// keeps the mic streaming amplitude measurements for sound patterns' run conditions
+AmplitudeReceiver *ambientSound = NULL;
 
 #include <controls.h>
 TouchPIO touchPIO;
@@ -140,6 +142,11 @@ void setup() {
 
   fc.loop();
 
+#if HARDWARE_VERSION >= 2
+  // measure ambient early to support an at-boot sound pattern
+  ambientSound = new AmplitudeReceiver(audioInput);
+#endif
+
   patternManager.setup();
   patternManager.registerPattern<SwarmPattern>();
   patternManager.registerPattern<SpiralSource>();
@@ -147,7 +154,6 @@ void setup() {
 #if HARDWARE_VERSION >= 2
   patternManager.registerPattern<SoundBits>(0, &SoundBits::wantsToRun);
 #endif
-  // patternManager.setTestRunner<SpasticTriad>();
 
   randomRunner = patternManager.setupRandomRunner(kPatternRunDuration, 2000);
 
@@ -174,7 +180,6 @@ void setup() {
   initLEDGraph();
   assert(ledgraph.adjList.size() == LED_COUNT, "adjlist size should match LED_COUNT");
 
-  audioInput.subscribe();
 
   setupDoneTime = millis();
 #if SAMD
@@ -215,6 +220,9 @@ void loop() {
   motorloop();
 #endif
 
+#if HARDWARE_VERSION >= 2
+  ambientSound->ambientLevel(); // drain the mic every frame to keep it accurate
+#endif
   fftProcessing.frameReset();
 
   benchLoop(readSerialLine());
