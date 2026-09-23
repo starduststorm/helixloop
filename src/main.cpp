@@ -1,5 +1,6 @@
 #define DEBUG 0
 #define WAIT_FOR_SERIAL 0
+#define LOG_BOOT_CAPTURE_BYTES 2048 // keep the boot log for HWTEST
 
 #include <Arduino.h>
 
@@ -109,6 +110,7 @@ CrossfadingPatternRunner *randomRunner = NULL;
 static const unsigned long kPatternRunDuration = 50*1000;
 
 #include "bench.h"
+#include "hwtest.h"
 
 static bool serialTimeout = false;
 static unsigned long setupDoneTime;
@@ -209,6 +211,19 @@ void loop() {
   controls.update();
 #endif
 
+  char *serialLine = readSerialLine();
+#if HARDWARE_VERSION >= 2
+  if (serialLine && strncmp(serialLine, kHWTestCommand, strlen(kHWTestCommand)) == 0 && !hwTest.active()) {
+    hwTest.begin(strstr(serialLine, "QUICK") != NULL);
+  }
+  if (hwTest.active()) {
+    // the self-test owns the pixels for its few seconds
+    hwTest.loop();
+    fc.loop();
+    return;
+  }
+#endif
+
   BENCH_PERF_MARK();
   patternManager.loop();
   BENCH_PERF_ACCUM(benchPerfPatternUS);
@@ -225,7 +240,7 @@ void loop() {
 #endif
   fftProcessing.frameReset();
 
-  benchLoop(readSerialLine());
+  benchLoop(serialLine);
 
   fc.loop();
   fc.clampToFramerate(benchClampFPS);
