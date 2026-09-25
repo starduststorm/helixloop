@@ -192,8 +192,20 @@ void setup() {
 #if defined(ARDUINO_ARCH_RP2040)
   updater = new NewerGlowUpdater("helixloop", FW_VERSION, xstr(HARDWARE_VERSION), [](void) {
     patternManager.runOneShotDrawing([](DrawingContext &ctx, unsigned long elapsed) {
-      ctx.leds.fill_solid(elapsed % 300 < 150 ? CRGB::Blue : CRGB::Black); // three blue flashes
-      return elapsed < 900;
+      static const unsigned long kCycleMs = 900;
+      static const int kCycles = 1;
+      static const int kEdge = 8; // soft leading edge, in pixels
+      ctx.leds.fill_solid(CRGB::Black);
+      uint8_t level = ease8InOutQuad(triwave8((elapsed % kCycleMs) * 256 / kCycleMs));
+      int front = level * (SPIRAL_LED_COUNT + kEdge); // fill front in 1/256 pixels
+      for (int i = 0; i < SPIRAL_LED_COUNT; ++i) {
+        uint8_t b = constrain((front - i * 256) / kEdge, 0, 255);
+        CRGB color = CRGB(0, 50, 255).nscale8_video(ease8InOutCubic(b));
+        for (int s = 0; s < SPIRAL_COUNT; ++s) {
+          ctx.leds[HLSpiralCenters[s] + i] = color;
+        }
+      }
+      return elapsed < kCycles * kCycleMs;
     }, 0xFE, 0xFF);
   });
 #endif
