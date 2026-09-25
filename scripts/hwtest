@@ -2,16 +2,16 @@
 """Unit intake: flash every board that shows up in BOOTSEL, then run the firmware's HWTEST self-test on every helixloop
 that shows up on USB serial, judge it, and log it per chip serial number.
 
-    ./hwtest v2                  build env v2, flash boards as they appear in bootloader mode, test units as they boot
-    ./hwtest v2 --no-build       reuse .pio/build/v2/firmware.uf2
-    ./hwtest --no-flash          only test (units already running a firmware with HWTEST)
-    ./hwtest --quick ...         skip the touch-each-pad step: no operator needed, pads are only checked for reading stuck
-    ./hwtest --new-only ...      leave alone the units that are already plugged in when this starts
-    ./hwtest v2 --reflash        also kick the units that are already running into the bootloader (1200-baud touch),
+    scripts/hwtest v2                  build env v2, flash boards as they appear in bootloader mode, test units as they boot
+    scripts/hwtest v2 --no-build       reuse .pio/build/v2/firmware.uf2
+    scripts/hwtest --no-flash          only test (units already running a firmware with HWTEST)
+    scripts/hwtest --quick ...         skip the touch-each-pad step: no operator needed, pads are only checked for reading stuck
+    scripts/hwtest --new-only ...      leave alone the units that are already plugged in when this starts
+    scripts/hwtest v2 --reflash        also kick the units that are already running into the bootloader (1200-baud touch),
                                  so they get this build and then the test
-    ./hwtest ... --for 60        stop after that many seconds (and print today's report) instead of waiting for ^C
-    ./hwtest report              the spread across units: what failed on how many, de-duplicated by serial number
-    ./hwtest report --all        ...counting every run rather than each unit's latest
+    scripts/hwtest ... --for 60        stop after that many seconds (and print today's report) instead of waiting for ^C
+    scripts/hwtest report              the spread across units: what failed on how many, de-duplicated by serial number
+    scripts/hwtest report --all        ...counting every run rather than each unit's latest
 
 What a run looks like on the unit: dark, then solid red / green / blue / white (watch for dead pixels, or the chain going
 dark past a bad joint), then each spiral lights blue in turn: touch its center pad, it turns green, let go. About 4s plus
@@ -23,6 +23,7 @@ Every run appends one JSON record to hwtest_results/results.jsonl and its raw tr
 import argparse, datetime, json, os, re, shutil, statistics, struct, subprocess, sys, threading, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)  # repo root (platformio.ini)
 try:
     import serial
     from serial.tools import list_ports
@@ -75,10 +76,10 @@ def resolve_image(target, build):
         if not os.path.isfile(target):
             sys.exit(f"hwtest: no such file: {target}")
         return os.path.abspath(target)
-    uf2 = os.path.join(HERE, ".pio", "build", target, "firmware.uf2")
+    uf2 = os.path.join(ROOT, ".pio", "build", target, "firmware.uf2")
     if build:
         log(f"building env `{target}`")
-        rc = subprocess.call([find_pio(), "run", "-e", target], cwd=HERE)
+        rc = subprocess.call([find_pio(), "run", "-e", target], cwd=ROOT)
         if rc != 0:
             sys.exit(f"hwtest: build of env `{target}` failed (exit {rc})")
     if not os.path.isfile(uf2):
@@ -164,13 +165,13 @@ def flash(vol, image):
 def firmware_identity(image):
     ident = {}
     try:
-        rev = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=HERE, capture_output=True, text=True).stdout.strip()
-        dirty = subprocess.run(["git", "status", "--porcelain", "src", "lib"], cwd=HERE, capture_output=True, text=True).stdout.strip()
+        rev = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+        dirty = subprocess.run(["git", "status", "--porcelain", "src", "lib"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
         ident["git"] = rev + ("+dirty" if dirty else "")
     except OSError:
         pass
     if image:
-        ident["image"] = os.path.relpath(image, HERE)
+        ident["image"] = os.path.relpath(image, ROOT)
         ident["image_built"] = datetime.datetime.fromtimestamp(os.path.getmtime(image)).isoformat(timespec="seconds")
     return ident
 

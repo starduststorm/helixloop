@@ -112,6 +112,12 @@ static const unsigned long kPatternRunDuration = 50*1000;
 #include "bench.h"
 #include "hwtest.h"
 
+#if defined(ARDUINO_ARCH_RP2040)
+#include <updating.h>
+#include <fw_version.h> // FW_VERSION, generated from the fw-v* tag by lib/dustlib/scripts/fw_version.py
+NewerGlowUpdater *updater;
+#endif
+
 static bool serialTimeout = false;
 static unsigned long setupDoneTime;
 
@@ -183,6 +189,15 @@ void setup() {
   assert(ledgraph.adjList.size() == LED_COUNT, "adjlist size should match LED_COUNT");
 
 
+#if defined(ARDUINO_ARCH_RP2040)
+  updater = new NewerGlowUpdater("helixloop", FW_VERSION, xstr(HARDWARE_VERSION), [](void) {
+    patternManager.runOneShotDrawing([](DrawingContext &ctx, unsigned long elapsed) {
+      ctx.leds.fill_solid(elapsed % 300 < 150 ? CRGB::Blue : CRGB::Black); // three blue flashes
+      return elapsed < 900;
+    }, 0xFE, 0xFF);
+  });
+#endif
+
   setupDoneTime = millis();
 #if SAMD
   motorsetup();
@@ -212,6 +227,9 @@ void loop() {
 #endif
 
   char *serialLine = readSerialLine();
+#if defined(ARDUINO_ARCH_RP2040)
+  updater->loop(serialLine);
+#endif
 #if HARDWARE_VERSION >= 2
   if (serialLine && strncmp(serialLine, kHWTestCommand, strlen(kHWTestCommand)) == 0 && !hwTest.active()) {
     hwTest.begin(strstr(serialLine, "QUICK") != NULL);
